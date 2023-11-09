@@ -41,12 +41,11 @@ import type { SubSkillsType } from '@/interface/skills';
 import { SkillList } from '@/interface/skills';
 import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
-import { useSession } from "next-auth/react";import { uploadToCloudinary } from '@/utils/upload';
-import { isUsernameAvailable } from '@/utils/username';
 import { useSession } from 'next-auth/react';
+import { userStore } from '@/store/user';
+import { uploadToCloudinary } from '@/utils/upload';
 
 type FormData = {
-  username: string;
   photo?: string;
   firstname?: string;
   lastname?: string;
@@ -82,10 +81,10 @@ const keysToOmit = [
   'id',
   'publicKey',
   'email',
-  'createdAt',
+  'created_at',
   'isVerified',
   'role',
-  'totalEarnedInUSD',
+  'totalEarned',
   'isTalentFilled',
   'superteamLevel',
   'notifications',
@@ -118,7 +117,6 @@ export default function EditProfilePage() {
   const userInfo :any = userStore();
   const { register, handleSubmit, setValue, watch } = useForm<FormData>();
 
-  const [userNameValid, setUserNameValid] = useState(true);
   const [discordError, setDiscordError] = useState(false);
   const [socialError, setSocialError] = useState(false);
   const [isAnySocialUrlInvalid, setAnySocialUrlInvalid] = useState(false);
@@ -239,21 +237,7 @@ export default function EditProfilePage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      if (data.username !== userInfo?.username) {
-        const avl = await isUsernameAvailable(data.username);
-        if (!avl) {
-          setUserNameValid(false);
-          toast({
-            title: 'Username Error.',
-            description: 'This username is not available.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-          return;
-        }
-      }
-      setUserNameValid(true);
+  
 
       if (!data.discord) {
         setDiscordError(true);
@@ -353,16 +337,16 @@ export default function EditProfilePage() {
         pows: pow,
       });
 
-      setUserInfo(response.data);
-      toast({
-        title: 'Profile updated.',
-        description: 'Your profile has been updated successfully!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      // setUserInfo(response.data);
+      // toast({
+      //   title: 'Profile updated.',
+      //   description: 'Your profile has been updated successfully!',
+      //   status: 'success',
+      //   duration: 3000,
+      //   isClosable: true,
+      // });
       setTimeout(() => {
-        router.push(`/t/${data.username}`);
+        router.push(`/t/${userInfo.username}`);
       }, 500);
     } catch (error: any) {
       toast({
@@ -414,7 +398,7 @@ export default function EditProfilePage() {
                     </FormLabel>
                     <MediaPicker
                       defaultValue={{ url: photoUrl, type: 'image' }}
-                      onChange={async (e) => {
+                      onChange={async (e:any) => {
                         setUploading(true);
                         const a = await uploadToCloudinary(e);
                         setValue('photo', a);
@@ -439,7 +423,7 @@ export default function EditProfilePage() {
                       Profile Picture
                     </FormLabel>
                     <MediaPicker
-                      onChange={async (e) => {
+                      onChange={async (e:any) => {
                         setUploading(true);
                         const a = await uploadToCloudinary(e);
                         setValue('photo', a);
@@ -454,16 +438,7 @@ export default function EditProfilePage() {
                     />
                   </>
                 )}
-                <InputField
-                  label="Username"
-                  placeholder="Username"
-                  name="username"
-                  register={register}
-                  isInvalid={!userNameValid}
-                  onChange={() => setUserNameValid(true)}
-                  validationErrorMessage="Username is unavailable! Please try another one."
-                  isRequired
-                />
+                
 
                 <InputField
                   label="First Name"
@@ -576,38 +551,7 @@ export default function EditProfilePage() {
                   />
                 </Box>
 
-                <Box w={'full'} mb={'1.25rem'}>
-                  <FormLabel color={'brand.slate.500'}>
-                    Community Affiliations
-                  </FormLabel>
-                  <ReactSelect
-                    closeMenuOnSelect={false}
-                    components={animatedComponents}
-                    isMulti
-                    options={CommunityList.map((elm: string) => {
-                      return { label: elm, value: elm };
-                    })}
-                    value={DropDownValues.community}
-                    required
-                    onChange={(e: any) => {
-                      const selectedCommunities = e
-                        ? e.map((elm: { label: string; value: string }) => elm)
-                        : [];
-                      setDropDownValues({
-                        ...DropDownValues,
-                        community: selectedCommunities,
-                      });
-                      setValue('community', selectedCommunities);
-                    }}
-                    styles={{
-                      control: (baseStyles) => ({
-                        ...baseStyles,
-                        backgroundColor: 'brand.slate.500',
-                        borderColor: 'brand.slate.300',
-                      }),
-                    }}
-                  />
-                </Box>
+                
 
                 <SelectBox
                   label="Work Experience"
@@ -623,18 +567,11 @@ export default function EditProfilePage() {
                   watchValue={watch('location')}
                   options={CityList}
                   id="location"
-                  placeholder="Select Your Country"
+                  placeholder="Select Your City"
                   register={register}
                 />
 
-                <SelectBox
-                  label="How familiar are you with Web3?"
-                  watchValue={watch('cryptoExperience')}
-                  options={web3Exp}
-                  id="cryptoExperience"
-                  placeholder="Pick your Experience"
-                  register={register}
-                />
+                
 
                 <SelectBox
                   label="Work Preference"

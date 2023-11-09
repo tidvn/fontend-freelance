@@ -23,8 +23,8 @@ interface Grant {
   isFeatured?: boolean;
   isActive?: boolean;
   isArchived?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export type { Grant };

@@ -7,8 +7,8 @@ interface UserSponsor {
   userId?: string;
   sponsorId?: string;
   role?: Role;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
   user?: User;
   sponsor?: SponsorType;
 }

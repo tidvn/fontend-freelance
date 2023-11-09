@@ -21,8 +21,8 @@ interface SubmissionWithUser {
   };
   isActive: boolean;
   isArchived: boolean;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
   like?: any;
   likes?: number;
   user: User;

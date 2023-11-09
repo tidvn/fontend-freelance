@@ -17,8 +17,8 @@ interface User {
   email?: string;
   username?: string;
   isVerified?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
   role?: string;
   talent?: boolean;
   sponsor?: boolean;
@@ -42,7 +42,7 @@ interface User {
   telegram?: string;
   pow?: string;
   notifications?: Notifications[] | null;
-  totalEarnedInUSD?: number;
+  totalEarned?: number;
   currentSponsorId?: string;
   currentSponsor?: SponsorType;
   UserSponsors?: UserSponsor[];

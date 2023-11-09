@@ -44,7 +44,7 @@ export default function PowCard({ talent, pow }: { talent: User; pow: PoW }) {
           fontSize={{ base: 'xs', md: 'sm' }}
           fontWeight={500}
         >
-          {timeAgoShort(pow?.createdAt || '')} {breakpoint === 'md' && ' ago'}
+          {timeAgoShort(pow?.created_at || '')} {breakpoint === 'md' && ' ago'}
         </Text>
       </Flex>
       <Text

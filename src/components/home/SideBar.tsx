@@ -92,7 +92,7 @@ import {
             />
             <Step
               number={3}
-              isComplete={!!userInfo?.id && !!userInfo.totalEarnedInUSD}
+              isComplete={!!userInfo?.id && !!userInfo.totalEarned}
             />
             <Flex pos={'absolute'} w={'0.0625rem'} h={'90%'} bg={'#CBD5E1'} />
           </VStack>
@@ -150,7 +150,7 @@ import {
               </Text>
             </Box>
             <Box ml={'0.8125rem'}>
-              {!userInfo?.id || !userInfo.totalEarnedInUSD ? (
+              {!userInfo?.id || !userInfo.totalEarned ? (
                 <Text
                   as="button"
                   color={'black'}

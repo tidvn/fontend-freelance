@@ -103,7 +103,7 @@ export default function SubmissionCard({
           fontSize={{ base: 'xs', md: 'sm' }}
           fontWeight={500}
         >
-          {timeAgoShort(sub?.createdAt)} {breakpoint === 'md' && ' ago'}
+          {timeAgoShort(sub?.created_at)} {breakpoint === 'md' && ' ago'}
         </Text>
       </Flex>
       <Box

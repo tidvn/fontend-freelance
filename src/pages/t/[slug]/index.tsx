@@ -18,7 +18,6 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -36,6 +35,8 @@ import type { User } from '@/interface/user';
 import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
 import { useSession } from "next-auth/react";
+import axios from '@/lib/axios';
+import { userStore } from '@/store/user';
 interface TalentProps {
   slug: string;
 }
@@ -58,8 +59,7 @@ function TalentProfile({ slug }: TalentProps) {
       [index]: !showSubskills[index],
     });
   };
-  const { data: session } = useSession();
-const userInfo:any  = session?.user;
+  const {userInfo} = userStore()
 
   const {
     isOpen: isOpenPow,
@@ -77,13 +77,14 @@ const userInfo:any  = session?.user;
           username: slug,
         });
 
-        if (res) {
+        if (res) {          
           setTalent(res?.data);
           setError(false);
           setIsloading(false);
         }
+        
+       
       } catch (err) {
-        console.log(err);
         setError(true);
         setIsloading(false);
       }
@@ -92,6 +93,15 @@ const userInfo:any  = session?.user;
   }, []);
 
   const bgImages = ['1.png', '2.png', '3.png', '4.png', '5.png'];
+
+  
+  useEffect(() => {
+    if(talent?.private && talent?.id != userInfo?.id){
+      setError(true)
+    }else{
+      setError(false)
+    }
+  }, [talent,  userInfo]);
 
   useEffect(() => {
     setRandomIndex(Math.floor(Math.random() * bgImages.length));
@@ -138,8 +148,8 @@ const userInfo:any  = session?.user;
     const typedPows = pows.map((p) => ({ ...p, type: 'pow' }));
 
     return [...typedSubmissions, ...typedPows].sort((a, b) => {
-      const dateA = new Date(a.createdAt ?? 0).getTime();
-      const dateB = new Date(b.createdAt ?? 0).getTime();
+      const dateA = new Date(a.created_at ?? 0).getTime();
+      const dateB = new Date(b.created_at ?? 0).getTime();
 
       return dateB - dateA;
     });
@@ -162,7 +172,7 @@ const userInfo:any  = session?.user;
       const previousPows = prevTalent.PoW ?? [];
       return {
         ...prevTalent,
-        PoW: [{ ...newPow, createdAt: currentTime }, ...previousPows],
+        PoW: [{ ...newPow, created_at: currentTime }, ...previousPows],
       };
     });
   };
@@ -202,6 +212,7 @@ const userInfo:any  = session?.user;
   };
 
   const workPreferenceText = getWorkPreferenceText(talent?.workPrefernce);
+
 
   const renderButton = (
     icon: JSX.Element,
@@ -484,13 +495,13 @@ const userInfo:any  = session?.user;
                   w={{ base: '100%', md: '50%' }}
                 >
                   <Flex direction={'column'}>
-                    <Text fontWeight={600}>${talent?.totalEarnedInUSD}</Text>
+                    <Text fontWeight={600}>${talent?.totalEarned}</Text>
                     <Text color={'brand.slate.500'} fontWeight={500}>
                       Earned
                     </Text>
                   </Flex>
                   <Flex direction={'column'}>
-                    <Text fontWeight={600}>{talent?.Submission?.length}</Text>
+                    <Text fontWeight={600}>{talent?.Submission?.length || 0}</Text>
                     <Text color={'brand.slate.500'} fontWeight={500}>
                       {talent?.Submission?.length === 1
                         ? 'Submission'

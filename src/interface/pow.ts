@@ -6,6 +6,6 @@ export interface PoW {
   skills: string[];
   subSkills: string[];
   link: string;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
 }
