@@ -3,19 +3,19 @@ import moment from 'moment';
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
 
-import type { Bounty } from '@/interface/bounty';
+import type { Job } from '@/interface/job';
 import type { SubmissionWithUser } from '@/interface/submission';
 
 import { SubmissionCard } from './submissionCard';
 
 interface Props {
-  bounty: Bounty;
+  job: Job;
   submissions: SubmissionWithUser[];
   endTime: string;
   setUpdate: Dispatch<SetStateAction<boolean>>;
 }
 export const Submissions = ({
-  bounty,
+  job,
   submissions,
   endTime,
   setUpdate,
@@ -58,7 +58,7 @@ export const Submissions = ({
                       }
                       talent={el.user}
                       key={el.id}
-                      winner={!!bounty?.isWinnersAnnounced && !!el.isWinner}
+                      winner={!!job?.isWinnersAnnounced && !!el.isWinner}
                       link={el.link ?? ''}
                       setUpdate={setUpdate}
                       winnerPosition={el.winnerPosition}

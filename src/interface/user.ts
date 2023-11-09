@@ -12,8 +12,8 @@ interface Notifications {
 interface User {
   id?: string;
   publicKey?: string;
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   email?: string;
   username?: string;
   isVerified?: boolean;

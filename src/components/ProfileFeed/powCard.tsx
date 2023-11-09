@@ -24,7 +24,7 @@ export default function PowCard({ talent, pow }: { talent: User; pow: PoW }) {
       <Flex align="center" justify={'space-between'}>
         <Flex align="center">
           <Avatar
-            name={`${talent?.firstName}${talent?.lastName}`}
+            name={`${talent?.firstname}${talent?.lastname}`}
             size={'xs'}
             src={talent?.photo as string}
           />
@@ -34,7 +34,7 @@ export default function PowCard({ talent, pow }: { talent: User; pow: PoW }) {
             fontWeight={500}
           >
             <Text as={'span'} ml={2} color={'brand.slate.900'} fontWeight={600}>
-              {talent?.firstName} {talent?.lastName}
+              {talent?.firstname} {talent?.lastname}
             </Text>{' '}
             added a personal project
           </Text>

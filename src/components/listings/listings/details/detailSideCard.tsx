@@ -378,7 +378,7 @@ export const DetailSideCard = ({
             currentStep={submissionStatus + 1}
             thisStep={2}
             label={'Submission Review'}
-            sublabel={'Bounties being assessed'}
+            sublabel={'Jobs being assessed'}
           />
           <Divider
             h={10}

@@ -2,10 +2,10 @@
 import { Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 
-import { BountiesCard } from '@/components/misc/listingsCard';
+import { JobsCard } from '@/components/misc/listingsCard';
 import EmptySection from '@/components/shared/EmptySection';
 import Loading from '@/components/shared/Loading';
-import type { Bounty } from '@/interface/bounty';
+import type { Job } from '@/interface/job';
 
 interface TabProps {
   id: string;
@@ -13,17 +13,17 @@ interface TabProps {
   content: JSX.Element;
 }
 
-interface BountyTabsProps {
+interface JobTabsProps {
   isListingsLoading: boolean;
-  bounties: { bounties: Bounty[] };
+  jobs: { jobs: Job[] };
   take?: number;
 }
 
-export const BountyTabs = ({
+export const JobTabs = ({
   isListingsLoading,
-  bounties,
+  jobs,
   take = 10,
-}: BountyTabsProps) => {
+}: JobTabsProps) => {
   const tabs: TabProps[] = [
     {
       id: 'tab1',
@@ -34,35 +34,35 @@ export const BountyTabs = ({
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
-          ) : bounties?.bounties?.filter(
-              (bounty) =>
-                bounty.status === 'OPEN' && !dayjs().isAfter(bounty.deadline)
+          ) : jobs?.jobs?.filter(
+              (job) =>
+                job.status === 'OPEN' && !dayjs().isAfter(job.deadline)
             ).length ? (
-            bounties.bounties
+            jobs.jobs
               .filter(
-                (bounty) =>
-                  bounty.status === 'OPEN' && !dayjs().isAfter(bounty.deadline)
+                (job) =>
+                  job.status === 'OPEN' && !dayjs().isAfter(job.deadline)
               )
               .slice(0, take)
-              .map((bounty) => (
-                <BountiesCard
-                  slug={bounty.slug}
-                  rewardAmount={bounty?.rewardAmount}
-                  key={bounty?.id}
-                  sponsorName={bounty?.sponsor?.name}
-                  deadline={bounty?.deadline}
-                  title={bounty?.title}
-                  logo={bounty?.sponsor?.logo}
-                  token={bounty?.token}
-                  type={bounty?.type}
-                  applicationType={bounty.applicationType}
+              .map((job) => (
+                <JobsCard
+                  slug={job.slug}
+                  rewardAmount={job?.rewardAmount}
+                  key={job?.id}
+                  sponsorName={job?.sponsor?.name}
+                  deadline={job?.deadline}
+                  title={job?.title}
+                  logo={job?.sponsor?.logo}
+                  token={job?.token}
+                  type={job?.type}
+                  applicationType={job.applicationType}
                 />
               ))
           ) : (
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
-                title="No bounties available!"
-                message="Subscribe to notifications to get notified about new bounties."
+                title="No jobs available!"
+                message="Subscribe to notifications to get notified about new jobs."
               />
             </Flex>
           )}
@@ -78,38 +78,38 @@ export const BountyTabs = ({
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
-          ) : bounties?.bounties?.filter(
-              (bounty) =>
-                !bounty.isWinnersAnnounced &&
-                dayjs().isAfter(bounty.deadline) &&
-                bounty.status === 'OPEN'
+          ) : jobs?.jobs?.filter(
+              (job) =>
+                !job.isWinnersAnnounced &&
+                dayjs().isAfter(job.deadline) &&
+                job.status === 'OPEN'
             ).length ? (
-            bounties.bounties
+            jobs.jobs
               .filter(
-                (bounty) =>
-                  !bounty.isWinnersAnnounced &&
-                  dayjs().isAfter(bounty.deadline) &&
-                  bounty.status === 'OPEN'
+                (job) =>
+                  !job.isWinnersAnnounced &&
+                  dayjs().isAfter(job.deadline) &&
+                  job.status === 'OPEN'
               )
               .slice(0, 10)
-              .map((bounty) => (
-                <BountiesCard
-                  slug={bounty.slug}
-                  rewardAmount={bounty?.rewardAmount}
-                  key={bounty?.id}
-                  sponsorName={bounty?.sponsor?.name}
-                  deadline={bounty?.deadline}
-                  title={bounty?.title}
-                  logo={bounty?.sponsor?.logo}
-                  token={bounty?.token}
-                  type={bounty?.type}
-                  applicationType={bounty.applicationType}
+              .map((job) => (
+                <JobsCard
+                  slug={job.slug}
+                  rewardAmount={job?.rewardAmount}
+                  key={job?.id}
+                  sponsorName={job?.sponsor?.name}
+                  deadline={job?.deadline}
+                  title={job?.title}
+                  logo={job?.sponsor?.logo}
+                  token={job?.token}
+                  type={job?.type}
+                  applicationType={job.applicationType}
                 />
               ))
           ) : (
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
-                title="No bounties in review!"
+                title="No jobs in review!"
                 message="Subscribe to notifications to get notified about updates."
               />
             </Flex>
@@ -126,36 +126,36 @@ export const BountyTabs = ({
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
-          ) : bounties?.bounties?.filter(
-              (bounty) =>
-                bounty.status === 'CLOSED' ||
-                (bounty.isWinnersAnnounced && bounty.status === 'OPEN')
+          ) : jobs?.jobs?.filter(
+              (job) =>
+                job.status === 'CLOSED' ||
+                (job.isWinnersAnnounced && job.status === 'OPEN')
             ).length ? (
-            bounties.bounties
+            jobs.jobs
               .filter(
-                (bounty) =>
-                  bounty.status === 'CLOSED' ||
-                  (bounty.isWinnersAnnounced && bounty.status === 'OPEN')
+                (job) =>
+                  job.status === 'CLOSED' ||
+                  (job.isWinnersAnnounced && job.status === 'OPEN')
               )
               .slice(0, 10)
-              .map((bounty) => (
-                <BountiesCard
-                  slug={bounty.slug}
-                  rewardAmount={bounty?.rewardAmount}
-                  key={bounty?.id}
-                  sponsorName={bounty?.sponsor?.name}
-                  deadline={bounty?.deadline}
-                  title={bounty?.title}
-                  logo={bounty?.sponsor?.logo}
-                  token={bounty?.token}
-                  type={bounty?.type}
-                  applicationType={bounty.applicationType}
+              .map((job) => (
+                <JobsCard
+                  slug={job.slug}
+                  rewardAmount={job?.rewardAmount}
+                  key={job?.id}
+                  sponsorName={job?.sponsor?.name}
+                  deadline={job?.deadline}
+                  title={job?.title}
+                  logo={job?.sponsor?.logo}
+                  token={job?.token}
+                  type={job?.type}
+                  applicationType={job.applicationType}
                 />
               ))
           ) : (
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
-                title="No bounties announced!"
+                title="No jobs announced!"
                 message="Subscribe to notifications to get notified about announcements."
               />
             </Flex>

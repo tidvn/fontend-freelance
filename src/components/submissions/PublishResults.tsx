@@ -23,7 +23,7 @@ interface Props {
   totalWinners: number;
   totalPaymentsMade: number;
   rewards: any;
-  bountyId: string | undefined;
+  jobId: string | undefined;
   isDeadlinePassed?: boolean;
   hasWinnersAnnounced?: boolean;
 }
@@ -34,7 +34,7 @@ function PublishResults({
   totalWinners,
   totalPaymentsMade,
   rewards,
-  bountyId,
+  jobId,
   isDeadlinePassed,
   hasWinnersAnnounced = false,
 }: Props) {
@@ -67,10 +67,10 @@ function PublishResults({
   }
 
   const publishResults = async () => {
-    if (!bountyId) return;
+    if (!jobId) return;
     setIsPublishingResults(true);
     try {
-      await axios.post(`/api/bounties/announce/${bountyId}/`);
+      await axios.post(`/api/jobs/announce/${jobId}/`);
       setIsWinnersAnnounced(true);
       setIsPublishingResults(false);
     } catch (e) {
@@ -110,7 +110,7 @@ function PublishResults({
               </AlertTitle>
               <AlertDescription maxW="sm">
                 The results have been announced publicly. Everyone can view the
-                results on the Bounty&apos;s page.
+                results on the Job&apos;s page.
                 <br />
                 <br />
                 {!hasWinnersAnnounced && (
@@ -126,7 +126,7 @@ function PublishResults({
             totalWinners === rewards?.length &&
             alertType !== 'error' && (
               <Text mb={4}>
-                Publishing the results of this bounty will make the results
+                Publishing the results of this job will make the results
                 public for everyone to see!
                 <br />
                 YOU CAN&apos;T GO BACK ONCE YOU PUBLISH THE RESULTS!
@@ -148,10 +148,10 @@ function PublishResults({
               <Alert mt={4} status="error">
                 <AlertIcon boxSize={8} />
                 <Box>
-                  <AlertTitle>Bounty still in progress!</AlertTitle>
+                  <AlertTitle>Job still in progress!</AlertTitle>
                   <AlertDescription>
                     If you publish the results before the deadline has passed,
-                    the bounty will get closed.
+                    the job will get closed.
                   </AlertDescription>
                 </Box>
               </Alert>

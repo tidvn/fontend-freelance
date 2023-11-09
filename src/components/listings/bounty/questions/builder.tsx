@@ -176,7 +176,7 @@ const Builder = ({
             }}
             variant="outline"
           >
-            {isNewOrDraft ? 'Save Draft' : 'Update Bounty'}
+            {isNewOrDraft ? 'Save Draft' : 'Update Job'}
           </Button>
         </VStack>
       </VStack>

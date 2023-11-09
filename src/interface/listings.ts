@@ -17,11 +17,11 @@ export const PrizeListMap = {
 
 interface Questions {
   id: string;
-  bountiesId: string;
+  jobsId: string;
   questions: string;
 }
 
-interface Bounties {
+interface Jobs {
   id?: string;
   title: string;
   description: string;
@@ -36,11 +36,11 @@ interface Bounties {
   privateBool: boolean;
   featured: boolean;
   prizeList: Partial<PrizeListType>; // change to enum and string
-  bugBounty: boolean;
+  bugJob: boolean;
   orgId: string;
   showTop: boolean;
   eligibility: string;
-  status: BountyStatus;
+  status: JobStatus;
   slug: string;
   winner?: Winner[];
   submission?: SubmissionType[];
@@ -50,13 +50,13 @@ interface Bounties {
   rewards?: Partial<PrizeListType>;
 }
 
-type BountyStatus = 'open' | 'review' | 'close';
+type JobStatus = 'open' | 'review' | 'close';
 interface Winner {
   id: string;
   email: string;
   name: string;
   publickey: string;
-  bountiesId: string;
+  jobsId: string;
   prize: Prize;
 }
 
@@ -103,19 +103,19 @@ interface SubmissionType {
   link: string;
   talent: string;
   questions: string;
-  bountiesId: string;
+  jobsId: string;
   Talent?: Talent;
 }
 
 interface SubscribeType {
   id?: string;
   talentId: string;
-  bountiesId: string;
+  jobsId: string;
   Talent?: Talent;
 }
 
 export type {
-  Bounties,
+  Jobs,
   DraftType,
   Experience,
   GrantsBasicType,

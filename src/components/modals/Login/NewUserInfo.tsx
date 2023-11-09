@@ -30,8 +30,8 @@ interface Props {
 }
 
 interface Info {
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   email?: string;
 }
 
@@ -53,8 +53,8 @@ function NewUserInfo({
   inviteInfo,
 }: Props) {
   const [userDetails, setUserDetails] = useState({
-    firstName: userInfo?.firstName ?? '',
-    lastName: userInfo?.lastName ?? '',
+    firstname: userInfo?.firstname ?? '',
+    lastname: userInfo?.lastname ?? '',
     email: inviteInfo?.emailInvite ?? userInfo?.email ?? '',
   });
   const [loading, setLoading] = useState(false);
@@ -91,8 +91,8 @@ function NewUserInfo({
     e.preventDefault();
     try {
       if (
-        !userDetails?.firstName ||
-        !userDetails?.lastName ||
+        !userDetails?.firstname ||
+        !userDetails?.lastname ||
         !userDetails?.email
       ) {
         setErrorMessage('Please fill all the fields');
@@ -104,8 +104,8 @@ function NewUserInfo({
         const newUserDetails = await axios.post('/api/user/create', {
           publicKey: userInfo?.publicKey,
           email: userDetails?.email,
-          firstName: userDetails?.firstName,
-          lastName: userDetails?.lastName,
+          firstname: userDetails?.firstname,
+          lastname: userDetails?.lastname,
         });
         sendOTPEmail(newUserDetails?.data);
       }
@@ -143,23 +143,23 @@ function NewUserInfo({
         <form onSubmit={(e) => sendOTP(e)}>
           <HStack mb={4}>
             <Box>
-              <FormControl id="firstName" isRequired>
+              <FormControl id="firstname" isRequired>
                 <FormLabel color="brand.slate.500">First Name</FormLabel>
                 <Input
-                  defaultValue={userDetails?.firstName}
+                  defaultValue={userDetails?.firstname}
                   focusBorderColor="brand.purple"
-                  onChange={(e) => setInfo({ firstName: e.target.value })}
+                  onChange={(e) => setInfo({ firstname: e.target.value })}
                   type="text"
                 />
               </FormControl>
             </Box>
             <Box>
-              <FormControl id="lastName" isRequired>
+              <FormControl id="lastname" isRequired>
                 <FormLabel color="brand.slate.500">Last Name</FormLabel>
                 <Input
-                  defaultValue={userDetails?.lastName}
+                  defaultValue={userDetails?.lastname}
                   focusBorderColor="brand.purple"
-                  onChange={(e) => setInfo({ lastName: e.target.value })}
+                  onChange={(e) => setInfo({ lastname: e.target.value })}
                   type="text"
                 />
               </FormControl>

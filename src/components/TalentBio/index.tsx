@@ -1,9 +1,8 @@
 import { Avatar, Box, Button, Flex, Image, Text } from '@chakra-ui/react';
-import type { User } from '@prisma/client';
 import { useRouter } from 'next/router';
 
-import { userStore } from '@/store/user';
-import { getURL } from '@/utils/validUrl';
+import { useSession } from "next-auth/react";import { getURL } from '@/utils/validUrl';
+import { User } from '@/interface/user';
 
 type ChipType = {
   icon: string;
@@ -59,11 +58,12 @@ function TalentBio({
   successPage: boolean;
   w?: any;
 }) {
-  const { userInfo } = userStore();
+  const { data: session, status } = useSession();
+const userInfo:any  = session?.user;
   const router = useRouter();
 
   const handleEditProfileClick = () => {
-    router.push(`/t/${user?.username}/edit`);
+    router.push(`/t/${userInfo?.username}/edit`);
   };
   const socialLinks = [
     {
@@ -105,7 +105,7 @@ function TalentBio({
       <Flex align={'center'} justify="space-between">
         <Flex align={'center'}>
           <Avatar
-            name={`${user?.firstName}${user?.lastName}`}
+            name={`${user?.lastname}${user?.lastname}`}
             size="lg"
             src={user?.photo as string}
           />
@@ -115,11 +115,11 @@ function TalentBio({
               fontWeight={'600'}
               cursor={'pointer'}
               onClick={() => {
-                const url = `${getURL()}t/${user?.username}`;
+                const url = `${getURL()}t/${userInfo?.username}`;
                 window.open(url, '_blank', 'noopener,noreferrer');
               }}
             >
-              {user?.firstName} {user?.lastName}
+              {user?.lastname} {user?.lastname}
             </Text>
             <Text
               color={'gray.400'}
@@ -127,14 +127,13 @@ function TalentBio({
               fontWeight={'600'}
               cursor="pointer"
               onClick={() => {
-                const url = `${getURL()}t/${user?.username}`;
+                const url = `${getURL()}t/${userInfo?.username}`;
                 window.open(url, '_blank', 'noopener,noreferrer');
               }}
             >
-              @
-              {user?.username?.length! > 15
-                ? `${user?.username?.slice(0, 15)}...`
-                : user?.username}
+              @{userInfo?.username?.length! > 10
+                ? `${userInfo?.username?.slice(0, 10)}...`
+                : userInfo?.username}
             </Text>
           </Box>
         </Flex>
@@ -168,7 +167,7 @@ function TalentBio({
       </Flex>
 
       {successPage ? (
-        <a style={{ textDecoration: 'none' }} href={`/t/${user?.username}`}>
+        <a style={{ textDecoration: 'none' }} href={`/t/${userInfo?.username}`}>
           <Button w={'full'} mt={'1.575rem'} color={'white'} bg={'#6562FF'}>
             View Your Profile
           </Button>

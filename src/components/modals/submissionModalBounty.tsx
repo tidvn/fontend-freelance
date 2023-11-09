@@ -14,13 +14,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import type { BountyType } from '@prisma/client';
+import type { JobType } from '@prisma/client';
 import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { QuestionHandler } from '@/components/listings/bounty/questions/questionHandler';
-import type { Eligibility } from '@/interface/bounty';
+import { QuestionHandler } from '@/components/listings/job/questions/questionHandler';
+import type { Eligibility } from '@/interface/job';
 import { userStore } from '@/store/user';
 import { Mixpanel } from '@/utils/mixpanel';
 
@@ -32,8 +32,8 @@ interface Props {
   setIsSubmitted: (arg0: boolean) => void;
   setSubmissionNumber: (arg0: number) => void;
   submissionNumber: number;
-  bountytitle: string;
-  type?: BountyType | string;
+  jobtitle: string;
+  type?: JobType | string;
 }
 export const SubmissionModal = ({
   id,
@@ -43,7 +43,7 @@ export const SubmissionModal = ({
   setIsSubmitted,
   setSubmissionNumber,
   submissionNumber,
-  bountytitle,
+  jobtitle,
   type,
 }: Props) => {
   const isPermissioned =
@@ -82,8 +82,8 @@ export const SubmissionModal = ({
         listingId: id,
         userId: userInfo?.id,
       });
-      Mixpanel.track('bounty_submission', {
-        title: bountytitle,
+      Mixpanel.track('job_submission', {
+        title: jobtitle,
         user: userInfo?.username,
       });
       reset();
@@ -109,7 +109,7 @@ export const SubmissionModal = ({
       <ModalOverlay></ModalOverlay>
       <ModalContent>
         <ModalHeader color="brand.slate.800">
-          {isPermissioned ? 'Submit Your Application' : 'Bounty Submission'}
+          {isPermissioned ? 'Submit Your Application' : 'Job Submission'}
         </ModalHeader>
         <ModalCloseButton />
         <VStack

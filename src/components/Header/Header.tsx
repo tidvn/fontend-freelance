@@ -25,7 +25,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  { label: 'Bounties', href: '/bounties' },
+  { label: 'Jobs', href: '/jobs' },
   { label: 'Projects', href: '/projects' },
   {
     label: 'Browse Categories',
@@ -189,7 +189,7 @@ export default function WithSubnavigation() {
 
   return (
     <Box pos="sticky" zIndex="sticky" top={0}>
-      {/* <BountySnackbar /> */}
+      {/* <JobSnackbar /> */}
       <Flex
         px={{ base: 4, lg: 6 }}
         py={{ base: 2, lg: 0 }}
@@ -235,9 +235,9 @@ export default function WithSubnavigation() {
             />
             <NavLink
               display={{ base: 'none', lg: 'flex' }}
-              href="/bounties"
-              label="Bounties"
-              isActive={router.asPath === '/bounties/'}
+              href="/jobs"
+              label="Jobs"
+              isActive={router.asPath === '/jobs/'}
             />
 
             <NavLink

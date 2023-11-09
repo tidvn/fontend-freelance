@@ -21,11 +21,11 @@ import { dayjs } from '@/utils/dayjs';
 import { isValidHttpUrl } from '@/utils/validUrl';
 
 import type { MultiSelectOptions } from '../../../constants';
-import type { BountyBasicType } from './Createbounty';
+import type { JobBasicType } from './Createjob';
 
 interface Props {
-  bountyBasic: BountyBasicType | undefined;
-  setbountyBasic: Dispatch<SetStateAction<BountyBasicType | undefined>>;
+  jobBasic: JobBasicType | undefined;
+  setjobBasic: Dispatch<SetStateAction<JobBasicType | undefined>>;
   setSteps: Dispatch<SetStateAction<number>>;
   setSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
   setSubSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
@@ -49,14 +49,14 @@ interface ErrorsBasic {
   applicationType: boolean;
   timeToComplete: boolean;
 }
-export const CreatebountyBasic = ({
-  setbountyBasic,
+export const CreatejobBasic = ({
+  setjobBasic,
   setSteps,
   setSkills,
   setSubSkills,
   skills,
   subSkills,
-  bountyBasic,
+  jobBasic,
   createDraft,
   draftLoading,
   regions,
@@ -82,10 +82,10 @@ export const CreatebountyBasic = ({
   const thirtyDaysFromNow = dayjs().add(30, 'day').format('YYYY-MM-DDTHH:mm');
 
   const hasBasicInfo =
-    bountyBasic?.title &&
+    jobBasic?.title &&
     skills.length !== 0 &&
     subSkills.length !== 0 &&
-    bountyBasic?.pocSocials &&
+    jobBasic?.pocSocials &&
     isUrlValid;
 
   return (
@@ -129,13 +129,13 @@ export const CreatebountyBasic = ({
             focusBorderColor="brand.purple"
             id="title"
             onChange={(e) => {
-              setbountyBasic({
-                ...(bountyBasic as BountyBasicType),
+              setjobBasic({
+                ...(jobBasic as JobBasicType),
                 title: e.target.value,
               });
             }}
             placeholder="Develop a new landing page"
-            value={bountyBasic?.title}
+            value={jobBasic?.title}
           />
           <FormErrorMessage>
             {/* {errors.title ? <>{errors.title.message}</> : <></>} */}
@@ -248,14 +248,14 @@ export const CreatebountyBasic = ({
               setIsUrlValid(isValidHttpUrl(url));
             }}
             onChange={(e) => {
-              setbountyBasic({
-                ...(bountyBasic as BountyBasicType),
+              setjobBasic({
+                ...(jobBasic as JobBasicType),
                 pocSocials: e.target.value,
               });
               setIsUrlValid(true);
             }}
             placeholder="https://twitter.com/elonmusk"
-            value={bountyBasic?.pocSocials}
+            value={jobBasic?.pocSocials}
           />
           <FormErrorMessage>
             {/* {errors.title ? <>{errors.title.message}</> : <></>} */}
@@ -285,25 +285,25 @@ export const CreatebountyBasic = ({
 
             <Select
               onChange={(e) => {
-                setbountyBasic({
-                  ...(bountyBasic as BountyBasicType),
+                setjobBasic({
+                  ...(jobBasic as JobBasicType),
                   applicationType: e.target.value as 'fixed' | 'rolling',
                 });
               }}
-              value={bountyBasic?.applicationType}
+              value={jobBasic?.applicationType}
             >
               <option value="fixed">Fixed Deadline</option>
               <option value="rolling">Rolling Deadline</option>
             </Select>
           </FormControl>
         )}
-        {bountyBasic?.applicationType !== 'rolling' && (
+        {jobBasic?.applicationType !== 'rolling' && (
           <FormControl
             mb={5}
             isInvalid={errorState.deadline}
             isRequired={
-              bountyBasic?.applicationType
-                ? bountyBasic.applicationType === 'fixed'
+              jobBasic?.applicationType
+                ? jobBasic.applicationType === 'fixed'
                 : true
             }
           >
@@ -346,14 +346,14 @@ export const CreatebountyBasic = ({
               id="deadline"
               min={`${date}T00:00`}
               onChange={(e) => {
-                setbountyBasic({
-                  ...(bountyBasic as BountyBasicType),
+                setjobBasic({
+                  ...(jobBasic as JobBasicType),
                   deadline: e.target.value,
                 });
               }}
               placeholder="deadline"
               type={'datetime-local'}
-              value={bountyBasic?.deadline}
+              value={jobBasic?.deadline}
             />
             <FormErrorMessage>
               {/* {errors.deadline ? <>{errors.deadline.message}</> : <></>} */}
@@ -382,13 +382,13 @@ export const CreatebountyBasic = ({
                 color: 'brand.slate.300',
               }}
               onChange={(e) => {
-                setbountyBasic({
-                  ...(bountyBasic as BountyBasicType),
+                setjobBasic({
+                  ...(jobBasic as JobBasicType),
                   timeToComplete: e.target.value,
                 });
               }}
               placeholder="Select time to complete"
-              value={bountyBasic?.timeToComplete}
+              value={jobBasic?.timeToComplete}
             >
               <option value="<1 Week">{'<1 Week'}</option>
               <option value="1-2 Weeks">1-2 Weeks</option>
@@ -404,34 +404,34 @@ export const CreatebountyBasic = ({
             onClick={() => {
               setErrorState({
                 deadline:
-                  bountyBasic?.applicationType === 'fixed'
-                    ? !bountyBasic?.deadline
+                  jobBasic?.applicationType === 'fixed'
+                    ? !jobBasic?.deadline
                     : false,
                 skills: skills.length === 0,
                 subSkills: subSkills.length === 0,
-                title: !bountyBasic?.title,
-                pocSocials: !bountyBasic?.pocSocials,
-                applicationType: !bountyBasic?.applicationType,
+                title: !jobBasic?.title,
+                pocSocials: !jobBasic?.pocSocials,
+                applicationType: !jobBasic?.applicationType,
                 timeToComplete:
                   type === 'permissioned'
-                    ? !bountyBasic?.timeToComplete
+                    ? !jobBasic?.timeToComplete
                     : false,
               });
 
-              if (hasBasicInfo && bountyBasic?.deadline) {
+              if (hasBasicInfo && jobBasic?.deadline) {
                 setSteps(3);
               }
               if (
                 type === 'permissioned' &&
                 hasBasicInfo &&
-                bountyBasic?.timeToComplete
+                jobBasic?.timeToComplete
               ) {
                 if (
-                  bountyBasic?.applicationType === 'rolling' &&
-                  !bountyBasic?.deadline
+                  jobBasic?.applicationType === 'rolling' &&
+                  !jobBasic?.deadline
                 ) {
-                  setbountyBasic({
-                    ...(bountyBasic as BountyBasicType),
+                  setjobBasic({
+                    ...(jobBasic as JobBasicType),
                     deadline: thirtyDaysFromNow,
                   });
                 }
@@ -444,14 +444,14 @@ export const CreatebountyBasic = ({
           </Button>
           <Button
             w="100%"
-            isDisabled={!bountyBasic?.title}
+            isDisabled={!jobBasic?.title}
             isLoading={draftLoading}
             onClick={() => {
               createDraft();
             }}
             variant="outline"
           >
-            {isNewOrDraft ? 'Save Draft' : 'Update Bounty'}
+            {isNewOrDraft ? 'Save Draft' : 'Update Job'}
           </Button>
         </VStack>
       </VStack>

@@ -5,32 +5,32 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import type { BountyBasicType } from '@/components/listings/bounty/Createbounty';
-import { CreateBounty } from '@/components/listings/bounty/Createbounty';
+import type { JobBasicType } from '@/components/listings/job/Createjob';
+import { CreateJob } from '@/components/listings/job/Createjob';
 import type {
   Ques,
   QuestionType,
-} from '@/components/listings/bounty/questions/builder';
+} from '@/components/listings/job/questions/builder';
 import { CreateGrants } from '@/components/listings/grants/CreateGrants';
 import Template from '@/components/listings/templates/template';
 import { SuccessListings } from '@/components/modals/successListings';
 import ErrorSection from '@/components/shared/ErrorSection';
 import type { MultiSelectOptions } from '@/constants';
-import type { Bounty, References } from '@/interface/bounty';
+import type { Job, References } from '@/interface/job';
 import type { GrantsBasicType } from '@/interface/listings';
 import FormLayout from '@/layouts/FormLayout';
 import { userStore } from '@/store/user';
-import { getBountyDraftStatus } from '@/utils/bounty';
+import { getJobDraftStatus } from '@/utils/job';
 import { dayjs } from '@/utils/dayjs';
 import { mergeSkills, splitSkills } from '@/utils/skills';
 
 interface Props {
-  bounty?: Bounty;
+  job?: Job;
   isEditMode?: boolean;
   type: 'open' | 'permissioned';
 }
 
-function CreateListing({ bounty, isEditMode = false, type }: Props) {
+function CreateListing({ job, isEditMode = false, type }: Props) {
   const router = useRouter();
   const { userInfo } = userStore();
   // Templates - 1
@@ -40,16 +40,16 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
   const [steps, setSteps] = useState<number>(isEditMode ? 2 : 1);
   const [listingType, setListingType] = useState('BOUNTY');
   const [draftLoading, setDraftLoading] = useState<boolean>(false);
-  const [bountyRequirements, setBountyRequirements] = useState<
+  const [jobRequirements, setJobRequirements] = useState<
     string | undefined
-  >(isEditMode ? bounty?.requirements : undefined);
+  >(isEditMode ? job?.requirements : undefined);
   const [editorData, setEditorData] = useState<string | undefined>(
-    isEditMode ? bounty?.description : undefined
+    isEditMode ? job?.description : undefined
   );
   const [regions, setRegions] = useState<Regions>(
-    isEditMode ? bounty?.region || Regions.GLOBAL : Regions.GLOBAL
+    isEditMode ? job?.region || Regions.GLOBAL : Regions.GLOBAL
   );
-  const skillsInfo = isEditMode ? splitSkills(bounty?.skills || []) : undefined;
+  const skillsInfo = isEditMode ? splitSkills(job?.skills || []) : undefined;
   const [mainSkills, setMainSkills] = useState<MultiSelectOptions[]>(
     isEditMode ? skillsInfo?.skills || [] : []
   );
@@ -62,7 +62,7 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
 
   const [questions, setQuestions] = useState<Ques[]>(
     isEditMode
-      ? (bounty?.eligibility || [])?.map((e) => ({
+      ? (job?.eligibility || [])?.map((e) => ({
           order: e.order,
           question: e.question,
           type: e.type as QuestionType,
@@ -74,31 +74,31 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
 
   const [references, setReferences] = useState<References[]>(
     isEditMode
-      ? (bounty?.references || [])?.map((e) => ({
+      ? (job?.references || [])?.map((e) => ({
           order: e.order,
           link: e.link,
         }))
       : []
   );
 
-  // - Bounty
-  const [bountybasic, setBountyBasic] = useState<BountyBasicType | undefined>({
-    title: isEditMode ? bounty?.title || undefined : undefined,
+  // - Job
+  const [jobbasic, setJobBasic] = useState<JobBasicType | undefined>({
+    title: isEditMode ? job?.title || undefined : undefined,
     deadline:
-      isEditMode && bounty?.deadline
-        ? dayjs(bounty?.deadline).format('YYYY-MM-DDTHH:mm') || undefined
+      isEditMode && job?.deadline
+        ? dayjs(job?.deadline).format('YYYY-MM-DDTHH:mm') || undefined
         : undefined,
-    templateId: isEditMode ? bounty?.templateId || undefined : undefined,
-    pocSocials: isEditMode ? bounty?.pocSocials || undefined : undefined,
-    applicationType: isEditMode ? bounty?.applicationType || 'fixed' : 'fixed',
+    templateId: isEditMode ? job?.templateId || undefined : undefined,
+    pocSocials: isEditMode ? job?.pocSocials || undefined : undefined,
+    applicationType: isEditMode ? job?.applicationType || 'fixed' : 'fixed',
     timeToComplete: isEditMode
-      ? bounty?.timeToComplete || undefined
+      ? job?.timeToComplete || undefined
       : undefined,
   });
-  const [bountyPayment, setBountyPayment] = useState({
-    rewardAmount: isEditMode ? bounty?.rewardAmount || 0 : 0,
-    token: isEditMode ? bounty?.token : undefined,
-    rewards: isEditMode ? bounty?.rewards || undefined : undefined,
+  const [jobPayment, setJobPayment] = useState({
+    rewardAmount: isEditMode ? job?.rewardAmount || 0 : 0,
+    token: isEditMode ? job?.token : undefined,
+    rewards: isEditMode ? job?.rewards || undefined : undefined,
   });
   // -- Grants
   const [grantBasic, setgrantsBasic] = useState<GrantsBasicType | undefined>();
@@ -109,17 +109,17 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
   const createAndPublishListing = async () => {
     setIsListingPublishing(true);
     try {
-      const newBounty: Bounty = {
+      const newJob: Job = {
         sponsorId: userInfo?.currentSponsor?.id ?? '',
         pocId: userInfo?.id ?? '',
         skills: mergeSkills({ skills: mainSkills, subskills: subSkill }),
-        ...bountybasic,
-        deadline: bountybasic?.deadline
-          ? new Date(bountybasic?.deadline).toISOString()
+        ...jobbasic,
+        deadline: jobbasic?.deadline
+          ? new Date(jobbasic?.deadline).toISOString()
           : undefined,
         description: editorData || '',
         type,
-        pocSocials: bountybasic?.pocSocials,
+        pocSocials: jobbasic?.pocSocials,
         region: regions,
         eligibility: (questions || []).map((q) => ({
           question: q.question,
@@ -130,16 +130,16 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
           link: r.link,
           order: r.order,
         })),
-        requirements: bountyRequirements,
-        ...bountyPayment,
+        requirements: jobRequirements,
+        ...jobPayment,
         isPublished: true,
       };
-      const result = await axios.post('/api/bounties/create/', newBounty);
-      await axios.post('/api/email/manual/createBounty', {
+      const result = await axios.post('/api/jobs/create/', newJob);
+      await axios.post('/api/email/manual/createJob', {
         id: result?.data?.id,
       });
       console.log(result?.data.id);
-      setSlug(`/bounties/${result?.data?.slug}/`);
+      setSlug(`/jobs/${result?.data?.slug}/`);
       onOpen();
       setIsListingPublishing(false);
     } catch (e) {
@@ -149,20 +149,20 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
 
   const createDraft = async () => {
     setDraftLoading(true);
-    let api = '/api/bounties/create/';
+    let api = '/api/jobs/create/';
     if (isEditMode) {
-      api = `/api/bounties/update/${bounty?.id}/`;
+      api = `/api/jobs/update/${job?.id}/`;
     }
-    let draft: Bounty = {
+    let draft: Job = {
       sponsorId: userInfo?.currentSponsor?.id ?? '',
       pocId: userInfo?.id ?? '',
     };
     draft = {
       ...draft,
       skills: mergeSkills({ skills: mainSkills, subskills: subSkill }),
-      ...bountybasic,
-      deadline: bountybasic?.deadline
-        ? new Date(bountybasic?.deadline).toISOString()
+      ...jobbasic,
+      deadline: jobbasic?.deadline
+        ? new Date(jobbasic?.deadline).toISOString()
         : undefined,
       description: editorData || '',
       eligibility: (questions || []).map((q) => ({
@@ -174,35 +174,35 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
         link: r.link,
         order: r.order,
       })),
-      pocSocials: bountybasic?.pocSocials,
+      pocSocials: jobbasic?.pocSocials,
       region: regions,
-      requirements: bountyRequirements,
-      ...bountyPayment,
+      requirements: jobRequirements,
+      ...jobPayment,
     };
     try {
       await axios.post(api, {
         ...draft,
-        isPublished: isEditMode ? bounty?.isPublished : false,
+        isPublished: isEditMode ? job?.isPublished : false,
       });
       // if (isEditMode) {
-      //   await axios.post('/api/email/manual/bountyUpdate', {
-      //     id: bounty?.id,
+      //   await axios.post('/api/email/manual/jobUpdate', {
+      //     id: job?.id,
       //   });
       // }
-      router.push('/dashboard/bounties');
+      router.push('/dashboard/jobs');
     } catch (e) {
       setDraftLoading(false);
     }
   };
 
-  const newBounty = bounty?.id === undefined;
+  const newJob = job?.id === undefined;
 
-  const bountyDraftStatus = getBountyDraftStatus(
-    bounty?.status,
-    bounty?.isPublished
+  const jobDraftStatus = getJobDraftStatus(
+    job?.status,
+    job?.isPublished
   );
 
-  const isNewOrDraft = bountyDraftStatus === 'DRAFT' || newBounty === true;
+  const isNewOrDraft = jobDraftStatus === 'DRAFT' || newJob === true;
 
   return (
     <>
@@ -295,29 +295,29 @@ function CreateListing({ bounty, isEditMode = false, type }: Props) {
               setEditorData={setEditorData}
               setSubSkills={setSubSkill}
               setMainSkills={setMainSkills}
-              setBountyBasic={setBountyBasic}
+              setJobBasic={setJobBasic}
               type={type}
             />
           )}
           {steps > 1 && listingType === 'BOUNTY' && (
-            <CreateBounty
+            <CreateJob
               type={type}
               regions={regions}
               setRegions={setRegions}
-              setBountyRequirements={setBountyRequirements}
-              bountyRequirements={bountyRequirements}
+              setJobRequirements={setJobRequirements}
+              jobRequirements={jobRequirements}
               createAndPublishListing={createAndPublishListing}
               isListingPublishing={isListingPublishing}
-              bountyPayment={bountyPayment}
-              setBountyPayment={setBountyPayment}
+              jobPayment={jobPayment}
+              setJobPayment={setJobPayment}
               questions={questions}
               setQuestions={setQuestions}
               references={references}
               setReferences={setReferences}
               draftLoading={draftLoading}
               createDraft={createDraft}
-              bountybasic={bountybasic}
-              setBountyBasic={setBountyBasic}
+              jobbasic={jobbasic}
+              setJobBasic={setJobBasic}
               onOpen={onOpen}
               setSubSkills={setSubSkill}
               subSkills={subSkill}

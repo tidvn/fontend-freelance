@@ -16,18 +16,18 @@ import React, { useEffect, useState } from 'react';
 import type { Metadata } from 'unfurl.js/dist/types';
 
 import TalentBio from '@/components/TalentBio';
-import type { Bounty } from '@/interface/bounty';
+import type { Job } from '@/interface/job';
 import type { SubmissionWithUser } from '@/interface/submission';
 
 import { Comments } from '../comments';
 
 interface Props {
-  bounty: Bounty;
+  job: Job;
   submission?: SubmissionWithUser;
   user: User;
   link: string;
 }
-export const SubmissionPage = ({ bounty, submission, user, link }: Props) => {
+export const SubmissionPage = ({ job, submission, user, link }: Props) => {
   const router = useRouter();
   const [image, setImage] = useState<string>('/assets/bg/og.svg');
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -59,7 +59,7 @@ export const SubmissionPage = ({ bounty, submission, user, link }: Props) => {
       mx={'auto'}
     >
       <VStack gap={3} w={'full'} mt={3}>
-        {bounty?.isWinnersAnnounced && submission?.isWinner && (
+        {job?.isWinnersAnnounced && submission?.isWinner && (
           <Box
             w="full"
             mt={4}
@@ -83,7 +83,7 @@ export const SubmissionPage = ({ bounty, submission, user, link }: Props) => {
         >
           <Flex justify={'space-between'} w={'full'} mt={5} px={8}>
             <Text color={'black'} fontSize={'22px'} fontWeight={600}>
-              {user?.firstName}&apos;s Submission
+              {user?.firstname}&apos;s Submission
             </Text>
           </Flex>
           <Image

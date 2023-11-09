@@ -4,21 +4,21 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const SubmissionLikeTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        People are really digging your work on the <strong>{bountyName}</strong>{' '}
-        bounty. Keep it up!
+        People are really digging your work on the <strong>{jobName}</strong>{' '}
+        job. Keep it up!
       </p>
       <p style={styles.textWithMargin}>
         Check out the other submissions and spread some love to the other

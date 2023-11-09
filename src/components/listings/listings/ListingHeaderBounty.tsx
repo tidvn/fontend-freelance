@@ -11,7 +11,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import type { BountyType, Regions, SubscribeBounty } from '@prisma/client';
+import type { JobType, Regions, SubscribeJob } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -19,13 +19,13 @@ import { toast, Toaster } from 'react-hot-toast';
 import { TbBell, TbBellRinging } from 'react-icons/tb';
 
 import { EarningModal } from '@/components/modals/earningModal';
-import type { References } from '@/interface/bounty';
+import type { References } from '@/interface/job';
 import type { SponsorType } from '@/interface/sponsor';
 import type { User } from '@/interface/user';
 import { userStore } from '@/store/user';
 import { dayjs } from '@/utils/dayjs';
 
-interface Bounty {
+interface Job {
   id: string | undefined;
   title: string;
   deadline?: string;
@@ -36,7 +36,7 @@ interface Bounty {
   sponsor?: SponsorType | undefined;
   poc?: User;
   slug?: string;
-  type?: BountyType | string;
+  type?: JobType | string;
   isWinnersAnnounced?: boolean;
   hackathonPrize?: boolean;
   isTemplate?: boolean;
@@ -57,14 +57,14 @@ function ListingHeader({
   hackathonPrize,
   region,
   references,
-}: Bounty) {
+}: Job) {
   const router = useRouter();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { userInfo } = userStore();
   const hasDeadlineEnded = dayjs().isAfter(deadline);
   const [update, setUpdate] = useState<boolean>(false);
   const [sub, setSub] = useState<
-    (SubscribeBounty & {
+    (SubscribeJob & {
       User: User | null;
     })[]
   >([]);
@@ -75,13 +75,13 @@ function ListingHeader({
     }
 
     try {
-      const res = await axios.post('/api/bounties/subscribe/subscribe', {
+      const res = await axios.post('/api/jobs/subscribe/subscribe', {
         userId: userInfo?.id,
-        bountyId: id,
+        jobId: id,
       });
       console.log(res);
       setUpdate((prev) => !prev);
-      toast.success('Subscribed to bounty');
+      toast.success('Subscribed to job');
     } catch (error) {
       console.log(error);
       toast.error('Error');
@@ -94,12 +94,12 @@ function ListingHeader({
     }
 
     try {
-      const res = await axios.post('/api/bounties/subscribe/unSubscribe', {
+      const res = await axios.post('/api/jobs/subscribe/unSubscribe', {
         id: idSub,
       });
       console.log(res);
       setUpdate((prev) => !prev);
-      toast.success('Unsubscribe to bounty');
+      toast.success('Unsubscribe to job');
     } catch (error) {
       console.log(error);
       toast.error('Error');
@@ -108,7 +108,7 @@ function ListingHeader({
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await axios.post('/api/bounties/subscribe/get', {
+      const { data } = await axios.post('/api/jobs/subscribe/get', {
         listingId: id,
       });
       setSub(data);
@@ -225,7 +225,7 @@ function ListingHeader({
                         label={
                           type === 'permissioned'
                             ? 'A Project is a short-term gig where sponsors solicit applications from multiple people, and select the best one to work on the Project.'
-                            : 'Bounties are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
+                            : 'Jobs are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
                         }
                       >
                         <Flex>
@@ -240,7 +240,7 @@ function ListingHeader({
                                 : '/assets/icons/bolt.svg'
                             }
                           />
-                          {type === 'permissioned' ? 'Project' : 'Bounty'}
+                          {type === 'permissioned' ? 'Project' : 'Job'}
                         </Flex>
                       </Tooltip>
                     )}
@@ -317,7 +317,7 @@ function ListingHeader({
               label={
                 type === 'permissioned'
                   ? 'Projects are like short-term freelance gigs that you can apply for. If and when selected as the winner, you can begin executing the scope of work mentioned in this listing.'
-                  : 'This is an open competition bounty! Anyone can start working and submit their work before the deadline!'
+                  : 'This is an open competition job! Anyone can start working and submit their work before the deadline!'
               }
             >
               <Flex>
@@ -333,13 +333,13 @@ function ListingHeader({
                   }
                 />
                 <Text color="gray.400" fontWeight={500}>
-                  {type === 'permissioned' ? 'Project' : 'Bounty'}
+                  {type === 'permissioned' ? 'Project' : 'Job'}
                 </Text>
               </Flex>
             </Tooltip>
           </Flex>
         </Flex>
-        {router.asPath.includes('bounties') && !isTemplate && (
+        {router.asPath.includes('jobs') && !isTemplate && (
           <HStack>
             <HStack align="start" px={[3, 3, 0, 0]}>
               <IconButton
@@ -386,7 +386,7 @@ function ListingHeader({
         )}
       </VStack>
       <Toaster />
-      {router.asPath.includes('bounties') && !isTemplate && (
+      {router.asPath.includes('jobs') && !isTemplate && (
         <Flex
           align={'center'}
           w={'full'}
@@ -425,7 +425,7 @@ function ListingHeader({
                 borderBottom: '2px solid',
                 borderBottomColor: 'brand.purple',
               }}
-              href={`/listings/bounties/${slug}`}
+              href={`/listings/jobs/${slug}`}
             >
               Details
             </Link>
@@ -449,7 +449,7 @@ function ListingHeader({
                   borderBottom: '2px solid',
                   borderBottomColor: 'brand.purple',
                 }}
-                href={`/listings/bounties/${slug}/submission`}
+                href={`/listings/jobs/${slug}/submission`}
               >
                 Submissions
               </Link>
@@ -474,7 +474,7 @@ function ListingHeader({
                   borderBottom: '2px solid',
                   borderBottomColor: 'brand.purple',
                 }}
-                href={`/listings/bounties/${slug}/references`}
+                href={`/listings/jobs/${slug}/references`}
               >
                 References
               </Link>

@@ -111,7 +111,7 @@ export const Comments = ({ refId, refType }: Props) => {
           onClose={onClose}
           title={'Complete your profile'}
           bodyText={
-            'Please complete your profile before commenting on the bounty.'
+            'Please complete your profile before commenting on the job.'
           }
           primaryCtaText={'Complete Profile'}
           primaryCtaLink={'/new/talent'}
@@ -198,7 +198,7 @@ export const Comments = ({ refId, refType }: Props) => {
                       window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                   >
-                    {`${comment?.author?.firstName} ${comment?.author?.lastName}`}
+                    {`${comment?.author?.firstname} ${comment?.author?.lastname}`}
                   </Text>
                   <Text color="brand.slate.500" fontSize="sm">
                     {date}

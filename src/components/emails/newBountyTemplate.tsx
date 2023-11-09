@@ -2,12 +2,12 @@ import React from 'react';
 
 import { styles } from './styles';
 
-interface NewBountyProps {
+interface NewJobProps {
   name: string;
   link: string;
 }
 
-export const NewBountyTemplate = ({ name, link }: NewBountyProps) => {
+export const NewJobTemplate = ({ name, link }: NewJobProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
@@ -20,7 +20,7 @@ export const NewBountyTemplate = ({ name, link }: NewBountyProps) => {
         <a href={link} style={styles.link}>
           Click here
         </a>{' '}
-        to learn more about the bounty.
+        to learn more about the job.
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
       <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>

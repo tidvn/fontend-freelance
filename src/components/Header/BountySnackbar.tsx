@@ -3,26 +3,26 @@ import dayjs from 'dayjs';
 import { atom, useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 
-type BountySnackbarType = {
+type JobSnackbarType = {
   submissionCount: number;
   deadline: string | undefined;
   rewardAmount: number | undefined;
   type: string | undefined;
 };
 
-export const bountySnackbarAtom = atom<BountySnackbarType | null>(null);
+export const jobSnackbarAtom = atom<JobSnackbarType | null>(null);
 
-export const BountySnackbar = () => {
+export const JobSnackbar = () => {
   const router = useRouter();
-  const [bountySnackbar] = useAtom(bountySnackbarAtom);
+  const [jobSnackbar] = useAtom(jobSnackbarAtom);
 
   const { pathname } = router;
 
-  const showSnackbar = /^\/listings\/bounties\/[^/]+$/.test(pathname);
+  const showSnackbar = /^\/listings\/jobs\/[^/]+$/.test(pathname);
 
   const getMessage = () => {
-    if (bountySnackbar) {
-      const { submissionCount, deadline, rewardAmount, type } = bountySnackbar;
+    if (jobSnackbar) {
+      const { submissionCount, deadline, rewardAmount, type } = jobSnackbar;
 
       if (deadline && dayjs(deadline).isBefore(dayjs())) {
         return null;
@@ -37,19 +37,19 @@ export const BountySnackbar = () => {
         }
 
         if (rewardAmount && rewardAmount > 1000) {
-          return "🤑 Mo' Money, Fewer Problems: Higher than average total bounty reward!";
+          return "🤑 Mo' Money, Fewer Problems: Higher than average total job reward!";
         }
 
         if (submissionCount === 0) {
-          return '🔥 High chance of winning: No submissions have been made for this bounty yet!';
+          return '🔥 High chance of winning: No submissions have been made for this job yet!';
         }
 
         if (submissionCount === 1) {
-          return '🔥 High chance of winning: Only 1 submission has been made for this bounty yet!';
+          return '🔥 High chance of winning: Only 1 submission has been made for this job yet!';
         }
 
         if (submissionCount < 10) {
-          return `🔥 High chance of winning: Only ${submissionCount} submissions have been made for this bounty yet!`;
+          return `🔥 High chance of winning: Only ${submissionCount} submissions have been made for this job yet!`;
         }
       } else if (type === 'permissioned') {
         if (deadline) {
@@ -74,7 +74,7 @@ export const BountySnackbar = () => {
 
   const message = getMessage();
 
-  if (showSnackbar && bountySnackbar && message) {
+  if (showSnackbar && jobSnackbar && message) {
     return (
       <Box w="full" color="white" bgColor="#B869D3">
         <Text p={3} fontSize="sm" fontWeight={500} textAlign="center">

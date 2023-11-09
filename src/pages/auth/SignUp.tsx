@@ -88,7 +88,7 @@ export default function SignupCard() {
             <Stack spacing={4}>
               <HStack>
                 <Box>
-                  <FormControl id="firstName" isRequired>
+                  <FormControl id="firstname" isRequired>
                     <FormLabel>First Name</FormLabel>
                     <Input
                       name="firstname"
@@ -99,7 +99,7 @@ export default function SignupCard() {
                   </FormControl>
                 </Box>
                 <Box>
-                  <FormControl id="lastName">
+                  <FormControl id="lastname">
                     <FormLabel>Last Name</FormLabel>
                     <Input
                       name="lastname"

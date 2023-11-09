@@ -4,21 +4,21 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const DeadlineExceededbyWeekTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        The deadline for the <strong>{bountyName}</strong> bounty expired a week
-        ago. The participants of the bounty would be expecting the results to be
+        The deadline for the <strong>{jobName}</strong> job expired a week
+        ago. The participants of the job would be expecting the results to be
         out soon — request you to publish the winners on Earn shortly!
       </p>
       <p style={styles.textWithMargin}>

@@ -23,17 +23,15 @@ import { Meta } from '@/layouts/Meta';
 
 import { Steps } from '@/components/misc/steps';
 import TalentBio from '@/components/TalentBio';
+import { User } from '@/interface/user';
 
 const useFormStore = create<UserStoreType>()((set) => ({
   form: {
     bio: '',
-    username: '',
     location: '',
     photo: '',
     experience: '',
-    cryptoExperience: '',
     currentEmployer: '',
-    community: '',
     interests: '',
     skills: [],
     subSkills: '',
@@ -45,20 +43,6 @@ const useFormStore = create<UserStoreType>()((set) => ({
     website: '',
     telegram: '',
     private: false,
-  },
-  otp: undefined,
-  setOtp: (data) => {
-    set((state) => {
-      state.otp = data;
-      return { ...state };
-    });
-  },
-  emailVerified: false,
-  verifyEmail: () => {
-    set((state) => {
-      state.emailVerified = true;
-      return { ...state };
-    });
   },
   updateState: (data) => {
     set((state) => {
@@ -89,7 +73,7 @@ const StepsCon = ({ setSuccess }: { setSuccess: () => void }) => {
     {
       title: 'Create Your Profile',
       subTitle:
-        "If you're ready to start contributing to Solana, you're in the right place.",
+        "",
     },
     {
       title: 'Tell Us About Your Work',

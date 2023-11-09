@@ -4,20 +4,20 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const SubmissionSponsorTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        Your listing <strong>{bountyName}</strong> just received a submission on
+        Your listing <strong>{jobName}</strong> just received a submission on
         Superteam Earn! &mdash;{' '}
         <a href={link} style={styles.link}>
           check it out!

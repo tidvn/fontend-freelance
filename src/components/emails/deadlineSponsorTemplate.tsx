@@ -4,20 +4,20 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const DeadlineSponsorTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        The deadline for the <strong>{bountyName}</strong>&nbsp;bounty&nbsp;you
+        The deadline for the <strong>{jobName}</strong>&nbsp;job&nbsp;you
         had listed has expired. Please review the submissions and announce the
         winners on Superteam Earn&nbsp;soon!
       </p>

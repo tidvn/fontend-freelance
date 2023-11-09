@@ -118,8 +118,8 @@ function NavHome() {
       route: 'all',
     },
     {
-      name: 'Bounties',
-      route: 'bounties',
+      name: 'Jobs',
+      route: 'jobs',
     },
   ];
   const isSmallerThan768 = useBreakpointValue({ base: true, md: false });

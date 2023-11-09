@@ -60,9 +60,9 @@ const CreateSponsor = () => {
       });
       await axios.post(`/api/email/manual/welcomeSponsor`, {
         email: userInfo?.email,
-        name: userInfo?.firstName,
+        name: userInfo?.firstname,
       });
-      router.push('/dashboard/bounties');
+      router.push('/dashboard/Jobs');
       // setIsLoading(false);
       // toast.success('Sponsor created!');
     } catch (e: any) {

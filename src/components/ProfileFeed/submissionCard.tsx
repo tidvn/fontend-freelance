@@ -79,7 +79,7 @@ export default function SubmissionCard({
       <Flex align="center" justify={'space-between'}>
         <Flex align="center">
           <Avatar
-            name={`${talent?.firstName}${talent?.lastName}`}
+            name={`${talent?.firstname}${talent?.lastname}`}
             size={'xs'}
             src={talent?.photo as string}
           />
@@ -89,12 +89,12 @@ export default function SubmissionCard({
             fontWeight={500}
           >
             <Text as={'span'} ml={2} color={'brand.slate.900'} fontWeight={600}>
-              {talent?.firstName} {talent?.lastName}
+              {talent?.firstname} {talent?.lastname}
             </Text>{' '}
             {sub?.isWinner ? (
-              <Text as={'span'}>won a bounty</Text>
+              <Text as={'span'}>won a job</Text>
             ) : (
-              <Text as={'span'}>submitted to a bounty</Text>
+              <Text as={'span'}>submitted to a job</Text>
             )}
           </Text>
         </Flex>
@@ -206,7 +206,7 @@ export default function SubmissionCard({
             whiteSpace={'nowrap'}
           >
             <LinkOverlay
-              href={`${getURL()}listings/bounties/${
+              href={`${getURL()}listings/jobs/${
                 sub?.listing?.slug
               }/submission/${sub?.id}`}
             >
@@ -249,7 +249,7 @@ export default function SubmissionCard({
             cursor: 'pointer',
           }}
           onClick={() => {
-            const submissionUrl = `${getURL()}listings/bounties/${
+            const submissionUrl = `${getURL()}listings/jobs/${
               sub?.listing?.slug
             }/submission/${sub?.id}`;
             window.location.href = submissionUrl;

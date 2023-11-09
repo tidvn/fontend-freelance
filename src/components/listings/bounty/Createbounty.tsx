@@ -2,16 +2,16 @@ import type { Regions } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
 
-import type { References } from '@/interface/bounty';
+import type { References } from '@/interface/job';
 
 import type { MultiSelectOptions } from '../../../constants';
 import Description from '../description';
-import { CreatebountyBasic } from './CreateBountyBasic';
-import { CreatebountyPayment } from './CreateBountyPayments';
+import { CreatejobBasic } from './CreateJobBasic';
+import { CreatejobPayment } from './CreateJobPayments';
 import type { Ques } from './questions/builder';
 import Builder from './questions/builder';
 
-export interface BountyBasicType {
+export interface JobBasicType {
   title?: string;
   deadline?: string;
   templateId?: string;
@@ -29,8 +29,8 @@ interface Props {
   subSkills: MultiSelectOptions[];
   setSubSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
   onOpen: () => void;
-  bountybasic: BountyBasicType | undefined;
-  setBountyBasic: Dispatch<SetStateAction<BountyBasicType | undefined>>;
+  jobbasic: JobBasicType | undefined;
+  setJobBasic: Dispatch<SetStateAction<JobBasicType | undefined>>;
   createDraft: () => void;
   draftLoading: boolean;
   setQuestions: Dispatch<SetStateAction<Ques[]>>;
@@ -39,17 +39,17 @@ interface Props {
   setReferences: Dispatch<SetStateAction<References[]>>;
   createAndPublishListing: () => void;
   isListingPublishing: boolean;
-  bountyPayment: any;
-  setBountyPayment: Dispatch<SetStateAction<any | undefined>>;
+  jobPayment: any;
+  setJobPayment: Dispatch<SetStateAction<any | undefined>>;
   isEditMode: boolean;
-  setBountyRequirements?: Dispatch<SetStateAction<any | undefined>>;
-  bountyRequirements?: string | undefined;
+  setJobRequirements?: Dispatch<SetStateAction<any | undefined>>;
+  jobRequirements?: string | undefined;
   regions: Regions;
   setRegions: Dispatch<SetStateAction<Regions>>;
   type: 'open' | 'permissioned';
   isNewOrDraft?: boolean;
 }
-export const CreateBounty = ({
+export const CreateJob = ({
   steps,
   editorData,
   setEditorData,
@@ -59,19 +59,19 @@ export const CreateBounty = ({
   setSubSkills,
   subSkills,
   onOpen,
-  bountybasic,
-  setBountyBasic,
+  jobbasic,
+  setJobBasic,
   draftLoading,
   createDraft,
   questions,
   setQuestions,
   createAndPublishListing,
   isListingPublishing,
-  bountyPayment,
-  setBountyPayment,
+  jobPayment,
+  setJobPayment,
   isEditMode,
-  bountyRequirements,
-  setBountyRequirements,
+  jobRequirements,
+  setJobRequirements,
   regions,
   setRegions,
   type,
@@ -84,7 +84,7 @@ export const CreateBounty = ({
   return (
     <>
       {steps === 2 && (
-        <CreatebountyBasic
+        <CreatejobBasic
           regions={regions}
           setRegions={setRegions}
           isEditMode={isEditMode}
@@ -94,9 +94,9 @@ export const CreateBounty = ({
           subSkills={subSkills}
           setSubSkills={setSubSkills}
           setSkills={setMainSkills}
-          bountyBasic={bountybasic}
+          jobBasic={jobbasic}
           setSteps={setSteps}
-          setbountyBasic={setBountyBasic}
+          setjobBasic={setJobBasic}
           type={type}
           isNewOrDraft={isNewOrDraft}
         />
@@ -104,8 +104,8 @@ export const CreateBounty = ({
       {steps === 3 && (
         <Description
           type={type}
-          setBountyRequirements={setBountyRequirements}
-          bountyRequirements={bountyRequirements}
+          setJobRequirements={setJobRequirements}
+          jobRequirements={jobRequirements}
           isEditMode={isEditMode}
           createDraft={createDraft}
           editorData={editorData}
@@ -130,19 +130,19 @@ export const CreateBounty = ({
       )}
 
       {steps === 5 && (
-        <CreatebountyPayment
+        <CreatejobPayment
           isEditMode={isEditMode}
           createAndPublishListing={createAndPublishListing}
           isListingPublishing={isListingPublishing}
-          bountyPayment={bountyPayment}
-          setBountyPayment={setBountyPayment}
+          jobPayment={jobPayment}
+          setJobPayment={setJobPayment}
           questions={questions}
           draftLoading={draftLoading}
           createDraft={createDraft}
           onOpen={onOpen}
           subSkills={subSkills}
           mainSkills={mainSkills}
-          bountyBasic={bountybasic}
+          jobBasic={jobbasic}
           editorData={editorData}
           isNewOrDraft={isNewOrDraft}
         />

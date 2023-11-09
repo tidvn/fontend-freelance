@@ -4,7 +4,7 @@ import axios from 'axios';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import type { BountyBasicType } from '@/components/listings/bounty/Createbounty';
+import type { JobBasicType } from '@/components/listings/job/Createjob';
 import type { MultiSelectOptions } from '@/constants';
 import { splitSkills } from '@/utils/skills';
 import { getURL } from '@/utils/validUrl';
@@ -15,7 +15,7 @@ interface Props {
   setEditorData: Dispatch<SetStateAction<string | undefined>>;
   setMainSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
   setSubSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
-  setBountyBasic: Dispatch<SetStateAction<BountyBasicType | undefined>>;
+  setJobBasic: Dispatch<SetStateAction<JobBasicType | undefined>>;
   type: 'open' | 'permissioned';
 }
 const Template = ({
@@ -24,38 +24,38 @@ const Template = ({
   setEditorData,
   setMainSkills,
   setSubSkills,
-  setBountyBasic,
+  setJobBasic,
   type,
 }: Props) => {
-  const [bountiesTemplates, setBountiesTemplates] = useState([]);
-  const [isBountiesTemplatesLoading, setIsBountiesTemplatesLoading] =
+  const [jobsTemplates, setJobsTemplates] = useState([]);
+  const [isJobsTemplatesLoading, setIsJobsTemplatesLoading] =
     useState(false);
 
-  const getBountyTemplates = async () => {
-    setIsBountiesTemplatesLoading(true);
+  const getJobTemplates = async () => {
+    setIsJobsTemplatesLoading(true);
     try {
-      const templates: any = await axios.get('/api/bounties/templates/', {
+      const templates: any = await axios.get('/api/jobs/templates/', {
         params: { type },
       });
-      setBountiesTemplates(templates?.data || []);
-      setIsBountiesTemplatesLoading(false);
+      setJobsTemplates(templates?.data || []);
+      setIsJobsTemplatesLoading(false);
     } catch (e) {
-      setIsBountiesTemplatesLoading(false);
+      setIsJobsTemplatesLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!isBountiesTemplatesLoading) {
-      getBountyTemplates();
+    if (!isJobsTemplatesLoading) {
+      getJobTemplates();
     }
   }, []);
 
   const createTemplate = (templateId: string) => {
-    const template: any = bountiesTemplates.find((t: any) => {
+    const template: any = jobsTemplates.find((t: any) => {
       return t?.id === templateId;
     });
     setListingType('BOUNTY');
-    setBountyBasic({
+    setJobBasic({
       title: template?.title || undefined,
       templateId: template?.id || undefined,
     });
@@ -72,7 +72,7 @@ const Template = ({
         <VStack align="start" w={'full'}>
           <Flex align="center" justify="center" gap="2rem" w="full" mb="2rem">
             <Text color="gray.600" fontSize="1.3rem" fontWeight={600}>
-              Bounty
+              Job
             </Text>
             <hr
               style={{
@@ -103,9 +103,9 @@ const Template = ({
                 Start from Scratch
               </Text>
             </Box>
-            {bountiesTemplates.map((template: any) => {
+            {jobsTemplates.map((template: any) => {
               const sponsors: any = [
-                ...new Set(template?.Bounties?.map((b: any) => b.sponsor)),
+                ...new Set(template?.Jobs?.map((b: any) => b.sponsor)),
               ];
               return (
                 <Box key={template.id} w={'15rem'} h={'16rem'} bg={'white'}>
@@ -202,7 +202,7 @@ const Template = ({
                         leftIcon={<ViewIcon />}
                         onClick={() => {
                           window.open(
-                            `${getURL()}templates/bounties/${template?.slug}`,
+                            `${getURL()}templates/jobs/${template?.slug}`,
                             '_blank'
                           );
                         }}

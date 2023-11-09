@@ -4,21 +4,21 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const DeadlineThreeDaysTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        Friendly reminder that the bounty &quot;
-        <span style={{ fontWeight: 400 }}>{bountyName}&quot;</span>you&nbsp;had
+        Friendly reminder that the job &quot;
+        <span style={{ fontWeight: 400 }}>{jobName}&quot;</span>you&nbsp;had
         indicated&nbsp;interest in will close in 3 days!{' '}
         <a href={link} style={styles.link}>
           Click here

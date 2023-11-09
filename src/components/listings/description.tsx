@@ -42,9 +42,9 @@ import {
   MdOutlineHorizontalRule,
 } from 'react-icons/md';
 
-import type { References } from '@/interface/bounty';
+import type { References } from '@/interface/job';
 
-import { ReferenceCard } from './bounty/reference-input';
+import { ReferenceCard } from './job/reference-input';
 
 const LinkModal = ({
   isOpen,
@@ -88,8 +88,8 @@ interface Props {
   createDraft: () => void;
   draftLoading?: boolean;
   isEditMode?: boolean;
-  setBountyRequirements?: Dispatch<SetStateAction<any | undefined>>;
-  bountyRequirements?: string | undefined;
+  setJobRequirements?: Dispatch<SetStateAction<any | undefined>>;
+  jobRequirements?: string | undefined;
   type?: 'open' | 'permissioned';
   references?: References[];
   setReferences?: Dispatch<SetStateAction<References[]>>;
@@ -101,8 +101,8 @@ const Description = ({
   setSteps,
   createDraft,
   draftLoading,
-  bountyRequirements,
-  setBountyRequirements,
+  jobRequirements,
+  setJobRequirements,
   references,
   setReferences,
   type,
@@ -226,25 +226,25 @@ const Description = ({
               color: 'brand.slate.300',
             }}
             focusBorderColor="brand.purple"
-            id="bountyRequirements"
+            id="jobRequirements"
             maxLength={220}
             onChange={(e) =>
-              setBountyRequirements && setBountyRequirements(e.target.value)
+              setJobRequirements && setJobRequirements(e.target.value)
             }
             placeholder="Add Eligibility Requirements"
             type={'text'}
-            value={bountyRequirements}
+            value={jobRequirements}
           />
           <Text
             color={
-              (bountyRequirements?.length || 0) > 200
+              (jobRequirements?.length || 0) > 200
                 ? 'red'
                 : 'brand.slate.400'
             }
             fontSize={'xs'}
             textAlign="right"
           >
-            {220 - (bountyRequirements?.length || 0)} characters left
+            {220 - (jobRequirements?.length || 0)} characters left
           </Text>
         </Box>
         <Flex justify="start" w="full">
@@ -650,7 +650,7 @@ const Description = ({
             onClick={() => createDraft()}
             variant="outline"
           >
-            {isNewOrDraft ? 'Save Draft' : 'Update Bounty'}
+            {isNewOrDraft ? 'Save Draft' : 'Update Job'}
           </Button>
         </VStack>
       </Box>

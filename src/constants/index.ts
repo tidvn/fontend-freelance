@@ -754,7 +754,7 @@ export const TimeZoneList: MultiSelectOptions[] = [
 export const PrizeList = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 export const ListingTypeQueryMap = {
-  Bounties: 'bounties',
+  Jobs: 'jobs',
   Grants: 'grants',
 };
 

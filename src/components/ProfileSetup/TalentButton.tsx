@@ -2,15 +2,13 @@ import { Alert, AlertIcon, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
-
-import { useSession } from 'next-auth/react';
+import { userStore } from '@/store/user';
 
 function TalentButton() {
   const router = useRouter(); 
   const [isLoading, setIsLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const { data: session, status } = useSession();
-  const  userInfo  = session?.user;
+  const { userInfo }: any = userStore();
   const checkTalent = async () => {
     if (!userInfo || !userInfo?.id) {
       setShowMessage(true);

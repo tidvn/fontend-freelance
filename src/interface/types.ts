@@ -1,4 +1,4 @@
-export type Listingtype = 'Bounties' | 'Grants';
+export type Listingtype = 'Jobs' | 'Grants';
 
 export type Source = 'native' | 'manual';
 
@@ -14,7 +14,7 @@ export type SponsorStatus = 'Unassigned' | 'Assigned';
 
 export type SponsorTypes = 'Admin' | 'Member';
 
-export type BountyStatus =
+export type JobStatus =
   | 'created'
   | 'funded'
   | 'ongoing'

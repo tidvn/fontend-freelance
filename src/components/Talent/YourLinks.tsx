@@ -16,12 +16,12 @@ import type { FieldValues, UseFormRegister } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import type { PoW } from '@/interface/pow';
-import { userStore } from '@/store/user';
-import { isValidHttpUrl } from '@/utils/validUrl';
+import { useSession } from "next-auth/react";import { isValidHttpUrl } from '@/utils/validUrl';
 
 import { AddProject } from '../Form/AddProject';
 import type { UserStoreType } from './types';
 import fetchClient from '@/lib/fetch-client';
+import { userStore } from '@/store/user';
 
 export const socials = [
   {
@@ -152,7 +152,7 @@ function YourLinks({ success, useFormStore }: Props) {
 
   const { updateState } = useFormStore();
 
-  const { setUserInfo, userInfo } = userStore();
+  const { userInfo } = userStore();
 
   const uploadProfile = async (
     socials: {
@@ -215,14 +215,12 @@ function YourLinks({ success, useFormStore }: Props) {
       const { subSkills, ...finalOptions } = updateOptions;
       console.log(finalOptions)
       const updatedUser = await fetchClient({method : "POST", endpoint: '/api/user/update/',body : JSON.stringify(finalOptions)});
-      // await fetchClient({method : "POST", endpoint: '/api/email/manual/welcomeTalent/',body : JSON.stringify({
-      //   email: userInfo?.email,
-      //   name: userInfo?.firstName,
-      // })});
+      // console.log(updatedUser)
 
-      setUserInfo(await updatedUser.json());
+      // setUserInfo(updatedUser.data);
       success();
     } catch (e) {
+      console.log(e)
       setisLoading(false);
     }
   };

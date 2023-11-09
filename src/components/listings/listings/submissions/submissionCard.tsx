@@ -120,7 +120,7 @@ export const SubmissionCard = ({
               fontWeight={600}
               onClick={navigateToTalentProfile}
             >
-              {talent?.firstName}
+              {talent?.firstname}
             </Text>
             <HStack>
               {talent?.photo ? (
@@ -128,13 +128,13 @@ export const SubmissionCard = ({
                   w={5}
                   h={5}
                   borderRadius="full"
-                  alt={`${talent?.firstName} ${talent?.lastName}`}
+                  alt={`${talent?.firstname} ${talent?.lastname}`}
                   rounded={'full'}
                   src={talent?.photo || undefined}
                 />
               ) : (
                 <Avatar
-                  name={`${talent?.firstName} ${talent?.lastName}`}
+                  name={`${talent?.firstname} ${talent?.lastname}`}
                   colors={['#92A1C6', '#F0AB3D', '#C271B4']}
                   size={20}
                   variant="marble"

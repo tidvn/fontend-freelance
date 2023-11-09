@@ -12,14 +12,14 @@ import {
   useDisclosure,
   useMediaQuery,
 } from '@chakra-ui/react';
-import type { BountyType } from '@prisma/client';
+import type { JobType } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import { TiTick } from 'react-icons/ti';
 
 import { tokenList } from '@/constants';
-import type { BountyStatus } from '@/interface/bounty';
+import type { JobStatus } from '@/interface/job';
 import { dayjs } from '@/utils/dayjs';
 import { Mixpanel } from '@/utils/mixpanel';
 
@@ -33,7 +33,7 @@ type ListingSectionProps = {
   title: string;
   sub: string;
   emoji: string;
-  type: 'bounties' | 'grants';
+  type: 'jobs' | 'grants';
   url?: string;
   all?: boolean;
 };
@@ -161,20 +161,20 @@ export const ListingSection = ({
   );
 };
 
-interface BountyProps {
+interface JobProps {
   title?: string;
   rewardAmount?: number;
   deadline?: string;
   logo?: string;
-  status?: BountyStatus;
+  status?: JobStatus;
   token?: string;
   slug?: string;
   sponsorName?: string;
-  type?: BountyType | string;
+  type?: JobType | string;
   applicationType?: 'fixed' | 'rolling';
 }
 
-export const BountiesCard = ({
+export const JobsCard = ({
   rewardAmount,
   deadline,
   type,
@@ -184,7 +184,7 @@ export const BountiesCard = ({
   slug = '',
   sponsorName,
   applicationType,
-}: BountyProps) => {
+}: JobProps) => {
   const router = useRouter();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   return (
@@ -197,11 +197,11 @@ export const BountiesCard = ({
           textDecoration: 'none',
           bg: 'gray.100',
         }}
-        href={`/listings/bounties/${slug}`}
+        href={`/listings/jobs/${slug}`}
         onClick={() => {
-          Mixpanel.track('bounty_clicked', {
+          Mixpanel.track('job_clicked', {
             element: 'title',
-            'Bounty Title': title,
+            'Job Title': title,
           });
         }}
       >
@@ -228,9 +228,9 @@ export const BountiesCard = ({
                   textDecoration: 'underline',
                 }}
                 onClick={() => {
-                  Mixpanel.track('bounty_clicked', {
+                  Mixpanel.track('job_clicked', {
                     element: 'title',
-                    'Bounty Title': title,
+                    'Job Title': title,
                   });
                 }}
                 style={{
@@ -267,7 +267,7 @@ export const BountiesCard = ({
                     fontSize={['x-small', 'xs', 'xs', 'xs']}
                     fontWeight={500}
                   >
-                    {type === 'open' ? 'Bounty' : 'Project'}
+                    {type === 'open' ? 'Job' : 'Project'}
                   </Text>
                 </>
                 <Text

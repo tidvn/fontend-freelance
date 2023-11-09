@@ -19,9 +19,7 @@ import makeAnimated from "react-select/animated";
 import { SkillSelect } from "@/components/misc/SkillSelectTalent";
 import type { MultiSelectOptions } from "@/constants";
 import {
-  CommunityList,
   IndustryList,
-  web3Exp,
   workExp,
   workType,
 } from "@/constants";
@@ -42,7 +40,6 @@ function YourWork({ setStep, useFormStore }: Step1Props) {
   const [subSkills, setSubSkills] = useState<MultiSelectOptions[]>([]);
 
   const [DropDownValues, setDropDownValues] = useState({
-    community: "",
     interests: "",
   });
 
@@ -54,17 +51,14 @@ function YourWork({ setStep, useFormStore }: Step1Props) {
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       experience: form.experience,
-      cryptoExperience: form.cryptoExperience,
       currentEmployer: form.currentEmployer,
-      community: form.community,
       workPrefernce: form.workPrefernce,
       private: form.private || false,
     },
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    setPost(true);
+      setPost(true);
     if (
       skills.length === 0 ||
       subSkills.length === 0 ||

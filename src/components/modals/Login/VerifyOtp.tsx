@@ -53,7 +53,7 @@ function VerifyOTP({ userInfo, onClose, inviteInfo, otp }: Props) {
         });
         setUserInfo(userUpdtedDetails?.data);
         Mixpanel.track('new_user_created');
-        router.push(inviteInfo?.emailInvite ? '/dashboard/bounties' : '/new');
+        router.push(inviteInfo?.emailInvite ? '/dashboard/jobs' : '/new');
         onClose();
       } else {
         setVerificationError('Incorrect OTP. Please try again.');

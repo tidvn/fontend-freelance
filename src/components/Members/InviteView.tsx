@@ -31,7 +31,7 @@ function InviteView({ invite }: Props) {
           inviteId: invite?.id,
           userId: user?.id,
         });
-        router.push('/dashboard/bounties');
+        router.push('/dashboard/jobs');
       } catch (e) {
         setIsWalletError(true);
         setIsAccepting(false);
@@ -77,7 +77,7 @@ function InviteView({ invite }: Props) {
           <br />
           <Text as="span" fontWeight={700}>
             Accept{' '}
-            {`${invite?.sender?.firstName} ${invite?.sender?.lastName}'s`}{' '}
+            {`${invite?.sender?.firstname} ${invite?.sender?.lastname}'s`}{' '}
             invite to join Superteam Earn.
           </Text>
         </Text>

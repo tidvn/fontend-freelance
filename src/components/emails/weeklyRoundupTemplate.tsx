@@ -2,7 +2,7 @@ import React from 'react';
 
 import { styles } from './styles';
 
-interface Bounty {
+interface Job {
   title: string;
   sponsor: string;
   slug: string;
@@ -11,27 +11,27 @@ interface Bounty {
 
 interface TemplateProps {
   name: string;
-  bounties: Bounty[] | undefined;
+  jobs: Job[] | undefined;
 }
 
-export const WeeklyRoundupTemplate = ({ name, bounties }: TemplateProps) => {
+export const WeeklyRoundupTemplate = ({ name, jobs }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey there, {name}!</p>
       <p style={styles.textWithMargin}>
-        Here&apos;s a curated round-up of all live bounties, made just for you!
+        Here&apos;s a curated round-up of all live jobs, made just for you!
       </p>
       <ol style={styles.list}>
-        {bounties?.map((bounty, i) => (
+        {jobs?.map((job, i) => (
           <li key={i} style={styles.text}>
             <a
-              href={`https://earn.superteam.fun/listings/bounties/${
-                bounty?.slug || ''
+              href={`https://earn.superteam.fun/listings/jobs/${
+                job?.slug || ''
               }/?utm_source=superteamearn&utm_medium=email&utm_campaign=notifications`}
               style={styles.link}
             >
-              {bounty.title} by {bounty.sponsor} ($
-              {bounty.rewardAmount ?? 'Not specified'})
+              {job.title} by {job.sponsor} ($
+              {job.rewardAmount ?? 'Not specified'})
             </a>
           </li>
         ))}

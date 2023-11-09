@@ -19,7 +19,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import type { BountyType } from '@prisma/client';
+import type { JobType } from '@prisma/client';
 import axios from 'axios';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -27,10 +27,10 @@ import Countdown from 'react-countdown';
 
 import LoginWrapper from '@/components/Header/LoginWrapper';
 import { VerticalStep } from '@/components/misc/steps';
-import { SubmissionModal } from '@/components/modals/submissionModalBounty';
+import { SubmissionModal } from '@/components/modals/submissionModalJob';
 import WarningModal from '@/components/shared/WarningModal';
 import { tokenList } from '@/constants/index';
-import type { Eligibility, Rewards } from '@/interface/bounty';
+import type { Eligibility, Rewards } from '@/interface/job';
 import { userStore } from '@/store/user';
 
 interface Props {
@@ -46,8 +46,8 @@ interface Props {
   token?: string;
   questions?: string;
   eligibility?: Eligibility[];
-  type?: BountyType | string;
-  bountytitle: string;
+  type?: JobType | string;
+  jobtitle: string;
   requirements?: string;
   isWinnersAnnounced?: boolean;
   hackathonPrize?: boolean;
@@ -63,7 +63,7 @@ function DetailSideCard({
   token,
   eligibility,
   applicationLink,
-  bountytitle,
+  jobtitle,
   requirements,
   type,
   pocSocials,
@@ -197,7 +197,7 @@ function DetailSideCard({
           submissionNumber={submissionNumber}
           setSubmissionNumber={setSubmissionNumber}
           setIsSubmitted={setIsSubmitted}
-          bountytitle={bountytitle}
+          jobtitle={jobtitle}
         />
       )}
       {warningIsOpen && (
@@ -206,7 +206,7 @@ function DetailSideCard({
           onClose={warningOnClose}
           title={'Complete your profile'}
           bodyText={
-            'Please complete your profile before submitting to a bounty.'
+            'Please complete your profile before submitting to a job.'
           }
           primaryCtaText={'Complete Profile'}
           primaryCtaLink={'/new/talent'}
@@ -447,12 +447,12 @@ function DetailSideCard({
               TYPE
             </Text>
             <Text color={'#64768b'} fontSize="1.1rem" fontWeight={500}>
-              {type === 'permissioned' ? 'Project' : 'Bounty'}
+              {type === 'permissioned' ? 'Project' : 'Job'}
             </Text>
             <Text color={'#94A3B8'} fontSize="1rem" fontWeight={400}>
               {type === 'permissioned'
-                ? "Don't start working just yet! Apply first, and then you'll be notified if you're selected to work on this bounty."
-                : 'This is an open competition bounty! Anyone can start working and submit their work before the deadline!'}
+                ? "Don't start working just yet! Apply first, and then you'll be notified if you're selected to work on this job."
+                : 'This is an open competition job! Anyone can start working and submit their work before the deadline!'}
             </Text>
           </VStack>
         )}

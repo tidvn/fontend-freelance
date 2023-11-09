@@ -15,8 +15,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CityList } from '@/constants';
 
-import { userStore } from '@/store/user';
-import { uploadToCloudinary } from '@/utils/upload';
+import { useSession } from "next-auth/react";import { uploadToCloudinary } from '@/utils/upload';
 
 import type { UserStoreType } from './types';
 
@@ -29,7 +28,8 @@ function AboutYou({ setStep, useFormStore }: Step1Props) {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [uploadLoading, setuploadLoading] = useState<boolean>(false);
   const { updateState, form } = useFormStore();
-  const { userInfo } = userStore();
+  const { data: session } = useSession();
+const userInfo:any  = session?.user;
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {

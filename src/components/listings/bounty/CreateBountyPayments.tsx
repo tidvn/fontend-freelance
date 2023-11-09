@@ -30,7 +30,7 @@ import type { MultiSelectOptions } from '@/constants';
 import { PrizeList, tokenList } from '@/constants';
 import { sortRank } from '@/utils/rank';
 
-import type { BountyBasicType } from './Createbounty';
+import type { JobBasicType } from './Createjob';
 import type { Ques } from './questions/builder';
 
 interface PrizeListInterface {
@@ -40,7 +40,7 @@ interface PrizeListInterface {
   defaultValue?: number;
 }
 interface Props {
-  bountyBasic: BountyBasicType | undefined;
+  jobBasic: JobBasicType | undefined;
   editorData: string | undefined;
   mainSkills: MultiSelectOptions[];
   subSkills: MultiSelectOptions[];
@@ -50,18 +50,18 @@ interface Props {
   questions: Ques[];
   createAndPublishListing: () => void;
   isListingPublishing: boolean;
-  bountyPayment: any;
-  setBountyPayment: Dispatch<SetStateAction<any | undefined>>;
+  jobPayment: any;
+  setJobPayment: Dispatch<SetStateAction<any | undefined>>;
   isEditMode: boolean;
   isNewOrDraft?: boolean;
 }
-export const CreatebountyPayment = ({
+export const CreatejobPayment = ({
   createDraft,
   draftLoading,
   createAndPublishListing,
   isListingPublishing,
-  bountyPayment,
-  setBountyPayment,
+  jobPayment,
+  setJobPayment,
   isEditMode,
   isNewOrDraft,
 }: Props) => {
@@ -73,7 +73,7 @@ export const CreatebountyPayment = ({
   const [isRewardError, setIsRewardError] = useState<boolean>(false);
   // handles which token is selected
   const defaultTokenIndex = tokenList?.findIndex(
-    (t) => t.tokenSymbol === bountyPayment.token
+    (t) => t.tokenSymbol === jobPayment.token
   );
   const [tokenName, setTokenName] = useState(
     defaultTokenIndex >= 0
@@ -84,21 +84,21 @@ export const CreatebountyPayment = ({
     defaultTokenIndex >= 0 ? defaultTokenIndex : 0
   );
   const [totalReward, setTotalReward] = useState<number | undefined>(
-    bountyPayment?.rewardAmount || undefined
+    jobPayment?.rewardAmount || undefined
   );
 
   // stores the state for prize
   const [prizevalues, setPrizevalues] = useState<any>(
-    bountyPayment?.rewards || {}
+    jobPayment?.rewards || {}
   );
 
   // handles the UI for prize
-  const prizesList = sortRank(Object.keys(bountyPayment?.rewards || []))?.map(
+  const prizesList = sortRank(Object.keys(jobPayment?.rewards || []))?.map(
     (r) => ({
       value: r,
       label: `${r} prize`,
-      placeHolder: bountyPayment?.rewards[r],
-      defaultValue: bountyPayment?.rewards[r],
+      placeHolder: jobPayment?.rewards[r],
+      defaultValue: jobPayment?.rewards[r],
     })
   );
   const [prizes, setPrizes] = useState<PrizeListInterface[]>(
@@ -114,7 +114,7 @@ export const CreatebountyPayment = ({
   );
 
   useEffect(() => {
-    setBountyPayment({
+    setJobPayment({
       rewardAmount: totalReward,
       token: tokenName,
       rewards: prizevalues,
@@ -141,7 +141,7 @@ export const CreatebountyPayment = ({
     const rewardAmount: number = (
       (Object.values(prizevalues) || []) as number[]
     ).reduce((a, b) => a + b, 0);
-    setBountyPayment({
+    setJobPayment({
       rewardAmount: totalReward,
       token: tokenName,
       rewards: prizevalues,
@@ -361,7 +361,7 @@ export const CreatebountyPayment = ({
             onClick={() => handleSubmit(isEditMode, 'DRAFT')}
             variant={isEditMode ? 'solid' : 'outline'}
           >
-            {isNewOrDraft ? 'Save Draft' : 'Update Bounty'}
+            {isNewOrDraft ? 'Save Draft' : 'Update Job'}
           </Button>
         </VStack>
       </VStack>

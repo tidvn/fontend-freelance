@@ -32,15 +32,15 @@ export const authOptions: NextAuthOptions = {
             endpoint: "/api/login",
             body: JSON.stringify(credentials),
           });
-
-          if (!response.ok) {
-            throw response;
+         
+          if (response.status != 200) {
+            throw new Error("Cant not get data");
           }
 
           const data: {
             user: User;
             access_token: string;
-          } = await response.json();
+          } =  response.data;
           if (!data?.access_token) {
             throw response;
           }
@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
             accessToken: data?.access_token,
           };
         } catch (error) {
+          console.log(error)
           if (error instanceof Response) {
             return null;
           }
@@ -66,7 +67,7 @@ export const authOptions: NextAuthOptions = {
             endpoint: "/api/user",
             token: token.accessToken,
           });
-          const user = await response.json();
+          const user =  response.data;
 
           return { ...token, ...user };
         }
@@ -97,9 +98,12 @@ export const authOptions: NextAuthOptions = {
         throw new Error("Refresh token has expired");
       }
 
-       const {accessToken,iat,exp,jti,...user } = token
-      session.JWT = {accessToken,iat,exp,jti};
-      session.user = user;
+      //  const {accessToken,iat,exp,jti,...user } = token
+      // session.JWT = {accessToken,iat,exp,jti};
+      // session.user = user;
+      session.accessToken = token.accessToken;
+      session.user.username = token.username || "";
+      session.user.email = token.email || "";
       return session;
     },
   },
@@ -122,10 +126,12 @@ async function refreshAccessToken(token: any) {
       token: token?.accessToken,
     });
 
-    if (!response.ok) throw response;
+    if (response.status != 200) {
+      throw new Error("Cant not get data");
+    }
 
     const refreshedAccessToken: { access_token: string } =
-      await response.json();
+      await response.data;
     const { exp } = jwt.decode(refreshedAccessToken.access_token);
 
     return {

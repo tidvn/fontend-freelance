@@ -12,8 +12,8 @@ import type { UseMutationResult } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import type { Ques } from '../listings/bounty/questions/builder';
-import { QuestionHandler } from '../listings/bounty/questions/questionHandler';
+import type { Ques } from '../listings/job/questions/builder';
+import { QuestionHandler } from '../listings/job/questions/questionHandler';
 
 interface Props {
   isOpen: boolean;
@@ -47,7 +47,7 @@ export const SubmissionModal = ({
           <ModalHeader>
             {eligibility !== 'permission-less'
               ? 'Submit Your Application'
-              : 'Bounty Submission'}
+              : 'Job Submission'}
           </ModalHeader>
           <VStack align={'start'} gap={3} p={5}>
             <Text color={'gray.500'} fontSize={'1rem'} fontWeight={500}>
@@ -59,7 +59,7 @@ export const SubmissionModal = ({
             <Text color={'gray.500'} fontSize={'1rem'} fontWeight={500}>
               {eligibility !== 'permission-less'
                 ? 'Please note that the sponsor might contact you to assess fit before picking the winner.'
-                : 'Please note that bounties typically take ~5 days after the end date to be evaluated.'}
+                : 'Please note that jobs typically take ~5 days after the end date to be evaluated.'}
             </Text>
             <form
               style={{ width: '100%' }}

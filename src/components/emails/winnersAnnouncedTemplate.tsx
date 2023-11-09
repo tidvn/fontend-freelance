@@ -4,20 +4,20 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const WinnersAnnouncedTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        The winners for the bounty <strong>{bountyName}</strong> have been
+        The winners for the job <strong>{jobName}</strong> have been
         announced!{' '}
         <p style={styles.text}>
           <a href={link} style={styles.link}>

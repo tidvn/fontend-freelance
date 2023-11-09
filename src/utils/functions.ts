@@ -8,7 +8,7 @@ import type { Notifications } from '@/interface/user';
 
 import type { Comment } from '../interface/comments';
 import type {
-  Bounties,
+  Jobs,
   DraftType,
   GrantsType,
   SubmissionType,
@@ -158,30 +158,30 @@ export const findTeam = async (id: string) => {
   }
 };
 
-// Bounties
-export const createBounty = async (
-  bounties: Bounties,
+// Jobs
+export const createJob = async (
+  jobs: Jobs,
   sponsor: SponsorType
 ) => {
   try {
-    const { data } = await axios.post(`${BACKEND_URL}/listings/bounty/create`, {
-      id: bounties.id,
-      title: bounties.title,
-      token: bounties.token,
-      slug: bounties.slug,
-      deadline: bounties.deadline,
-      description: bounties.description,
-      sponsorStatus: bounties.sponsorStatus,
-      featured: bounties.featured,
+    const { data } = await axios.post(`${BACKEND_URL}/listings/job/create`, {
+      id: jobs.id,
+      title: jobs.title,
+      token: jobs.token,
+      slug: jobs.slug,
+      deadline: jobs.deadline,
+      description: jobs.description,
+      sponsorStatus: jobs.sponsorStatus,
+      featured: jobs.featured,
       orgId: sponsor.id,
-      skills: bounties.skills,
-      subSkills: bounties.subSkills,
-      prizeList: bounties.prizeList,
-      active: bounties.active,
+      skills: jobs.skills,
+      subSkills: jobs.subSkills,
+      prizeList: jobs.prizeList,
+      active: jobs.active,
       private: false,
-      amount: bounties.amount,
-      eligibility: bounties.eligibility,
-      status: bounties.status,
+      amount: jobs.amount,
+      eligibility: jobs.eligibility,
+      status: jobs.status,
     });
     return data;
   } catch (e) {
@@ -190,14 +190,14 @@ export const createBounty = async (
   }
 };
 type FindBoutiesReturn = {
-  listing: Bounties;
+  listing: Jobs;
   sponsor: SponsorType;
 } | null;
 
 export const findBouties = async (slug: string): Promise<FindBoutiesReturn> => {
   if (!slug) return null;
   const { data, status } = await axios.get(
-    `${BACKEND_URL}/listings/bounty/find/${slug}`
+    `${BACKEND_URL}/listings/job/find/${slug}`
   );
   if (status === 204) {
     return null;
@@ -350,7 +350,7 @@ export const removeSubscription = async (id: string) => {
 
 export const createQuestions = async (questions: {
   id: string;
-  bountiesId: string;
+  jobsId: string;
   questions: string;
 }) => {
   try {

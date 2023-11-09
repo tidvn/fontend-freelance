@@ -1,6 +1,6 @@
-import type { BountyType, Regions } from '@prisma/client';
+import type { JobType, Regions } from '@prisma/client';
 
-import type { QuestionType } from '@/components/listings/bounty/questions/builder';
+import type { QuestionType } from '@/components/listings/job/questions/builder';
 import type { SponsorType } from '@/interface/sponsor';
 import type { User } from '@/interface/user';
 
@@ -25,9 +25,9 @@ interface Rewards {
   fifth?: number;
 }
 
-type BountyStatus = 'OPEN' | 'REVIEW' | 'CLOSED';
+type JobStatus = 'OPEN' | 'REVIEW' | 'CLOSED';
 
-interface Bounty {
+interface Job {
   id?: string;
   title?: string;
   slug?: string;
@@ -38,7 +38,7 @@ interface Bounty {
   deadline?: string;
   eligibility?: Eligibility[];
   references?: References[];
-  status?: BountyStatus;
+  status?: JobStatus;
   isActive?: boolean;
   isArchived?: boolean;
   isPublished?: boolean;
@@ -53,7 +53,7 @@ interface Bounty {
   poc?: User;
   source?: string;
   sourceDetails?: string;
-  type?: BountyType | string;
+  type?: JobType | string;
   applicationType?: 'fixed' | 'rolling';
   totalWinnersSelected?: number;
   region?: Regions;
@@ -64,16 +64,16 @@ interface Bounty {
   hackathonprize?: boolean;
 }
 
-interface BountyWithSubmissions extends Bounty {
+interface JobWithSubmissions extends Job {
   _count?: {
     Submission?: number;
   };
 }
 
 export type {
-  Bounty,
-  BountyStatus,
-  BountyWithSubmissions,
+  Job,
+  JobStatus,
+  JobWithSubmissions,
   Eligibility,
   References,
   Rewards,

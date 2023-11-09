@@ -83,7 +83,7 @@ export default function HomeBanner({ setTriggerLogin }: BannerProps) {
           color={'white'}
           fontSize={{ base: 'sm', md: 'lg' }}
         >
-          Explore bounties, projects, and grant opportunities for developers and
+          Explore jobs, projects, and grant opportunities for developers and
           non-technical talent alike
         </Text>
         <Flex

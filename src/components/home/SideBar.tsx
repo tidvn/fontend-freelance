@@ -161,17 +161,17 @@ import {
                   }}
                   onClick={() => {
                     if (userInfo?.id) {
-                      router.push('/bounties');
+                      router.push('/jobs');
                     } else {
                       setTriggerLogin(true);
                     }
                   }}
                 >
-                  Win a bounty
+                  Win a job
                 </Text>
               ) : (
                 <Text color={'brand.purple'} fontSize={'md'} fontWeight={500}>
-                  Win a bounty
+                  Win a job
                 </Text>
               )}
               <Text color={'gray.500'} fontSize={'md'} fontWeight={500}>
@@ -185,10 +185,10 @@ import {
   };
   
   const TotalStats = ({
-    bountyCount,
+    jobCount,
     TVL,
   }: {
-    bountyCount: number;
+    jobCount: number;
     TVL: number;
   }) => {
     return (
@@ -233,7 +233,7 @@ import {
           />
           <Box>
             <Text color={'black'} fontSize={'sm'} fontWeight={'600'}>
-              {bountyCount}
+              {jobCount}
             </Text>
             <Text color={'gray.500'} fontSize={'xs'} fontWeight={'400'}>
               Opportunities Listed
@@ -248,17 +248,17 @@ import {
     name: string;
     avatar?: string;
     amount: number;
-    bounty?: string;
+    job?: string;
     slug: string;
     token?: string;
   }
-  const Earner = ({ amount, name, avatar, bounty, slug, token }: EarnerProps) => {
+  const Earner = ({ amount, name, avatar, job, slug, token }: EarnerProps) => {
     const tokenObj = tokenList.find((t) => t.tokenSymbol === token);
     const tokenIcon = tokenObj
       ? tokenObj.icon
       : '/assets/landingsponsor/icons/usdc.svg';
     return (
-      <NextLink href={`${getURL()}listings/bounties/${slug}`}>
+      <NextLink href={`${getURL()}listings/jobs/${slug}`}>
         <Flex align={'center'} w={'100%'} my={4}>
           {avatar ? (
             <Image
@@ -285,7 +285,7 @@ import {
               {/* {name} */}
             </Text>
             <Text color={'gray.400'} fontSize={'xs'} fontWeight={500}>
-              won {bounty?.slice(0, 15)}...
+              won {job?.slice(0, 15)}...
             </Text>
           </Box>
           <Flex align={'center'} columnGap={1} ml={'auto'}>
@@ -363,10 +363,10 @@ import {
                 <Earner
                   amount={t.reward ?? 0}
                   token={t.rewardToken}
-                  name={`${t.firstName} ${t.lastName}`}
+                  name={`${t.firstname} ${t.lastname}`}
                   avatar={t.photo}
                   key={`${t.id}-${index}`}
-                  bounty={t.title ?? ''}
+                  job={t.title ?? ''}
                   slug={t.slug}
                 />
               )
@@ -449,7 +449,7 @@ import {
     return (
       <Flex direction={'column'} rowGap={'2.5rem'} w={'22.125rem'} pl={6}>
         <GettingStarted userInfo={userInfo} />
-        <TotalStats bountyCount={listings} TVL={total} />
+        <TotalStats jobCount={listings} TVL={total} />
         <RecentEarners earners={earners} />
         <AlphaAccess />
       </Flex>

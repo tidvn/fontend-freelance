@@ -60,16 +60,16 @@ export const ListingHeader = ({
     mutationFn: createSubscription,
     mutationKey: ['subscribe'],
     onSuccess: () => {
-      queryClient.invalidateQueries(['bounties', router.query.id ?? '']);
-      toast.success('Alerts For Bounty Is Active');
+      queryClient.invalidateQueries(['jobs', router.query.id ?? '']);
+      toast.success('Alerts For Job Is Active');
     },
   });
   const subDeleteMutation = useMutation({
     mutationFn: removeSubscription,
     mutationKey: ['subscribe', 'delete'],
     onSuccess: () => {
-      queryClient.invalidateQueries(['bounties', router.query.id ?? '']);
-      toast.success('Alerts For Bounty Is Active');
+      queryClient.invalidateQueries(['jobs', router.query.id ?? '']);
+      toast.success('Alerts For Job Is Active');
     },
   });
   return (
@@ -147,7 +147,7 @@ export const ListingHeader = ({
               </HStack>
             </VStack>
           </HStack>
-          {router.asPath.includes('bounties') && (
+          {router.asPath.includes('jobs') && (
             <HStack>
               <HStack align="start" px={[3, 3, 0, 0]}>
                 {sub?.filter((e) => e.talentId === (talentInfo?.id as string))
@@ -179,7 +179,7 @@ export const ListingHeader = ({
                       }
 
                       subMutation.mutate({
-                        bountiesId: id as string,
+                        jobsId: id as string,
                         talentId: talentInfo?.id as string,
                         id: genrateuuid(),
                       });
@@ -259,7 +259,7 @@ export const ListingHeader = ({
             onClick={() => {
               if (!tabs) return;
               router.push(
-                `/bounties/${title.split(' ').join('-').toLowerCase()}`
+                `/jobs/${title.split(' ').join('-').toLowerCase()}`
               );
             }}
             rounded={0}

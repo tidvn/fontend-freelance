@@ -4,20 +4,20 @@ import { styles } from './styles';
 
 interface TemplateProps {
   name: string;
-  bountyName: string;
+  jobName: string;
   link: string;
 }
 
 export const CommentSponsorTemplate = ({
   name,
-  bountyName,
+  jobName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
-        The <strong>{bountyName}</strong> listing added by your company just
+        The <strong>{jobName}</strong> listing added by your company just
         received a comment &mdash;{' '}
         <a href={link} style={styles.link}>
           check it out!

@@ -4,23 +4,23 @@ import Avatar from 'boring-avatars';
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 
-import type { Bounty, Rewards } from '@/interface/bounty';
+import type { Job, Rewards } from '@/interface/job';
 import type { SubmissionWithUser } from '@/interface/submission';
 import { sortRank } from '@/utils/rank';
 
 interface Props {
-  bounty: Bounty;
+  job: Job;
 }
 
-function BountyWinners({ bounty }: Props) {
-  const [isBountyLoading, setIsBountyLoading] = useState(true);
+function JobWinners({ job }: Props) {
+  const [isJobLoading, setIsJobLoading] = useState(true);
   const [submissions, setSubmissions] = useState<SubmissionWithUser[]>([]);
 
   const getSubmissions = async (id?: string) => {
-    setIsBountyLoading(true);
+    setIsJobLoading(true);
     try {
       const submissionsDetails = await axios.get(
-        `/api/submission/${id || bounty?.id}/winners/`
+        `/api/submission/${id || job?.id}/winners/`
       );
       const { data } = submissionsDetails;
       const winners = sortRank(
@@ -32,9 +32,9 @@ function BountyWinners({ bounty }: Props) {
         data.find((d: SubmissionWithUser) => d.winnerPosition === position)
       );
       setSubmissions(sortedSubmissions);
-      setIsBountyLoading(false);
+      setIsJobLoading(false);
     } catch (e) {
-      setIsBountyLoading(false);
+      setIsJobLoading(false);
     }
   };
 
@@ -42,11 +42,11 @@ function BountyWinners({ bounty }: Props) {
     getSubmissions();
   }, []);
 
-  if (isBountyLoading || !submissions.length) {
+  if (isJobLoading || !submissions.length) {
     return null;
   }
   console.log(
-    'file: BountyWinners.tsx:34 ~ BountyWinners ~ submissions:',
+    'file: JobWinners.tsx:34 ~ JobWinners ~ submissions:',
     submissions
   );
 
@@ -74,7 +74,7 @@ function BountyWinners({ bounty }: Props) {
             {submissions.map((submission) => (
               <NextLink
                 key={submission.id}
-                href={`/listings/bounties/${bounty?.slug}/submission/${submission?.id}/`}
+                href={`/listings/jobs/${job?.slug}/submission/${submission?.id}/`}
                 passHref
               >
                 <Flex
@@ -103,12 +103,12 @@ function BountyWinners({ bounty }: Props) {
                     <Image
                       boxSize="72px"
                       borderRadius="full"
-                      alt={`${submission?.user?.firstName} ${submission?.user?.lastName}`}
+                      alt={`${submission?.user?.firstname} ${submission?.user?.lastname}`}
                       src={submission?.user?.photo}
                     />
                   ) : (
                     <Avatar
-                      name={`${submission?.user?.firstName} ${submission?.user?.lastName}`}
+                      name={`${submission?.user?.firstname} ${submission?.user?.lastname}`}
                       colors={['#92A1C6', '#F0AB3D', '#C271B4']}
                       size={72}
                       variant="marble"
@@ -118,16 +118,16 @@ function BountyWinners({ bounty }: Props) {
                     fontSize="sm"
                     fontWeight={600}
                     textAlign={'center'}
-                  >{`${submission?.user?.firstName} ${submission?.user?.lastName}`}</Text>
+                  >{`${submission?.user?.firstname} ${submission?.user?.lastname}`}</Text>
                   <Text
                     fontSize="xs"
                     fontWeight={300}
                     textAlign="center"
                     opacity={0.6}
                   >
-                    {bounty?.token}{' '}
-                    {bounty?.rewards &&
-                      bounty?.rewards[
+                    {job?.token}{' '}
+                    {job?.rewards &&
+                      job?.rewards[
                         submission?.winnerPosition as keyof Rewards
                       ]}
                   </Text>
@@ -141,4 +141,4 @@ function BountyWinners({ bounty }: Props) {
   );
 }
 
-export default BountyWinners;
+export default JobWinners;

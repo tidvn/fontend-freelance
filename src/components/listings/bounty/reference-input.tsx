@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
-import type { References } from '@/interface/bounty';
+import type { References } from '@/interface/job';
 import { isValidHttpUrl } from '@/utils/validUrl';
 
 interface Props {

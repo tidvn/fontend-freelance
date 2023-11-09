@@ -1,8 +1,8 @@
 import type { ListingType, User } from '@prisma/client';
 
-import type { Rewards } from '@/interface/bounty';
+import type { Rewards } from '@/interface/job';
 
-import type { Bounties } from './listings';
+import type { Jobs } from './listings';
 
 interface SubmissionWithUser {
   id: string;
@@ -26,7 +26,7 @@ interface SubmissionWithUser {
   like?: any;
   likes?: number;
   user: User;
-  listing?: Bounties;
+  listing?: Jobs;
 }
 
 export type { SubmissionWithUser };
