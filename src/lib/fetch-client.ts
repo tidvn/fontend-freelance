@@ -1,6 +1,6 @@
+import { backend_url } from '@/env';
 import axios from 'axios';
 import { getSession, signOut } from 'next-auth/react';
-
 interface fetchClientProps {
   method?: string;
   endpoint: string;
@@ -12,7 +12,6 @@ async function fetchClient({ method = 'GET', endpoint, body = '', token=""}: fet
   try {
     const session: any = await getSession();
     const accessToken = token || session?.accessToken;
-    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://frelan.test';
 
     const axiosConfig = {
       method: method,

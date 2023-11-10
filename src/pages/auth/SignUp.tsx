@@ -22,6 +22,7 @@ import { useFormik } from "formik";
 import { useAlert } from "@/context/AlertContext";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { backend_url } from "@/env";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -39,9 +40,6 @@ export default function SignupCard() {
 
     },
     onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      const backend_url =
-        process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://frelan.test";
       try {
         const res = await axios.post(backend_url + "/api/register", values, {
           headers: {

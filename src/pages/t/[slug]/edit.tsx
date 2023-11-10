@@ -13,7 +13,6 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { MediaPicker } from 'degen';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -44,6 +43,7 @@ import { Meta } from '@/layouts/Meta';
 import { useSession } from 'next-auth/react';
 import { userStore } from '@/store/user';
 import { uploadToCloudinary } from '@/utils/upload';
+import fetchClient from '@/lib/fetch-client';
 
 type FormData = {
   photo?: string;
@@ -222,12 +222,13 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     const fetchPoW = async () => {
-      const response = await axios.get('/api/pow/get', {
-        params: {
-          userId: userInfo?.id,
-        },
-      });
-      setPow(response.data);
+      // const response = await axios.get('/api/pow/get', {
+      //   params: {
+      //     userId: userInfo?.id,
+      //   },
+      // });
+      const response = {} 
+      setPow(response?.data);
     };
 
     if (userInfo?.id) {
@@ -326,16 +327,20 @@ export default function EditProfilePage() {
         }
         return acc;
       }, {} as Partial<FormData>);
+      const response = await fetchClient({
+        method:"POST",
+        endpoint:"/api/user/edit",
+        body: JSON.stringify({
+          id: userInfo?.id,
+          ...finalUpdatedData,
+        })
+      })
+      
 
-      const response = await axios.post('/api/user/edit', {
-        id: userInfo?.id,
-        ...finalUpdatedData,
-      });
-
-      await axios.post('/api/pow/edit', {
-        userId: userInfo?.id,
-        pows: pow,
-      });
+      // await axios.post('/api/pow/edit', {
+      //   userId: userInfo?.id,
+      //   pows: pow,
+      // });
 
       // setUserInfo(response.data);
       // toast({
@@ -346,7 +351,7 @@ export default function EditProfilePage() {
       //   isClosable: true,
       // });
       setTimeout(() => {
-        router.push(`/t/${userInfo.username}`);
+        router.push(`/t/${userInfo?.username}`);
       }, 500);
     } catch (error: any) {
       toast({
