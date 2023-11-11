@@ -1,14 +1,15 @@
+import { BACKEND_URL } from "@/env";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
 // Define a function to get the access token
 const getAccessToken = async () => {
   const session:any = await getSession();
-  return session?.JWT.accessToken;
+  return session?.accessToken;
 };
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://frelan.test",
+  baseURL: BACKEND_URL,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Accept': "application/json",

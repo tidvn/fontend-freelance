@@ -20,7 +20,7 @@ import { TbBellRinging } from 'react-icons/tb';
 import { Mixpanel } from '@/utils/mixpanel';
 
 import type { SubscribeType } from '../../../interface/listings';
-import type { SponsorType } from '../../../interface/sponsor';
+import type { CompanyType } from '../../../interface/company';
 import { TalentStore } from '../../../store/talent';
 import { userStore } from '../../../store/user';
 import {
@@ -33,7 +33,7 @@ import { CreateProfileModal } from '../../modals/createProfile';
 type Eligibility = 'permission' | 'permission-less';
 
 interface Props {
-  sponsor: SponsorType;
+  company: CompanyType;
   title: string;
   tabs: boolean;
   id?: string;
@@ -42,7 +42,7 @@ interface Props {
   eligibility: Eligibility;
 }
 export const ListingHeader = ({
-  sponsor,
+  company,
   title,
   tabs,
   id,
@@ -93,7 +93,7 @@ export const ListingHeader = ({
               objectFit={'cover'}
               alt={'phantom'}
               rounded={'md'}
-              src={sponsor?.logo}
+              src={company?.logo}
             />
             <VStack align={'start'}>
               <Heading
@@ -106,7 +106,7 @@ export const ListingHeader = ({
               </Heading>
               <HStack>
                 <Text color={'#94A3B8'}>
-                  by @{sponsor?.slug} at {sponsor?.name}
+                  by @{company?.slug} at {company?.name}
                 </Text>
                 {endTime ? (
                   Number(moment(endTime).format('x')) > Date.now() ? (

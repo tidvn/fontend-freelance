@@ -14,7 +14,7 @@ interface Props {
   onClose: () => void;
   isOpen: boolean;
 }
-export const CreateSponsorModel = ({ isOpen, onClose }: Props) => {
+export const CreateCompanyModel = ({ isOpen, onClose }: Props) => {
   const router = useRouter();
   return (
     <>
@@ -23,7 +23,7 @@ export const CreateSponsorModel = ({ isOpen, onClose }: Props) => {
         <ModalContent h={'max'} py={5}>
           <ModalHeader>
             <Text color={'gray.700'} fontFamily={'Inter'} fontWeight={600}>
-              Create a Sponsor account to access the listing
+              Create a Company account to access the listing
             </Text>
 
             <VStack mt={5}>
@@ -35,10 +35,10 @@ export const CreateSponsorModel = ({ isOpen, onClose }: Props) => {
                 bg={'#6562FF'}
                 _hover={{ bg: '#6562FF' }}
                 onClick={() => {
-                  router.push('/sponsor/create');
+                  router.push('/company/create');
                 }}
               >
-                Create Sponsor
+                Create Company
               </Button>
               <Button
                 w="100%"

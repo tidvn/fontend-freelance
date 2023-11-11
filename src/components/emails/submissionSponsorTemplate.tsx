@@ -8,7 +8,7 @@ interface TemplateProps {
   link: string;
 }
 
-export const SubmissionSponsorTemplate = ({
+export const SubmissionCompanyTemplate = ({
   name,
   jobName,
   link,
@@ -18,13 +18,13 @@ export const SubmissionSponsorTemplate = ({
       <p style={styles.greetings}>Hey {name},</p>
       <p style={styles.textWithMargin}>
         Your listing <strong>{jobName}</strong> just received a submission on
-        Superteam Earn! &mdash;{' '}
+        FreLan! &mdash;{' '}
         <a href={link} style={styles.link}>
           check it out!
         </a>
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
       <p style={styles.unsubscribe}>
         Click{' '}
         <a
@@ -33,7 +33,7 @@ export const SubmissionSponsorTemplate = ({
         >
           here
         </a>{' '}
-        to unsubscribe from all emails from Superteam Earn.
+        to unsubscribe from all emails from FreLan.
       </p>
     </div>
   );

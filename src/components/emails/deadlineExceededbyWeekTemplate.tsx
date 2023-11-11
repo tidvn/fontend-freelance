@@ -28,7 +28,7 @@ export const DeadlineExceededbyWeekTemplate = ({
         to review the submissions.
       </p>
       <p style={styles.salutation}>Best,</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
       <p style={styles.unsubscribe}>
         Click{' '}
         <a
@@ -37,7 +37,7 @@ export const DeadlineExceededbyWeekTemplate = ({
         >
           here
         </a>{' '}
-        to unsubscribe from all emails from Superteam Earn.
+        to unsubscribe from all emails from FreLan.
       </p>
     </div>
   );

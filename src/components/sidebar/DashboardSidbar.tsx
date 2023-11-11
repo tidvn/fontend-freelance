@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SponsorType } from '../../interface/sponsor';
+import type { CompanyType } from '../../interface/company';
 
 interface Props {
-  sponsors: SponsorType[];
+  companies: CompanyType[];
 }
 
 type NavOption = {
@@ -22,7 +22,7 @@ const navOptions: NavOption[] = [
     icon: '/assets/icons/nav/blue-person.svg',
   },
   {
-    title: 'My Listings',
+    title: 'My jobs',
     href: '/dashboard/listings',
     icon: '/assets/icons/nav/fire.svg',
   },
@@ -33,7 +33,7 @@ const navOptions: NavOption[] = [
   },
 ];
 
-export const DashboardSidbar = ({ sponsors }: Props) => {
+export const DashboardSidbar = ({ companies }: Props) => {
   const router = useRouter();
 
   function NavItem({ title, href, icon }: NavOption) {
@@ -114,10 +114,10 @@ export const DashboardSidbar = ({ sponsors }: Props) => {
       >
         <Box px={5}>
           <Select>
-            {sponsors?.map((sponsor, index) => {
+            {companies?.map((company, index) => {
               return (
-                <option key={sponsor.id} value={index}>
-                  {sponsor.name}
+                <option key={company.id} value={index}>
+                  {company.name}
                 </option>
               );
             })}

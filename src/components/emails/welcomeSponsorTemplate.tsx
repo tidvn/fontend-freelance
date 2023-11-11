@@ -2,10 +2,10 @@ import React from 'react';
 
 import { styles } from './styles';
 
-export const WelcomeSponsorTemplate = () => {
+export const WelcomeCompanyTemplate = () => {
   return (
     <div style={styles.container}>
-      <p style={styles.text}>Welcome to Superteam Earn!</p>
+      <p style={styles.text}>Welcome to FreLan!</p>
       <p style={styles.textWithMargin}>
         Thank you for signing up. Earn is the premier talent-matching platform,
         favored by over 100 leading Solana projects &mdash; we are excited to

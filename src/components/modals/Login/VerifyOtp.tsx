@@ -22,7 +22,7 @@ interface Props {
   onClose: () => void;
   inviteInfo?: {
     emailInvite?: string;
-    currentSponsorId?: string;
+    currentCompanyId?: string;
     memberType?: 'MEMBER' | 'ADMIN';
   };
   otp: {
@@ -46,9 +46,9 @@ function VerifyOTP({ userInfo, onClose, inviteInfo, otp }: Props) {
       if (otp.current === Number(pin) || otp.last === Number(pin)) {
         const userUpdtedDetails = await axios.post('/api/user/update', {
           id: userInfo?.id,
-          currentSponsorId: inviteInfo?.currentSponsorId,
+          currentCompanyId: inviteInfo?.currentCompanyId,
           isVerified: true,
-          addUserSponsor: !!inviteInfo?.emailInvite,
+          addUserCompany: !!inviteInfo?.emailInvite,
           memberType: inviteInfo?.memberType,
         });
         setUserInfo(userUpdtedDetails?.data);

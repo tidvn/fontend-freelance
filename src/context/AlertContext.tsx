@@ -1,3 +1,4 @@
+import { userStore } from "@/store/user";
 import {
   Alert,
   AlertDescription,
@@ -6,7 +7,8 @@ import {
   Box,
   CloseButton,
 } from "@chakra-ui/react";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useSession } from "next-auth/react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 type AlertContextType = {
   showAlert: ({status, variant, message}:any) => void;
@@ -28,6 +30,16 @@ type AlertProviderProps = {
 };
 
 export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
+
+  const { data: session, status }: any = useSession();
+  const { userInfo, fetchData }: any = userStore();
+  
+  useEffect(() => {
+    if (session?.accessToken) {   
+      fetchData(session?.accessToken);
+    }
+  }, [session]);
+  
   const [isVisible, setIsVisible] = useState(false);
   const [arlertData, setArlertData] = useState({
     status: "",

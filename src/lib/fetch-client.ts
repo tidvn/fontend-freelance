@@ -1,4 +1,4 @@
-import { backend_url } from '@/env';
+import { BACKEND_URL } from '@/env';
 import axios from 'axios';
 import { getSession, signOut } from 'next-auth/react';
 interface fetchClientProps {
@@ -12,14 +12,13 @@ async function fetchClient({ method = 'GET', endpoint, body = '', token=""}: fet
   try {
     const session: any = await getSession();
     const accessToken = token || session?.accessToken;
-
     const axiosConfig = {
       method: method,
-      url: backend_url + endpoint.toString(),
+      url: BACKEND_URL + endpoint.toString(),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer${accessToken}`, // Note the space after "Bearer"
+        Authorization: `Bearer${accessToken}`,
       },
       data: body || undefined,
     };
@@ -32,7 +31,6 @@ async function fetchClient({ method = 'GET', endpoint, body = '', token=""}: fet
 
     return response;
   } catch (error) {
-    console.log(error)
     if (axios.isAxiosError(error) && error.response) {
       const errorResponse = error.response;
 

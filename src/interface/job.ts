@@ -1,7 +1,6 @@
-import type { JobType, Regions } from '@prisma/client';
 
 import type { QuestionType } from '@/components/listings/job/questions/builder';
-import type { SponsorType } from '@/interface/sponsor';
+import type { CompanyType } from '@/interface/company';
 import type { User } from '@/interface/user';
 
 import type { Skills } from './skills';
@@ -46,17 +45,16 @@ interface Job {
   token?: string;
   rewardAmount?: number;
   rewards?: Rewards;
-  sponsorId?: string;
-  sponsor?: SponsorType;
+  companyId?: string;
+  company?: CompanyType;
   pocSocials?: string;
   pocId?: string;
   poc?: User;
   source?: string;
   sourceDetails?: string;
-  type?: JobType | string;
+  type?:  string;
   applicationType?: 'fixed' | 'rolling';
   totalWinnersSelected?: number;
-  region?: Regions;
   totalPaymentsMade?: number;
   isWinnersAnnounced?: boolean;
   templateId?: string;

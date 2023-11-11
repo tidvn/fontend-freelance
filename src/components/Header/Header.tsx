@@ -25,7 +25,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  { label: 'Jobs', href: '/jobs' },
+  { label: 'Listings', href: '/jobs' },
   { label: 'Projects', href: '/projects' },
   {
     label: 'Browse Categories',
@@ -227,7 +227,7 @@ export default function WithSubnavigation() {
               mr={5}
               cursor="pointer"
               objectFit={'contain'}
-              alt={'Superteam Earn'}
+              alt={'FreLan'}
               onClick={() => {
                 router.push('/');
               }}
@@ -236,7 +236,7 @@ export default function WithSubnavigation() {
             <NavLink
               display={{ base: 'none', lg: 'flex' }}
               href="/jobs"
-              label="Jobs"
+              label="Listings"
               isActive={router.asPath === '/jobs/'}
             />
 

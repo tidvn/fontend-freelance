@@ -19,15 +19,15 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
-import type { SponsorType } from '../../interface/sponsor';
+import type { CompanyType } from '../../interface/company';
 import { userStore } from '../../store/user';
-import { createSponsor, UpdateUser } from '../../utils/functions';
+import { createCompany, UpdateUser } from '../../utils/functions';
 
 interface Props {
   onClose: () => void;
   isOpen: boolean;
   email: string;
-  sponsor: SponsorType;
+  company: CompanyType;
   totp: Totp;
 }
 interface Totp {
@@ -38,7 +38,7 @@ export const Emailverification = ({
   onClose,
   isOpen,
   email,
-  sponsor,
+  company,
   totp,
 }: Props) => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -146,9 +146,9 @@ export const Emailverification = ({
                   ) {
                     setLoading(true);
                     toast.success('Success');
-                    const a = await createSponsor(sponsor);
+                    const a = await createCompany(company);
                     const res = await UpdateUser(userInfo?.id as string, {
-                      sponsor: true,
+                      company: true,
                     });
                     console.log(a);
                     if (a.data && res) {

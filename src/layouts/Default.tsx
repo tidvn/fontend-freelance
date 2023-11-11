@@ -1,9 +1,8 @@
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
-import { useSession } from 'next-auth/react';
-import { userStore } from '@/store/user';
+
 
 type IDefaultProps = {
   meta: ReactNode;
@@ -12,14 +11,7 @@ type IDefaultProps = {
 };
 
 const Default = (props: IDefaultProps) => {
-  const { data: session, status }: any = useSession();
-  const { userInfo, fetchData }: any = userStore();
-  
-  useEffect(() => {
-    if (session?.accessToken) {   
-      fetchData(session?.accessToken);
-    }
-  }, [session]);
+
   return (
     <div
       className={

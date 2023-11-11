@@ -10,13 +10,12 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import axios from 'axios';
 import { MediaPicker } from 'degen';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 
@@ -24,14 +23,14 @@ import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
 import { userStore } from '@/store/user';
 
-import { IndustryList } from '../../constants';
-import type { SponsorType } from '../../interface/sponsor';
-import { uploadToCloudinary } from '../../utils/utils/upload';
+import { IndustryList } from '@/constants';
+import type { CompanyType } from '@/interface/company';
+import { uploadToCloudinary } from '@/utils/upload';
+import fetchClient from '@/lib/fetch-client';
 
-const CreateSponsor = () => {
+const CreateCompany = () => {
   const router = useRouter();
   const animatedComponents = makeAnimated();
-  const { connected } = useWallet();
   const { userInfo } = userStore();
   const {
     handleSubmit,
@@ -46,7 +45,7 @@ const CreateSponsor = () => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const createNewSponsor = async (sponsor: SponsorType) => {
+  const createNewCompany = async (company: CompanyType) => {
     if (getValues('bio').length > 180) {
       setErrorMessage('Company short bio length exceeded the limit');
       return;
@@ -54,21 +53,22 @@ const CreateSponsor = () => {
     setIsLoading(true);
     setHasError(false);
     try {
-      await axios.post('/api/sponsors/create', {
-        ...sponsor,
-        userId: userInfo?.id,
-      });
-      await axios.post(`/api/email/manual/welcomeSponsor`, {
-        email: userInfo?.email,
-        name: userInfo?.firstname,
-      });
-      router.push('/dashboard/Jobs');
-      // setIsLoading(false);
-      // toast.success('Sponsor created!');
-    } catch (e: any) {
-      if (e?.response?.data?.error?.code === 'P2002') {
-        setErrorMessage('Sorry! Sponsor name or username already exists.');
+      const response = await fetchClient({
+        method:"POST",
+        endpoint: "/api/company/create",
+        body: JSON.stringify({
+          ...company,
+          userId: userInfo?.id,
+        })
+      })
+      if (response.status != 200){
+        throw new Error(response?.data?.message);
       }
+      setIsLoading(false);
+      toast.success('Company created!');
+      router.push('/dashboard/jobs');
+    } catch (e: any) {
+      setErrorMessage(e?.data?.message || e.message); 
       setIsLoading(false);
       setHasError(true);
     }
@@ -77,13 +77,13 @@ const CreateSponsor = () => {
     <Default
       meta={
         <Meta
-          title="Create Sponsor | Superteam Earn"
+          title="Create Company | FreLan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />
       }
     >
-      {!connected ? (
+      {!userInfo ? (
         <>
           <Box
             alignItems={'center'}
@@ -93,7 +93,7 @@ const CreateSponsor = () => {
             minH={'100vh'}
           >
             <Text color={'gray.600'} fontSize={'xl'} fontWeight={500}>
-              Please sign up first!
+              Please sign In first!
             </Text>
           </Box>
         </>
@@ -106,7 +106,7 @@ const CreateSponsor = () => {
               fontSize={'24px'}
               fontWeight={700}
             >
-              Welcome to Superteam Earn
+              Welcome to FreLan
             </Heading>
             <Text
               color={'gray.400'}
@@ -114,20 +114,20 @@ const CreateSponsor = () => {
               fontSize={'20px'}
               fontWeight={500}
             >
-              {"Let's start with some basic information about your team"}
+              {"Let's start with some basic information about your company"}
             </Text>
           </VStack>
           <VStack w={'2xl'} pt={10}>
             <form
               onSubmit={handleSubmit(async (e) => {
-                createNewSponsor({
+                createNewCompany({
                   bio: e.bio,
                   industry: industries ?? '',
-                  name: e.sponsorname,
+                  name: e.companyname,
                   slug: e.slug,
                   logo: imageUrl ?? '',
                   twitter: e.twitterHandle ?? '',
-                  url: e.sponsorurl ?? '',
+                  url: e.companyurl ?? '',
                 });
               })}
               style={{ width: '100%' }}
@@ -138,7 +138,7 @@ const CreateSponsor = () => {
                     color={'brand.slate.500'}
                     fontSize={'15px'}
                     fontWeight={600}
-                    htmlFor={'sponsorname'}
+                    htmlFor={'companyname'}
                   >
                     Company Name
                   </FormLabel>
@@ -147,13 +147,13 @@ const CreateSponsor = () => {
                     borderColor={'brand.slate.300'}
                     _placeholder={{ color: 'brand.slate.300' }}
                     focusBorderColor="brand.purple"
-                    id="sponsorname"
+                    id="companyname"
                     placeholder="Stark Industries"
-                    {...register('sponsorname')}
+                    {...register('companyname')}
                   />
                   <FormErrorMessage>
-                    {errors.sponsorname ? (
-                      <>{errors.sponsorname.message}</>
+                    {errors.companyname ? (
+                      <>{errors.companyname.message}</>
                     ) : (
                       <></>
                     )}
@@ -166,7 +166,7 @@ const CreateSponsor = () => {
                     fontWeight={600}
                     htmlFor={'slug'}
                   >
-                    Company Username
+                    Company Slug
                   </FormLabel>
                   <Input
                     w={'18rem'}
@@ -188,21 +188,21 @@ const CreateSponsor = () => {
                     color={'brand.slate.500'}
                     fontSize={'15px'}
                     fontWeight={600}
-                    htmlFor={'sponsorname'}
+                    htmlFor={'companyname'}
                   >
-                    Company URL
+                    Website
                   </FormLabel>
                   <Input
                     borderColor={'brand.slate.300'}
                     _placeholder={{ color: 'brand.slate.300' }}
                     focusBorderColor="brand.purple"
-                    id="sponsorurl"
+                    id="companyurl"
                     placeholder="https://starkindustries.com"
-                    {...register('sponsorurl')}
+                    {...register('companyurl')}
                   />
                   <FormErrorMessage>
-                    {errors.sponsorurl ? (
-                      <>{errors.sponsorurl.message}</>
+                    {errors.companyurl ? (
+                      <>{errors.companyurl.message}</>
                     ) : (
                       <></>
                     )}
@@ -251,7 +251,7 @@ const CreateSponsor = () => {
                 </Heading>
                 <HStack gap={5}>
                   <MediaPicker
-                    onChange={async (e) => {
+                    onChange={async (e:any) => {
                       const a = await uploadToCloudinary(e);
                       setImageUrl(a);
                     }}
@@ -335,9 +335,7 @@ const CreateSponsor = () => {
                   <Text align="center" mb={4} color="red">
                     {errorMessage ||
                       'Sorry! An error occurred while creating your company!'}
-                    <br />
-                    Please update the details & try again or contact support!
-                  </Text>
+                    <br />                  </Text>
                 )}
                 <Button
                   w="full"
@@ -348,7 +346,7 @@ const CreateSponsor = () => {
                   type="submit"
                   variant="solid"
                 >
-                  Create Sponsor
+                  Create Company
                 </Button>
               </Box>
             </form>
@@ -359,4 +357,4 @@ const CreateSponsor = () => {
   );
 };
 
-export default CreateSponsor;
+export default CreateCompany;

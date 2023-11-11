@@ -1,4 +1,4 @@
-import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -12,38 +12,37 @@ import {
   Textarea,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
-import { MediaPicker } from 'degen';
-import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import ReactSelect from 'react-select';
-import makeAnimated from 'react-select/animated';
+} from "@chakra-ui/react";
+import { MediaPicker } from "degen";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import ReactSelect from "react-select";
+import makeAnimated from "react-select/animated";
 
-import { AddProject } from '@/components/Form/AddProject';
-import { InputField } from '@/components/Form/InputField';
-import { SelectBox } from '@/components/Form/SelectBox';
-import { SocialInput } from '@/components/Form/SocialInput';
-import { SkillSelect } from '@/components/misc/SkillSelect';
-import { socials } from '@/components/Talent/YourLinks';
-import type { MultiSelectOptions } from '@/constants';
+import { AddProject } from "@/components/Form/AddProject";
+import { InputField } from "@/components/Form/InputField";
+import { SelectBox } from "@/components/Form/SelectBox";
+import { SocialInput } from "@/components/Form/SocialInput";
+import { SkillSelect } from "@/components/misc/SkillSelect";
+import { socials } from "@/components/Talent/YourLinks";
+import type { MultiSelectOptions } from "@/constants";
 import {
-  CommunityList,
   CityList,
   IndustryList,
   web3Exp,
   workExp,
   workType,
-} from '@/constants';
-import type { PoW } from '@/interface/pow';
-import type { SubSkillsType } from '@/interface/skills';
-import { SkillList } from '@/interface/skills';
-import { Default } from '@/layouts/Default';
-import { Meta } from '@/layouts/Meta';
-import { useSession } from 'next-auth/react';
-import { userStore } from '@/store/user';
-import { uploadToCloudinary } from '@/utils/upload';
-import fetchClient from '@/lib/fetch-client';
+} from "@/constants";
+import type { PoW } from "@/interface/pow";
+import type { SubSkillsType } from "@/interface/skills";
+import { SkillList } from "@/interface/skills";
+import { Default } from "@/layouts/Default";
+import { Meta } from "@/layouts/Meta";
+import { useSession } from "next-auth/react";
+import { userStore } from "@/store/user";
+import { uploadToCloudinary } from "@/utils/upload";
+import fetchClient from "@/lib/fetch-client";
 
 type FormData = {
   photo?: string;
@@ -57,10 +56,8 @@ type FormData = {
   linkedin?: string;
   website?: string;
   telegram?: string;
-  community?: { label: string; value: string }[];
   experience?: string;
   location?: string;
-  cryptoExperience?: string;
   workPrefernce?: string;
   currentEmployer?: string;
   pow?: string;
@@ -70,33 +67,32 @@ type FormData = {
 };
 
 const socialLinkFields = [
-  'twitter',
-  'github',
-  'linkedin',
-  'website',
-  'telegram',
+  "twitter",
+  "github",
+  "linkedin",
+  "website",
+  "telegram",
 ];
 
 const keysToOmit = [
-  'id',
-  'publicKey',
-  'email',
-  'created_at',
-  'isVerified',
-  'role',
-  'totalEarned',
-  'isTalentFilled',
-  'superteamLevel',
-  'notifications',
-  'currentSponsorId',
-  'UserSponsors',
-  'currentSponsor',
-  'poc',
-  'Comment',
-  'Submission',
-  'Grants',
-  'UserInvites',
-  'SubscribeJob',
+  "id",
+  "email",
+  "created_at",
+  "isVerified",
+  "role",
+  "totalEarned",
+  "isTalentFilled",
+  "superteamLevel",
+  "notifications",
+  "currentCompanyId",
+  "UserCompanies",
+  "currentCompany",
+  "poc",
+  "Comment",
+  "Submission",
+  "Grants",
+  "UserInvites",
+  "SubscribeJob",
 ];
 
 const parseSkillsAndSubskills = (skillsObject: any) => {
@@ -114,7 +110,7 @@ const parseSkillsAndSubskills = (skillsObject: any) => {
 };
 
 export default function EditProfilePage() {
-  const userInfo :any = userStore();
+  const { userInfo }: any = userStore();
   const { register, handleSubmit, setValue, watch } = useForm<FormData>();
 
   const [discordError, setDiscordError] = useState(false);
@@ -136,17 +132,15 @@ export default function EditProfilePage() {
   const animatedComponents = makeAnimated();
   const [DropDownValues, setDropDownValues] = useState<{
     interests: string;
-    community: { label: string; value: string }[];
   }>({
     interests: JSON.stringify(userInfo?.interests || []),
-    community: userInfo?.community ? JSON.parse(userInfo.community) : [],
   });
 
   const [skills, setSkills] = useState<MultiSelectOptions[]>([]);
   const [subSkills, setSubSkills] = useState<MultiSelectOptions[]>([]);
   const toast = useToast();
 
-  const privateValue = watch('private', userInfo?.private);
+  const privateValue = watch("private", userInfo?.private);
 
   const socialLinksValidityRef = useRef<{ [key: string]: boolean }>({});
 
@@ -171,36 +165,23 @@ export default function EditProfilePage() {
         const defaultInterests = interestsArray.map((value: string) =>
           IndustryList.find((option) => option.value === value)
         );
-        setValue('interests', defaultInterests);
+        setValue("interests", defaultInterests);
         setDropDownValues((prev) => ({
           ...prev,
           interests: defaultInterests,
         }));
       }
 
-      if (userInfo?.community) {
-        const communityArray: string[] = JSON.parse(userInfo.community);
-        const communitySelectValues = communityArray.map((item) => ({
-          label: item,
-          value: item,
-        }));
-        setValue('community', communitySelectValues);
-        setDropDownValues((prev) => ({
-          ...prev,
-          community: communitySelectValues,
-        }));
-      }
-
       if (userInfo.experience) {
-        setValue('experience', userInfo.experience);
+        setValue("experience", userInfo.experience);
       }
 
       if (userInfo.location) {
-        setValue('location', userInfo.location);
+        setValue("location", userInfo.location);
       }
 
       if (userInfo.private) {
-        setValue('private', userInfo.private);
+        setValue("private", userInfo.private);
       }
 
       if (userInfo?.skills && Array.isArray(userInfo.skills)) {
@@ -211,7 +192,7 @@ export default function EditProfilePage() {
       }
 
       if (userInfo?.photo) {
-        setValue('photo', userInfo.photo);
+        setValue("photo", userInfo.photo);
         setPhotoUrl(userInfo.photo);
         setIsPhotoLoading(false);
       } else {
@@ -222,15 +203,12 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     const fetchPoW = async () => {
-      // const response = await axios.get('/api/pow/get', {
-      //   params: {
-      //     userId: userInfo?.id,
-      //   },
-      // });
-      const response = {} 
+      const response = await fetchClient({
+        method: "GET",
+        endpoint: `/api/pow/get/?userId=${userInfo?.id}`,
+      });
       setPow(response?.data);
     };
-
     if (userInfo?.id) {
       fetchPoW();
     }
@@ -238,14 +216,12 @@ export default function EditProfilePage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-  
-
       if (!data.discord) {
         setDiscordError(true);
         toast({
-          title: 'Discord Error.',
-          description: 'Discord field is required.',
-          status: 'error',
+          title: "Discord Error.",
+          description: "Discord field is required.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -261,9 +237,9 @@ export default function EditProfilePage() {
 
       if (filledSocialLinksCount < 1) {
         toast({
-          title: 'Social Links Error.',
-          description: 'At least one social link is required.',
-          status: 'error',
+          title: "Social Links Error.",
+          description: "At least one social link is required.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -272,9 +248,9 @@ export default function EditProfilePage() {
 
       if (isAnySocialUrlInvalid) {
         toast({
-          title: 'Social URLs Error.',
-          description: 'One or more social URLs are invalid.',
-          status: 'error',
+          title: "Social URLs Error.",
+          description: "One or more social URLs are invalid.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -284,9 +260,6 @@ export default function EditProfilePage() {
       const interestsJSON = JSON.stringify(
         (data.interests || []).map((interest) => interest.value)
       );
-
-      const communityArray = (data.community || []).map((item) => item.value);
-      const communityJSON = JSON.stringify(communityArray);
 
       const combinedSkills = skills.map((mainskill) => {
         const main = SkillList.find(
@@ -304,7 +277,7 @@ export default function EditProfilePage() {
         });
 
         return {
-          skills: main?.mainskill ?? '',
+          skills: main?.mainskill ?? "",
           subskills: sub ?? [],
         };
       });
@@ -312,7 +285,6 @@ export default function EditProfilePage() {
       const updatedData = {
         ...data,
         interests: interestsJSON,
-        community: communityJSON,
         skills: combinedSkills,
       };
 
@@ -327,38 +299,40 @@ export default function EditProfilePage() {
         }
         return acc;
       }, {} as Partial<FormData>);
+      console.log(userInfo);
       const response = await fetchClient({
-        method:"POST",
-        endpoint:"/api/user/edit",
+        method: "POST",
+        endpoint: "/api/user/edit",
         body: JSON.stringify({
           id: userInfo?.id,
           ...finalUpdatedData,
-        })
-      })
-      
+        }),
+      });
+      await fetchClient({
+        method: "POST",
+        endpoint: "/api/pow/edit",
+        body: JSON.stringify({
+          pows: pow,
+        }),
+      });
 
-      // await axios.post('/api/pow/edit', {
-      //   userId: userInfo?.id,
-      //   pows: pow,
-      // });
 
-      // setUserInfo(response.data);
-      // toast({
-      //   title: 'Profile updated.',
-      //   description: 'Your profile has been updated successfully!',
-      //   status: 'success',
-      //   duration: 3000,
-      //   isClosable: true,
-      // });
+      toast({
+        title: 'Profile updated.',
+        description: 'Your profile has been updated successfully!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
       setTimeout(() => {
         router.push(`/t/${userInfo?.username}`);
       }, 500);
     } catch (error: any) {
       toast({
-        title: 'Failed to update profile.',
+        title: "Failed to update profile.",
         description:
           'There might be a field with invalid input. Please rectify and then click on "Update"',
-        status: 'error',
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
@@ -370,7 +344,7 @@ export default function EditProfilePage() {
       <Default
         meta={
           <Meta
-            title="Superteam Earn"
+            title="FreLan"
             description="Every Solana opportunity in one place!"
             canonical="/assets/logo/og.svg"
           />
@@ -394,23 +368,23 @@ export default function EditProfilePage() {
                 ) : photoUrl ? (
                   <>
                     <FormLabel
-                      mb={'0'}
-                      pb={'0'}
-                      color={'brand.slate.500'}
+                      mb={"0"}
+                      pb={"0"}
+                      color={"brand.slate.500"}
                       requiredIndicator={<></>}
                     >
                       Profile Picture
                     </FormLabel>
                     <MediaPicker
-                      defaultValue={{ url: photoUrl, type: 'image' }}
-                      onChange={async (e:any) => {
+                      defaultValue={{ url: photoUrl, type: "image" }}
+                      onChange={async (e: any) => {
                         setUploading(true);
                         const a = await uploadToCloudinary(e);
-                        setValue('photo', a);
+                        setValue("photo", a);
                         setUploading(false);
                       }}
                       onReset={() => {
-                        setValue('photo', '');
+                        setValue("photo", "");
                         setUploading(false);
                       }}
                       compact
@@ -420,22 +394,22 @@ export default function EditProfilePage() {
                 ) : (
                   <>
                     <FormLabel
-                      mb={'0'}
-                      pb={'0'}
-                      color={'brand.slate.500'}
+                      mb={"0"}
+                      pb={"0"}
+                      color={"brand.slate.500"}
                       requiredIndicator={<></>}
                     >
                       Profile Picture
                     </FormLabel>
                     <MediaPicker
-                      onChange={async (e:any) => {
+                      onChange={async (e: any) => {
                         setUploading(true);
                         const a = await uploadToCloudinary(e);
-                        setValue('photo', a);
+                        setValue("photo", a);
                         setUploading(false);
                       }}
                       onReset={() => {
-                        setValue('photo', '');
+                        setValue("photo", "");
                         setUploading(false);
                       }}
                       compact
@@ -443,7 +417,6 @@ export default function EditProfilePage() {
                     />
                   </>
                 )}
-                
 
                 <InputField
                   label="First Name"
@@ -461,31 +434,31 @@ export default function EditProfilePage() {
                   isRequired
                 />
 
-                <Box w={'full'} mb={'1.25rem'}>
-                  <FormLabel color={'brand.slate.500'}>
+                <Box w={"full"} mb={"1.25rem"}>
+                  <FormLabel color={"brand.slate.500"}>
                     Your One-Line Bio
                   </FormLabel>
                   <Textarea
                     borderColor="brand.slate.300"
                     _placeholder={{
-                      color: 'brand.slate.300',
+                      color: "brand.slate.300",
                     }}
                     focusBorderColor="brand.purple"
-                    id={'bio'}
+                    id={"bio"}
                     maxLength={180}
                     placeholder="Here is a sample placeholder"
-                    {...register('bio', { required: true })}
+                    {...register("bio", { required: true })}
                   />
                   <Text
                     color={
-                      (watch('bio')?.length || 0) > 160
-                        ? 'red'
-                        : 'brand.slate.400'
+                      (watch("bio")?.length || 0) > 160
+                        ? "red"
+                        : "brand.slate.400"
                     }
-                    fontSize={'xs'}
+                    fontSize={"xs"}
                     textAlign="right"
                   >
-                    {180 - (watch('bio')?.length || 0)} characters left
+                    {180 - (watch("bio")?.length || 0)} characters left
                   </Text>
                 </Box>
 
@@ -501,7 +474,7 @@ export default function EditProfilePage() {
                       {...sc}
                       key={`sc${idx}`}
                       discordError={
-                        sc.label.toLowerCase() === 'discord'
+                        sc.label.toLowerCase() === "discord"
                           ? discordError
                           : false
                       }
@@ -523,8 +496,8 @@ export default function EditProfilePage() {
                   Work
                 </Text>
 
-                <Box w={'full'} mb={'1.25rem'}>
-                  <FormLabel color={'brand.slate.500'}>
+                <Box w={"full"} mb={"1.25rem"}>
+                  <FormLabel color={"brand.slate.500"}>
                     What areas of Web3 are you most interested in?
                   </FormLabel>
                   <ReactSelect
@@ -544,23 +517,21 @@ export default function EditProfilePage() {
                         ...DropDownValues,
                         interests: selectedInterests,
                       });
-                      setValue('interests', selectedInterests);
+                      setValue("interests", selectedInterests);
                     }}
                     styles={{
                       control: (baseStyles) => ({
                         ...baseStyles,
-                        backgroundColor: 'brand.slate.500',
-                        borderColor: 'brand.slate.300',
+                        backgroundColor: "brand.slate.500",
+                        borderColor: "brand.slate.300",
                       }),
                     }}
                   />
                 </Box>
 
-                
-
                 <SelectBox
                   label="Work Experience"
-                  watchValue={watch('experience')}
+                  watchValue={watch("experience")}
                   options={workExp}
                   id="experience"
                   placeholder="Pick Your Experience"
@@ -569,18 +540,16 @@ export default function EditProfilePage() {
 
                 <SelectBox
                   label="Location"
-                  watchValue={watch('location')}
+                  watchValue={watch("location")}
                   options={CityList}
                   id="location"
                   placeholder="Select Your City"
                   register={register}
                 />
 
-                
-
                 <SelectBox
                   label="Work Preference"
-                  watchValue={watch('workPrefernce')}
+                  watchValue={watch("workPrefernce")}
                   options={workType}
                   id="workPrefernce"
                   placeholder="Type of Work"
@@ -595,33 +564,33 @@ export default function EditProfilePage() {
                   isRequired
                 />
 
-                <FormLabel color={'brand.slate.500'}>Proof of Work</FormLabel>
+                <FormLabel color={"brand.slate.500"}>Proof of Work</FormLabel>
                 <Box>
                   {pow.map((data, idx) => {
                     return (
                       <Flex
                         key={data.id}
-                        align={'center'}
+                        align={"center"}
                         mt="2"
-                        mb={'1.5'}
-                        px={'1rem'}
-                        py={'0.5rem'}
-                        color={'brand.slate.500'}
-                        border={'1px solid gray'}
+                        mb={"1.5"}
+                        px={"1rem"}
+                        py={"0.5rem"}
+                        color={"brand.slate.500"}
+                        border={"1px solid gray"}
                         borderColor="brand.slate.300"
-                        rounded={'md'}
+                        rounded={"md"}
                       >
-                        <Text w={'full'} color={'gray.800'} fontSize={'0.8rem'}>
+                        <Text w={"full"} color={"gray.800"} fontSize={"0.8rem"}>
                           {data.title}
                         </Text>
-                        <Center columnGap={'0.8rem'}>
+                        <Center columnGap={"0.8rem"}>
                           <EditIcon
                             onClick={() => {
                               setSelectedProject(idx);
                               onOpen();
                             }}
-                            cursor={'pointer'}
-                            fontSize={'0.8rem'}
+                            cursor={"pointer"}
+                            fontSize={"0.8rem"}
                           />
                           <DeleteIcon
                             onClick={() => {
@@ -629,8 +598,8 @@ export default function EditProfilePage() {
                                 prevPow.filter((_ele, id) => idx !== id)
                               );
                             }}
-                            cursor={'pointer'}
-                            fontSize={'0.8rem'}
+                            cursor={"pointer"}
+                            fontSize={"0.8rem"}
                           />
                         </Center>
                       </Flex>
@@ -638,7 +607,7 @@ export default function EditProfilePage() {
                   })}
                 </Box>
                 <Button
-                  w={'full'}
+                  w={"full"}
                   mb={8}
                   leftIcon={<AddIcon />}
                   onClick={() => {
@@ -666,7 +635,7 @@ export default function EditProfilePage() {
                   colorScheme="purple"
                   isChecked={privateValue}
                   onChange={(e) => {
-                    setValue('private', e.target.checked);
+                    setValue("private", e.target.checked);
                   }}
                   size="md"
                 >

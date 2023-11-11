@@ -1,8 +1,8 @@
 import type { SkillsProp } from '@/interface/skills';
 
-import type { SponsorType } from './sponsor';
+import type { CompanyType } from './company';
 import type { Talent } from './talent';
-import type { Listingtype, Prize, Source, SponsorStatus } from './types';
+import type { Listingtype, Prize, Source, CompanyStatus } from './types';
 
 type PrizeListType = {
   [key in Prize]: string;
@@ -21,7 +21,7 @@ interface Questions {
   questions: string;
 }
 
-interface Jobs {
+interface Listings {
   id?: string;
   title: string;
   description: string;
@@ -31,7 +31,7 @@ interface Jobs {
   source: Source;
   amount: string;
   token: string;
-  sponsorStatus: SponsorStatus;
+  companyStatus: CompanyStatus;
   active: boolean;
   privateBool: boolean;
   featured: boolean;
@@ -46,7 +46,7 @@ interface Jobs {
   submission?: SubmissionType[];
   subscribe?: SubscribeType[];
   Questions?: Questions;
-  sponsor?: SponsorType;
+  company?: CompanyType;
   rewards?: Partial<PrizeListType>;
 }
 
@@ -89,7 +89,7 @@ type Experience =
 
 interface DraftType {
   id?: string;
-  sponsorId?: string;
+  companyId?: string;
   type?: Listingtype;
   skills?: SkillsProp[];
   basic?: string;
@@ -115,7 +115,7 @@ interface SubscribeType {
 }
 
 export type {
-  Jobs,
+  Listings,
   DraftType,
   Experience,
   GrantsBasicType,

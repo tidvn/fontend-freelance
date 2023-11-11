@@ -8,18 +8,18 @@ import type { Notifications } from '@/interface/user';
 
 import type { Comment } from '../interface/comments';
 import type {
-  Jobs,
+  Listings,
   DraftType,
   GrantsType,
   SubmissionType,
   SubscribeType,
 } from '../interface/listings';
 // types
-import type { SponsorType } from '../interface/sponsor';
+import type { CompanyType } from '../interface/company';
 import type { Talent } from '../interface/talent';
-import { SponsorStore } from '../store/sponsor';
+import { CompanyStore } from '../store/company';
+import { BACKEND_URL } from '@/env';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const createUser = async (publickey: string) => {
   const id = uuidV4();
@@ -69,11 +69,11 @@ export const generateOtp = async (
     return null;
   }
 };
-// Sponsors
-export const createSponsor = async (sponsor: SponsorType) => {
+// Companies
+export const createCompany = async (company: CompanyType) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/sponsor/create`, {
-      ...sponsor,
+    const res = await axios.post(`${BACKEND_URL}/company/create`, {
+      ...company,
     });
     return res.data;
   } catch (e) {
@@ -82,14 +82,14 @@ export const createSponsor = async (sponsor: SponsorType) => {
   }
 };
 
-export const findSponsors = async (publicKey: string) => {
+export const findCompanies = async (publicKey: string) => {
   if (!publicKey) return null;
   try {
     const { data } = await axios.get(
-      `${BACKEND_URL}/sponsor/find?publickey=${publicKey}`
+      `${BACKEND_URL}/company/find?publickey=${publicKey}`
     );
-    SponsorStore.setState({
-      currentSponsor: data.data[0],
+    CompanyStore.setState({
+      currentCompany: data.data[0],
     });
     return data.data ?? [];
   } catch (error) {
@@ -97,9 +97,9 @@ export const findSponsors = async (publicKey: string) => {
     return null;
   }
 };
-export const DeleteSponsor = async (id: string) => {
+export const DeleteCompany = async (id: string) => {
   try {
-    const { data } = await axios.delete(`${BACKEND_URL}/sponsor/delete/${id}`);
+    const { data } = await axios.delete(`${BACKEND_URL}/company/delete/${id}`);
     return data;
   } catch (e) {
     console.log(e);
@@ -108,7 +108,7 @@ export const DeleteSponsor = async (id: string) => {
   }
 };
 
-export const findSponsorListing = async (orgId: string) => {
+export const findCompanyListing = async (orgId: string) => {
   if (!orgId) {
     throw new Error('orgId undefined!');
   }
@@ -117,7 +117,7 @@ export const findSponsorListing = async (orgId: string) => {
 };
 
 // Drafts
-export const findSponsorDrafts = async (orgId: string) => {
+export const findCompanyDrafts = async (orgId: string) => {
   if (!orgId) {
     throw new Error('orgId undefined!');
   }
@@ -149,7 +149,7 @@ export const findOneDraft = async (id: string) => {
 export const findTeam = async (id: string) => {
   if (!id) return null;
   try {
-    const { data } = await axios.get(`${BACKEND_URL}/sponsor/team?id=${id}`);
+    const { data } = await axios.get(`${BACKEND_URL}/company/team?id=${id}`);
 
     return data.data ?? [];
   } catch (error) {
@@ -158,10 +158,10 @@ export const findTeam = async (id: string) => {
   }
 };
 
-// Jobs
+// Listings
 export const createJob = async (
-  jobs: Jobs,
-  sponsor: SponsorType
+  jobs: Listings,
+  company: CompanyType
 ) => {
   try {
     const { data } = await axios.post(`${BACKEND_URL}/listings/job/create`, {
@@ -171,9 +171,9 @@ export const createJob = async (
       slug: jobs.slug,
       deadline: jobs.deadline,
       description: jobs.description,
-      sponsorStatus: jobs.sponsorStatus,
+      companyStatus: jobs.companyStatus,
       featured: jobs.featured,
-      orgId: sponsor.id,
+      orgId: company.id,
       skills: jobs.skills,
       subSkills: jobs.subSkills,
       prizeList: jobs.prizeList,
@@ -190,8 +190,8 @@ export const createJob = async (
   }
 };
 type FindBoutiesReturn = {
-  listing: Jobs;
-  sponsor: SponsorType;
+  listing: Listings;
+  company: CompanyType;
 } | null;
 
 export const findBouties = async (slug: string): Promise<FindBoutiesReturn> => {
@@ -375,7 +375,7 @@ export const createQuestions = async (questions: {
 export const AllGrants = async (): Promise<
   | {
       grants: GrantsType;
-      sponsorInfo: SponsorType;
+      companyInfo: CompanyType;
     }[]
   | null
 > => {

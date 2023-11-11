@@ -219,7 +219,7 @@ export const tokenList = [
     tokenSymbol: 'ISC',
     mintAddress: '',
     address: '',
-    icon: 'https://res.cloudinary.com/dgvnuwspr/image/upload/v1683200072/sponsors/International%20Stable%20Currency.png',
+    icon: 'https://res.cloudinary.com/dgvnuwspr/image/upload/v1683200072/companies/International%20Stable%20Currency.png',
   },
   {
     tokenName: 'USDT',
@@ -754,7 +754,7 @@ export const TimeZoneList: MultiSelectOptions[] = [
 export const PrizeList = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 export const ListingTypeQueryMap = {
-  Jobs: 'jobs',
+  Listings: 'jobs',
   Grants: 'grants',
 };
 

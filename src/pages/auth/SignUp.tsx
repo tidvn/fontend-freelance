@@ -22,7 +22,7 @@ import { useFormik } from "formik";
 import { useAlert } from "@/context/AlertContext";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { backend_url } from "@/env";
+import { BACKEND_URL } from "@/env";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function SignupCard() {
     },
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(backend_url + "/api/register", values, {
+        const res = await axios.post(BACKEND_URL + "/api/register", values, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

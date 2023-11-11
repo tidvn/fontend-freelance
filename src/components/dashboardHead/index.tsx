@@ -2,12 +2,12 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Image, Skeleton, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-import { SponsorStore } from '../../store/sponsor';
+import { CompanyStore } from '../../store/company';
 
 function DashboardHeader() {
-  const { currentSponsor } = SponsorStore();
+  const { currentCompany } = CompanyStore();
 
-  if (!currentSponsor) {
+  if (!currentCompany) {
     return (
       <Skeleton
         w={'full'}
@@ -35,12 +35,12 @@ function DashboardHeader() {
             h="6rem"
             objectFit={'cover'}
             alt=""
-            src={currentSponsor.logo || '/assets/logo/port-placeholder.svg'}
+            src={currentCompany.logo || '/assets/logo/port-placeholder.svg'}
           ></Image>
         </Box>
         <Box ml={'1.5rem'}>
           <Text color={'white '} fontSize={'1.125rem'} fontWeight={'600'}>
-            {currentSponsor.name}
+            {currentCompany.name}
           </Text>
           <Text color={'#94A3B8'}>
             Here are all the listing made by your company
@@ -87,7 +87,7 @@ function DashboardHeader() {
             fontSize={'0.875rem'}
             lineHeight={'1.0625rem'}
           >
-            Learn more about being a sponsor and accessing the best talent in
+            Learn more about being a company and accessing the best talent in
             Solana
           </Text>
         </Box>

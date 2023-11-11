@@ -65,7 +65,7 @@ function NavHome() {
           return;
         }
 
-        if (!res.data?.sponsor) {
+        if (!res.data?.company) {
           router.push('/new');
         }
       }
@@ -118,7 +118,7 @@ function NavHome() {
       route: 'all',
     },
     {
-      name: 'Jobs',
+      name: 'Listings',
       route: 'jobs',
     },
   ];
@@ -319,7 +319,7 @@ function NavHome() {
               </>
             ) : (
               <HStack gap={2}>
-                {userInfo?.sponsor && (
+                {userInfo?.company && (
                   <Button
                     w="100%"
                     color="brand.purple"
@@ -371,7 +371,7 @@ function NavHome() {
                         View Profile
                       </Text>
                     </MenuItem>
-                    {userInfo?.sponsor && (
+                    {userInfo?.company && (
                       <MenuItem
                         onClick={() => {
                           router.push('/dashboard/team');

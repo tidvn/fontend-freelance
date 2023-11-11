@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import SponsorButton from '@/components/ProfileSetup/SponsorButton';
+import CompanyButton from '@/components/ProfileSetup/CompanyButton';
 import TalentButton from '@/components/ProfileSetup/TalentButton';
 import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
@@ -11,7 +11,7 @@ const Index = () => {
     <Default
       meta={
         <Meta
-          title="Superteam Earn"
+          title="FreLan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />
@@ -119,7 +119,7 @@ const Index = () => {
                   </Text>
                 </Flex>
               </Box>
-              <SponsorButton />
+              <CompanyButton />
             </Box>
           </Flex>
 

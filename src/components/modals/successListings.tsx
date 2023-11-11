@@ -23,7 +23,7 @@ interface Props {
   isOpen: boolean;
   slug: string;
 }
-export const SuccessListings = ({ isOpen, onClose, slug }: Props) => {
+export const Successjobs = ({ isOpen, onClose, slug }: Props) => {
   const { hasCopied, onCopy } = useClipboard(`${getURL()}listings${slug}`);
   const router = useRouter();
   return (

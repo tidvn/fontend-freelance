@@ -16,7 +16,7 @@ import {
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-export const CreateSponsors = () => {
+export const CreateCompanies = () => {
   const {
     handleSubmit,
     formState: { errors },
@@ -35,7 +35,7 @@ export const CreateSponsors = () => {
                 fontWeight={600}
                 textAlign="start"
               >
-                Sponsor name
+                Company name
               </Text>
               <Input
                 h="4.3rem"

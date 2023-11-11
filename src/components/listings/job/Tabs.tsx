@@ -2,7 +2,7 @@
 import { Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 
-import { JobsCard } from '@/components/misc/listingsCard';
+import { listingsCard } from '@/components/misc/listingsCard';
 import EmptySection from '@/components/shared/EmptySection';
 import Loading from '@/components/shared/Loading';
 import type { Job } from '@/interface/job';
@@ -14,13 +14,13 @@ interface TabProps {
 }
 
 interface JobTabsProps {
-  isListingsLoading: boolean;
+  isjobsLoading: boolean;
   jobs: { jobs: Job[] };
   take?: number;
 }
 
 export const JobTabs = ({
-  isListingsLoading,
+  isjobsLoading,
   jobs,
   take = 10,
 }: JobTabsProps) => {
@@ -30,7 +30,7 @@ export const JobTabs = ({
       title: 'OPEN',
       content: (
         <Flex direction={'column'} rowGap={1}>
-          {isListingsLoading ? (
+          {isjobsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -45,14 +45,14 @@ export const JobTabs = ({
               )
               .slice(0, take)
               .map((job) => (
-                <JobsCard
+                <ListingsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
-                  sponsorName={job?.sponsor?.name}
+                  companyName={job?.company?.name}
                   deadline={job?.deadline}
                   title={job?.title}
-                  logo={job?.sponsor?.logo}
+                  logo={job?.company?.logo}
                   token={job?.token}
                   type={job?.type}
                   applicationType={job.applicationType}
@@ -74,7 +74,7 @@ export const JobTabs = ({
       title: 'IN REVIEW',
       content: (
         <Flex direction={'column'} rowGap={'1'}>
-          {isListingsLoading ? (
+          {isjobsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -93,14 +93,14 @@ export const JobTabs = ({
               )
               .slice(0, 10)
               .map((job) => (
-                <JobsCard
+                <ListingsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
-                  sponsorName={job?.sponsor?.name}
+                  companyName={job?.company?.name}
                   deadline={job?.deadline}
                   title={job?.title}
-                  logo={job?.sponsor?.logo}
+                  logo={job?.company?.logo}
                   token={job?.token}
                   type={job?.type}
                   applicationType={job.applicationType}
@@ -122,7 +122,7 @@ export const JobTabs = ({
       title: 'COMPLETED',
       content: (
         <Flex direction={'column'} rowGap={'1'}>
-          {isListingsLoading ? (
+          {isjobsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -139,14 +139,14 @@ export const JobTabs = ({
               )
               .slice(0, 10)
               .map((job) => (
-                <JobsCard
+                <ListingsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
-                  sponsorName={job?.sponsor?.name}
+                  companyName={job?.company?.name}
                   deadline={job?.deadline}
                   title={job?.title}
-                  logo={job?.sponsor?.logo}
+                  logo={job?.company?.logo}
                   token={job?.token}
                   type={job?.type}
                   applicationType={job.applicationType}

@@ -32,7 +32,7 @@ interface Props {
   initialStep?: number;
   inviteInfo?: {
     emailInvite?: string;
-    currentSponsorId?: string;
+    currentCompanyId?: string;
     memberType?: 'MEMBER' | 'ADMIN';
   };
 }
@@ -78,7 +78,7 @@ export const Login = ({
             <Image
               w={32}
               h="100%"
-              alt="Superteam Earn"
+              alt="FreLan"
               src="/assets/logo/new-logo.svg"
             />
           </Flex>

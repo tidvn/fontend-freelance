@@ -8,7 +8,7 @@ interface TemplateProps {
   link: string;
 }
 
-export const CommentSponsorTemplate = ({
+export const CommentCompanyTemplate = ({
   name,
   jobName,
   link,
@@ -24,7 +24,7 @@ export const CommentSponsorTemplate = ({
         </a>
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
       <p style={styles.unsubscribe}>
         Click{' '}
         <a
@@ -33,7 +33,7 @@ export const CommentSponsorTemplate = ({
         >
           here
         </a>{' '}
-        to unsubscribe from all emails from Superteam Earn.
+        to unsubscribe from all emails from FreLan.
       </p>
     </div>
   );

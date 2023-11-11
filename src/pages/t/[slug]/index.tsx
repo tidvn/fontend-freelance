@@ -260,7 +260,7 @@ function TalentProfile({ slug }: TalentProps) {
             title={
               talent?.firstname && talent?.lastname
                 ? `${talent?.firstname} ${talent?.lastname}`
-                : 'Superteam Earn'
+                : 'FreLan'
             }
             description="Every Solana opportunity in one place!"
             canonical="/assets/logo/og.svg"

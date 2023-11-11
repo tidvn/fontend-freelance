@@ -13,7 +13,7 @@ interface LoginProps {
   setTriggerLogin: (arg0: boolean) => void;
   inviteInfo?: {
     emailInvite?: string;
-    currentSponsorId?: string;
+    currentCompanyId?: string;
     memberType?: 'MEMBER' | 'ADMIN';
   };
   acceptUser?: (user: User) => void;

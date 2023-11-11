@@ -13,7 +13,7 @@ import type {
 } from '@/components/listings/job/questions/builder';
 import { CreateGrants } from '@/components/listings/grants/CreateGrants';
 import Template from '@/components/listings/templates/template';
-import { SuccessListings } from '@/components/modals/successListings';
+import { Successjobs } from '@/components/modals/successjobs';
 import ErrorSection from '@/components/shared/ErrorSection';
 import type { MultiSelectOptions } from '@/constants';
 import type { Job, References } from '@/interface/job';
@@ -110,7 +110,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
     setIsListingPublishing(true);
     try {
       const newJob: Job = {
-        sponsorId: userInfo?.currentSponsor?.id ?? '',
+        companyId: userInfo?.currentCompany?.id ?? '',
         pocId: userInfo?.id ?? '',
         skills: mergeSkills({ skills: mainSkills, subskills: subSkill }),
         ...jobbasic,
@@ -154,7 +154,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
       api = `/api/jobs/update/${job?.id}/`;
     }
     let draft: Job = {
-      sponsorId: userInfo?.currentSponsor?.id ?? '',
+      companyId: userInfo?.currentCompany?.id ?? '',
       pocId: userInfo?.id ?? '',
     };
     draft = {
@@ -207,7 +207,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
   return (
     <>
       {!userInfo?.id ||
-      !(userInfo?.role === 'GOD' || !!userInfo?.currentSponsorId) ? (
+      !(userInfo?.role === 'GOD' || !!userInfo?.currentCompanyId) ? (
         <ErrorSection
           title="Access is Forbidden!"
           message="Please contact support to access this section."
@@ -286,7 +286,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
           }
         >
           {isOpen && (
-            <SuccessListings slug={slug} isOpen={isOpen} onClose={() => {}} />
+            <Successjobs slug={slug} isOpen={isOpen} onClose={() => {}} />
           )}
           {steps === 1 && (
             <Template

@@ -1,4 +1,4 @@
-export type Listingtype = 'Jobs' | 'Grants';
+export type Listingtype = 'Listings' | 'Grants';
 
 export type Source = 'native' | 'manual';
 
@@ -10,9 +10,9 @@ export const PrizeLabels: string[] = [
   'fourth',
   'fifth',
 ];
-export type SponsorStatus = 'Unassigned' | 'Assigned';
+export type CompanyStatus = 'Unassigned' | 'Assigned';
 
-export type SponsorTypes = 'Admin' | 'Member';
+export type CompanyTypes = 'Admin' | 'Member';
 
 export type JobStatus =
   | 'created'

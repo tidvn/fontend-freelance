@@ -1,4 +1,4 @@
-import { LinkIcon } from '@chakra-ui/icons';
+import { LinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -13,18 +13,19 @@ import {
   ModalOverlay,
   Text,
   Textarea,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import type { Dispatch, SetStateAction } from 'react';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@chakra-ui/react";
+import axios from "axios";
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import type { MultiSelectOptions } from '@/constants';
-import type { PoW } from '@/interface/pow';
-import { userStore } from '@/store/user';
-import { isValidHttpUrl } from '@/utils/validUrl';
+import type { MultiSelectOptions } from "@/constants";
+import type { PoW } from "@/interface/pow";
+import { userStore } from "@/store/user";
+import { isValidHttpUrl } from "@/utils/validUrl";
 
-import { SkillSelect } from '../misc/SkillSelect';
+import { SkillSelect } from "../misc/SkillSelect";
+import fetchClient from "@/lib/fetch-client";
 
 type AddProjectProps = {
   isOpen: boolean;
@@ -66,18 +67,18 @@ export const AddProject = ({
 
   useEffect(() => {
     if (!isOpen) {
-      setValue('title', '');
-      setValue('description', '');
-      setValue('link', '');
+      setValue("title", "");
+      setValue("description", "");
+      setValue("link", "");
       setSkills([]);
       setSubSkills([]);
       if (setSelectedProject) {
         setSelectedProject(null);
       }
     } else if (projectToEdit && setSelectedProject) {
-      setValue('title', projectToEdit.title);
-      setValue('description', projectToEdit.description);
-      setValue('link', projectToEdit.link);
+      setValue("title", projectToEdit.title);
+      setValue("description", projectToEdit.description);
+      setValue("link", projectToEdit.link);
       setSkills(
         projectToEdit.skills.map((value: string) => ({ label: value, value }))
       );
@@ -121,15 +122,18 @@ export const AddProject = ({
 
     if (upload) {
       try {
-        await axios.post('/api/pow/create', {
-          userId: userInfo?.id,
-          pows: [projectData],
+        await fetchClient({
+          method: "POST",
+          endpoint: "/api/pow/create",
+          body: JSON.stringify({
+            pows: [projectData],
+          }),
         });
         if (onNewPow) {
           onNewPow(projectData);
         }
       } catch (e) {
-        console.error('Error posting to DB:', e);
+        console.error("Error posting to DB:", e);
         return;
       }
     } else if (setPow && setSelectedProject !== undefined) {
@@ -154,48 +158,48 @@ export const AddProject = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent maxW={'607px'} py={'1.4375rem'}>
+      <ModalContent maxW={"607px"} py={"1.4375rem"}>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isRequired>
-              <Box w={'full'} mb={'1.25rem'}>
-                <FormLabel color={'brand.slate.500'}>Project Title</FormLabel>
+              <Box w={"full"} mb={"1.25rem"}>
+                <FormLabel color={"brand.slate.500"}>Project Title</FormLabel>
                 <Input
                   borderColor="brand.slate.300"
                   _placeholder={{
-                    color: 'brand.slate.300',
+                    color: "brand.slate.300",
                   }}
                   focusBorderColor="brand.purple"
                   id="title"
                   placeholder="Project Title"
-                  {...register('title', { required: true })}
+                  {...register("title", { required: true })}
                 />
               </Box>
-              <Box w={'full'} mb={'1.25rem'}>
-                <FormLabel color={'brand.slate.500'}>
+              <Box w={"full"} mb={"1.25rem"}>
+                <FormLabel color={"brand.slate.500"}>
                   Describe Your Work
                 </FormLabel>
                 <Textarea
                   borderColor="brand.slate.300"
                   _placeholder={{
-                    color: 'brand.slate.300',
+                    color: "brand.slate.300",
                   }}
                   focusBorderColor="brand.purple"
-                  id={'description'}
+                  id={"description"}
                   maxLength={180}
                   placeholder="About the Project"
-                  {...register('description', { required: true })}
+                  {...register("description", { required: true })}
                 />
                 <Text
                   color={
-                    (watch('description')?.length || 0) > 160
-                      ? 'red'
-                      : 'brand.slate.400'
+                    (watch("description")?.length || 0) > 160
+                      ? "red"
+                      : "brand.slate.400"
                   }
-                  fontSize={'xs'}
+                  fontSize={"xs"}
                   textAlign="right"
                 >
-                  {180 - (watch('description')?.length || 0)} characters left
+                  {180 - (watch("description")?.length || 0)} characters left
                 </Text>
               </Box>
               <SkillSelect
@@ -207,11 +211,11 @@ export const AddProject = ({
                 subSkillLabel="Sub Skills Used"
               />
 
-              <Box w={'full'} mb={'1.25rem'}>
-                <FormLabel color={'brand.slate.500'}>Link</FormLabel>
-                <InputGroup _placeholder={{ color: 'gray.500' }}>
+              <Box w={"full"} mb={"1.25rem"}>
+                <FormLabel color={"brand.slate.500"}>Link</FormLabel>
+                <InputGroup _placeholder={{ color: "gray.500" }}>
                   <InputLeftElement
-                    _placeholder={{ color: 'gray.500' }}
+                    _placeholder={{ color: "gray.500" }}
                     pointerEvents="none"
                     // eslint-disable-next-line react/no-children-prop
                     children={<LinkIcon color="gray.300" />}
@@ -219,29 +223,29 @@ export const AddProject = ({
                   <Input
                     borderColor="brand.slate.300"
                     _placeholder={{
-                      color: 'brand.slate.300',
+                      color: "brand.slate.300",
                     }}
                     focusBorderColor="brand.purple"
                     placeholder="https://example.com"
-                    {...register('link', { required: true })}
+                    {...register("link", { required: true })}
                   />
                 </InputGroup>
               </Box>
-              <Box w={'full'} mb={'1.25rem'}>
+              <Box w={"full"} mb={"1.25rem"}>
                 {skillsError && (
-                  <Text color={'red'}>Please add Skills and Sub Skills</Text>
+                  <Text color={"red"}>Please add Skills and Sub Skills</Text>
                 )}
                 {linkError && (
-                  <Text color={'red'}>
+                  <Text color={"red"}>
                     Link URL needs to contain &quot;https://&quot; prefix
                   </Text>
                 )}
               </Box>
               <Button
-                w={'full'}
+                w={"full"}
                 h="50px"
-                color={'white'}
-                bg={'rgb(101, 98, 255)'}
+                color={"white"}
+                bg={"rgb(101, 98, 255)"}
                 type="submit"
               >
                 Add Project

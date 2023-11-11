@@ -1,5 +1,5 @@
-interface SponsorType {
-  id?: string;
+interface CompanyType {
+  id?: number;
   slug: string;
   name: string;
   logo?: string;
@@ -8,4 +8,4 @@ interface SponsorType {
   twitter?: string;
   bio?: string;
 }
-export type { SponsorType };
+export type { CompanyType };

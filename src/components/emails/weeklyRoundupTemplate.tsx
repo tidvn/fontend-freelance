@@ -4,7 +4,7 @@ import { styles } from './styles';
 
 interface Job {
   title: string;
-  sponsor: string;
+  company: string;
   slug: string;
   rewardAmount: number | null;
 }
@@ -30,14 +30,14 @@ export const WeeklyRoundupTemplate = ({ name, jobs }: TemplateProps) => {
               }/?utm_source=superteamearn&utm_medium=email&utm_campaign=notifications`}
               style={styles.link}
             >
-              {job.title} by {job.sponsor} ($
+              {job.title} by {job.company} ($
               {job.rewardAmount ?? 'Not specified'})
             </a>
           </li>
         ))}
       </ol>
       <p style={styles.salutation}>Go Secure the Bag,</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸‍♀️🦸‍♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸‍♀️🦸‍♂️</p>
       <p style={styles.unsubscribe}>
         Click{' '}
         <a
@@ -46,7 +46,7 @@ export const WeeklyRoundupTemplate = ({ name, jobs }: TemplateProps) => {
         >
           here
         </a>{' '}
-        to unsubscribe from all emails from Superteam Earn.
+        to unsubscribe from all emails from FreLan.
       </p>
     </div>
   );

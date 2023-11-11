@@ -20,12 +20,13 @@ import {
   RadioGroup,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
-import { AiOutlineSend } from 'react-icons/ai';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
+import { AiOutlineSend } from "react-icons/ai";
 
-import { userStore } from '@/store/user';
+import { userStore } from "@/store/user";
+import fetchClient from "@/lib/fetch-client";
 
 interface Props {
   isOpen: boolean;
@@ -43,7 +44,7 @@ const validateEmail = (email: string) => {
 function InviteMembers({ isOpen, onClose }: Props) {
   const { userInfo } = userStore();
   const [email, setEmail] = useState<string>();
-  const [memberType, setMemberType] = useState<string>('MEMBER');
+  const [memberType, setMemberType] = useState<string>("MEMBER");
   const [isInviting, setIsInviting] = useState(false);
   const [isInviteSuccess, setIsInviteSuccess] = useState(false);
   const [isInviteError, setIsInviteError] = useState(false);
@@ -60,12 +61,16 @@ function InviteMembers({ isOpen, onClose }: Props) {
     setIsInviting(true);
     setIsInviteError(false);
     try {
-      await axios.post('/api/members/invite/', {
-        email,
-        userId: userInfo?.id,
-        sponsorId: userInfo?.currentSponsorId,
-        memberType,
+      await fetchClient({
+        method: "POST",
+        endpoint: "/api/members/invite/",
+        body: JSON.stringify({
+          email,
+          companyId: userInfo?.currentCompanyId,
+          memberType,
+        }),
       });
+
       setIsInviteSuccess(true);
       setIsInviting(false);
     } catch (e) {
@@ -97,8 +102,8 @@ function InviteMembers({ isOpen, onClose }: Props) {
                 <Box>
                   <AlertTitle>Sent Invite!</AlertTitle>
                   <AlertDescription>
-                    Your team member will receive an email with a link to join
-                    Superteam Earn.
+                    Your team member will receive a link to join
+                    FreLan.
                   </AlertDescription>
                 </Box>
               </Alert>
@@ -118,7 +123,7 @@ function InviteMembers({ isOpen, onClose }: Props) {
                   color="brand.slate.500"
                   borderColor="brand.slate.300"
                   _placeholder={{
-                    color: 'brand.slate.300',
+                    color: "brand.slate.300",
                   }}
                   focusBorderColor="brand.purple"
                   onChange={(e) => handleInput(e.target.value)}
@@ -135,7 +140,7 @@ function InviteMembers({ isOpen, onClose }: Props) {
                   onChange={(value) => setMemberType(value)}
                 >
                   <Radio
-                    _hover={{ bg: 'brand.slate.100' }}
+                    _hover={{ bg: "brand.slate.100" }}
                     colorScheme="purple"
                     name="memberType"
                     size="md"
@@ -146,14 +151,13 @@ function InviteMembers({ isOpen, onClose }: Props) {
                         Member
                       </Text>
                       <Text fontSize="sm">
-                        Members can manage jobs & projects, can assign
-                        winners and make payments.
+                        Members can manage jobs & projects
                       </Text>
                     </Box>
                   </Radio>
                   <Radio
                     mt={2}
-                    _hover={{ bg: 'brand.slate.100' }}
+                    _hover={{ bg: "brand.slate.100" }}
                     colorScheme="purple"
                     name="memberType"
                     size="md"

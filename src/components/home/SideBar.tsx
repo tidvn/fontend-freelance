@@ -256,7 +256,7 @@ import {
     const tokenObj = tokenList.find((t) => t.tokenSymbol === token);
     const tokenIcon = tokenObj
       ? tokenObj.icon
-      : '/assets/landingsponsor/icons/usdc.svg';
+      : '/assets/landingcompany/icons/usdc.svg';
     return (
       <NextLink href={`${getURL()}listings/jobs/${slug}`}>
         <Flex align={'center'} w={'100%'} my={4}>

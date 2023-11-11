@@ -1,26 +1,20 @@
 import produce from "immer";
-import { mountStoreDevtool } from "simple-zustand-devtools";
 import { create } from "zustand";
 import type { User } from "@/interface/user";
 import fetchClient from "@/lib/fetch-client";
 
 interface UserState {
-  userInfo: any | null;
+  userInfo: User | null;
   setUserInfo: (user: User) => void;
-  fetchData:(token:any)=>void
+  fetchData: (token: any) => void;
 }
 
 export const userStore = create<UserState>((set) => ({
   userInfo: null,
-  setUserInfo: (user: User): void =>
-    set(
-      produce((state: UserState) => {
-        state.userInfo = user;
-      })
-    ),
+  setUserInfo: (user: User): void => set({ userInfo: user }),
   fetchData: async (token: any) => {
-    if(!token){
-      return
+    if (!token) {
+      return;
     }
     try {
       const response = await fetchClient({
@@ -30,11 +24,7 @@ export const userStore = create<UserState>((set) => ({
       });
       set({ userInfo: response.data });
     } catch (error) {
-      
       set({ userInfo: null });
     }
   },
 }));
-if (process.env.NODE_ENV === "development") {
-  mountStoreDevtool("profileStore", userStore);
-}

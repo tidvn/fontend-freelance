@@ -20,7 +20,7 @@ import { TbBell, TbBellRinging } from 'react-icons/tb';
 
 import { EarningModal } from '@/components/modals/earningModal';
 import type { References } from '@/interface/job';
-import type { SponsorType } from '@/interface/sponsor';
+import type { CompanyType } from '@/interface/company';
 import type { User } from '@/interface/user';
 import { userStore } from '@/store/user';
 import { dayjs } from '@/utils/dayjs';
@@ -33,7 +33,7 @@ interface Job {
   isActive?: boolean;
   isPublished?: string;
   isFeatured?: string;
-  sponsor?: SponsorType | undefined;
+  company?: CompanyType | undefined;
   poc?: User;
   slug?: string;
   type?: JobType | string;
@@ -48,7 +48,7 @@ function ListingHeader({
   title,
   status,
   deadline,
-  sponsor,
+  company,
   type,
   slug,
   isWinnersAnnounced,
@@ -137,8 +137,8 @@ function ListingHeader({
             alt={'phantom'}
             rounded={'md'}
             src={
-              sponsor?.logo ||
-              `${router.basePath}/assets/images/sponsor-logo.png`
+              company?.logo ||
+              `${router.basePath}/assets/images/company-logo.png`
             }
           />
           <VStack align={'start'}>
@@ -200,7 +200,7 @@ function ListingHeader({
             {!isTemplate && (
               <HStack>
                 <Text color={'#94A3B8'} fontWeight={500}>
-                  by {sponsor?.name}
+                  by {company?.name}
                 </Text>
                 <Text color={'#E2E8EF'} fontWeight={500}>
                   |
@@ -224,8 +224,8 @@ function ListingHeader({
                         borderRadius={'lg'}
                         label={
                           type === 'permissioned'
-                            ? 'A Project is a short-term gig where sponsors solicit applications from multiple people, and select the best one to work on the Project.'
-                            : 'Jobs are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
+                            ? 'A Project is a short-term gig where companies solicit applications from multiple people, and select the best one to work on the Project.'
+                            : 'Listings are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
                         }
                       >
                         <Flex>

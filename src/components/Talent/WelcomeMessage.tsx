@@ -19,7 +19,7 @@ function WelcomeMessage({ setStep }: { setStep: () => void }) {
             fontSize={'1.5rem'}
             fontWeight={700}
           >
-            Welcome to Superteam Earn
+            Welcome to FreLan
           </Heading>
           <Text
             color={'gray.400'}

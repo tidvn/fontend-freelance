@@ -27,25 +27,25 @@ const Template = ({
   setJobBasic,
   type,
 }: Props) => {
-  const [jobsTemplates, setJobsTemplates] = useState([]);
-  const [isJobsTemplatesLoading, setIsJobsTemplatesLoading] =
+  const [jobsTemplates, setListingsTemplates] = useState([]);
+  const [isListingsTemplatesLoading, setIsListingsTemplatesLoading] =
     useState(false);
 
   const getJobTemplates = async () => {
-    setIsJobsTemplatesLoading(true);
+    setIsListingsTemplatesLoading(true);
     try {
       const templates: any = await axios.get('/api/jobs/templates/', {
         params: { type },
       });
-      setJobsTemplates(templates?.data || []);
-      setIsJobsTemplatesLoading(false);
+      setListingsTemplates(templates?.data || []);
+      setIsListingsTemplatesLoading(false);
     } catch (e) {
-      setIsJobsTemplatesLoading(false);
+      setIsListingsTemplatesLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!isJobsTemplatesLoading) {
+    if (!isListingsTemplatesLoading) {
       getJobTemplates();
     }
   }, []);
@@ -104,8 +104,8 @@ const Template = ({
               </Text>
             </Box>
             {jobsTemplates.map((template: any) => {
-              const sponsors: any = [
-                ...new Set(template?.Jobs?.map((b: any) => b.sponsor)),
+              const companies: any = [
+                ...new Set(template?.Listings?.map((b: any) => b.company)),
               ];
               return (
                 <Box key={template.id} w={'15rem'} h={'16rem'} bg={'white'}>
@@ -131,36 +131,36 @@ const Template = ({
                       <Text color={'brand.slate.700'} fontWeight={500}>
                         {template?.templateTitle}
                       </Text>
-                      {sponsors?.length > 0 ? (
+                      {companies?.length > 0 ? (
                         <Flex align="center" justify={'start'} mt={1}>
                           <Flex align="center" justify={'start'} mr={6}>
-                            {sponsors.length >= 1 && (
+                            {companies.length >= 1 && (
                               <Image
                                 boxSize="24px"
                                 border="1px solid white"
                                 borderRadius="full"
-                                alt={sponsors[0]?.name}
-                                src={sponsors[0]?.logo}
+                                alt={companies[0]?.name}
+                                src={companies[0]?.logo}
                               />
                             )}
-                            {sponsors.length >= 2 && (
+                            {companies.length >= 2 && (
                               <Image
                                 boxSize="24px"
                                 ml={-3}
                                 border="1px solid white"
                                 borderRadius="full"
-                                alt={sponsors[1]?.name}
-                                src={sponsors[1]?.logo}
+                                alt={companies[1]?.name}
+                                src={companies[1]?.logo}
                               />
                             )}
-                            {sponsors.length >= 3 && (
+                            {companies.length >= 3 && (
                               <Image
                                 boxSize="24px"
                                 ml={-3}
                                 border="1px solid white"
                                 borderRadius="full"
-                                alt={sponsors[2]?.name}
-                                src={sponsors[2]?.logo}
+                                alt={companies[2]?.name}
+                                src={companies[2]?.logo}
                               />
                             )}
                           </Flex>
@@ -170,17 +170,17 @@ const Template = ({
                             wordBreak={'break-word'}
                           >
                             Used by{' '}
-                            {sponsors.length >= 1 && (
-                              <Text as="span">{sponsors[0]?.name}</Text>
+                            {companies.length >= 1 && (
+                              <Text as="span">{companies[0]?.name}</Text>
                             )}
-                            {sponsors.length >= 2 && (
+                            {companies.length >= 2 && (
                               <Text as="span">
-                                {sponsors.length > 2 ? ',' : ' &'}{' '}
-                                {sponsors[1]?.name}
+                                {companies.length > 2 ? ',' : ' &'}{' '}
+                                {companies[1]?.name}
                               </Text>
                             )}
-                            {sponsors.length >= 3 && (
-                              <Text as="span"> & {sponsors[2]?.name}</Text>
+                            {companies.length >= 3 && (
+                              <Text as="span"> & {companies[2]?.name}</Text>
                             )}
                           </Text>
                         </Flex>

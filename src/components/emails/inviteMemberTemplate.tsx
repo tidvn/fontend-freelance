@@ -4,29 +4,29 @@ import { styles } from './styles';
 
 interface TemplateProps {
   senderName: string;
-  sponsorName: string;
+  companyName: string;
   link: string;
 }
 
 export const InviteMemberTemplate = ({
   senderName,
-  sponsorName,
+  companyName,
   link,
 }: TemplateProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>
-        You have been invited to join <strong>{sponsorName}</strong> {''}
+        You have been invited to join <strong>{companyName}</strong> {''}
         by {senderName}!
       </p>
       <p style={styles.textWithMargin}>
         <a href={link} style={styles.link}>
           Click here
         </a>{' '}
-        to get added as a team member of {sponsorName} on Superteam Earn
+        to get added as a team member of {companyName} on FreLan
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
     </div>
   );
 };

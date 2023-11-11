@@ -23,7 +23,7 @@ import toast from 'react-hot-toast';
 import type { MultiSelectOptions } from '../../../constants';
 import { tokenList } from '../../../constants';
 import type { GrantsBasicType, GrantsType } from '../../../interface/listings';
-import { SponsorStore } from '../../../store/sponsor';
+import { CompanyStore } from '../../../store/company';
 import { createGrants } from '../../../utils/functions';
 import { genrateuuid } from '../../../utils/helpers';
 
@@ -53,7 +53,7 @@ export const CreateGrantsPayment = ({
   // handles which token is selected
   const [tokenIndex, setTokenIndex] = useState<number | undefined>(undefined);
   // stores the state for prize
-  const { currentSponsor } = SponsorStore();
+  const { currentCompany } = CompanyStore();
   const [loading, setLoading] = useState<boolean>(false);
   return (
     <>
@@ -72,7 +72,7 @@ export const CreateGrantsPayment = ({
               active: true,
               link: grantsBasic?.link ?? '',
               token: tokenList[tokenIndex as number]?.mintAddress || '',
-              orgId: currentSponsor?.id ?? '',
+              orgId: currentCompany?.id ?? '',
               maxSalary: Number(e.max_sal),
               minSalary: Number(e.min_sal),
               contact: grantsBasic?.contact ?? '',

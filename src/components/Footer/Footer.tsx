@@ -19,7 +19,7 @@ const Logo = (props: any) => {
       h={8}
       cursor="pointer"
       objectFit={'contain'}
-      alt={'Superteam Earn'}
+      alt={'FreLan'}
       src={'/images/logo/logo.png'}
       {...props}
     />

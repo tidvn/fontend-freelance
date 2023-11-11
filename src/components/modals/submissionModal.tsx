@@ -52,13 +52,13 @@ export const SubmissionModal = ({
           <VStack align={'start'} gap={3} p={5}>
             <Text color={'gray.500'} fontSize={'1rem'} fontWeight={500}>
               {eligibility !== 'permission-less'
-                ? `Don't start working just yet! Apply first, and then begin working only once you've been hired for the project by the sponsor.`
+                ? `Don't start working just yet! Apply first, and then begin working only once you've been hired for the project by the company.`
                 : `We can't wait to see what you've created! Winners will receive
               prizes as well as instant admission to our DAO.`}
             </Text>
             <Text color={'gray.500'} fontSize={'1rem'} fontWeight={500}>
               {eligibility !== 'permission-less'
-                ? 'Please note that the sponsor might contact you to assess fit before picking the winner.'
+                ? 'Please note that the company might contact you to assess fit before picking the winner.'
                 : 'Please note that jobs typically take ~5 days after the end date to be evaluated.'}
             </Text>
             <form

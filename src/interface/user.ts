@@ -1,5 +1,5 @@
-import type { SponsorType } from '@/interface/sponsor';
-import type { UserSponsor } from '@/interface/userSponsor';
+import type { CompanyType } from '@/interface/company';
+import type { UserCompany } from '@/interface/userCompany';
 
 import type { PoW } from './pow';
 import type { SubmissionWithUser } from './submission';
@@ -10,7 +10,7 @@ interface Notifications {
 }
 
 interface User {
-  id?: string;
+  id?: number;
   publicKey?: string;
   firstname?: string;
   lastname?: string;
@@ -21,7 +21,7 @@ interface User {
   updated_at?: string;
   role?: string;
   talent?: boolean;
-  sponsor?: boolean;
+  company?: boolean;
   isTalentFilled?: boolean;
   bio?: string;
   location?: string;
@@ -43,9 +43,9 @@ interface User {
   pow?: string;
   notifications?: Notifications[] | null;
   totalEarned?: number;
-  currentSponsorId?: string;
-  currentSponsor?: SponsorType;
-  UserSponsors?: UserSponsor[];
+  currentCompanyId?: string;
+  currentCompany?: CompanyType;
+  UserCompanies?: UserCompany[];
   PoW?: PoW[];
   private?: boolean;
   Submission?: SubmissionWithUser[];

@@ -6,7 +6,7 @@ import { userStore } from '@/store/user';
 function Banner() {
   const { userInfo } = userStore();
 
-  if (!userInfo?.currentSponsorId) return null;
+  if (!userInfo?.currentCompanyId) return null;
   return (
     <Box
       mb={6}
@@ -17,37 +17,37 @@ function Banner() {
       bgColor="brand.charcoal.700"
     >
       <Flex align="start" bg="transparent">
-        {userInfo?.currentSponsor?.logo ? (
+        {userInfo?.currentCompany?.logo ? (
           <Image
             boxSize="52px"
             mt={2}
             borderRadius="full"
-            alt={userInfo?.currentSponsor?.name}
-            src={userInfo?.currentSponsor?.logo}
+            alt={userInfo?.currentCompany?.name}
+            src={userInfo?.currentCompany?.logo}
           />
         ) : (
           <Avatar
             colors={['#92A1C6', '#F0AB3D', '#C271B4']}
-            name={userInfo?.currentSponsor?.name}
+            name={userInfo?.currentCompany?.name}
             size={32}
             variant="marble"
           />
         )}
         <Box display={{ base: 'none', md: 'block' }} ml={6}>
           <Text fontSize="2xl" fontWeight={700}>
-            {userInfo?.currentSponsor?.name}
+            {userInfo?.currentCompany?.name}
           </Text>
           <Text fontSize="md" fontWeight={400}>
-            {userInfo?.currentSponsor?.bio || ''}
+            {userInfo?.currentCompany?.bio || ''}
           </Text>
           <Link
             color="brand.slate.300"
             fontSize="sm"
             fontWeight={400}
-            href={userInfo?.currentSponsor?.url}
+            href={userInfo?.currentCompany?.url}
             isExternal
           >
-            {userInfo?.currentSponsor?.url}
+            {userInfo?.currentCompany?.url}
           </Link>
         </Box>
       </Flex>

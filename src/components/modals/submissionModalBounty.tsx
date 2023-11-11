@@ -123,12 +123,12 @@ export const SubmissionModal = ({
           <Box>
             <Text mb={1} color={'brand.slate.500'} fontSize="sm">
               {isPermissioned
-                ? "Don't start working just yet! Apply first, and then begin working only once you've been hired for the project by the sponsor."
+                ? "Don't start working just yet! Apply first, and then begin working only once you've been hired for the project by the company."
                 : `We can't wait to see what you've created!`}
             </Text>
             <Text color={'brand.slate.500'} fontSize="sm">
               {!!isPermissioned &&
-                'Please note that the sponsor might contact you to assess fit before picking the winner.'}
+                'Please note that the company might contact you to assess fit before picking the winner.'}
             </Text>
           </Box>
           <form

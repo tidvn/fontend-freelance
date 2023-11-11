@@ -1,11 +1,11 @@
-import { Box, Button, Container, Heading, Stack, Text } from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Box, Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-import LoginWrapper from '@/components/Header/LoginWrapper';
-import type { User } from '@/interface/user';
-import { userStore } from '@/store/user';
+import type { User } from "@/interface/user";
+import { userStore } from "@/store/user";
+import fetchClient from "@/lib/fetch-client";
 
 interface Props {
   invite: any;
@@ -13,79 +13,71 @@ interface Props {
 
 function InviteView({ invite }: Props) {
   const router = useRouter();
-  const [triggerLogin, setTriggerLogin] = useState(false);
+  // const [triggerLogin, setTriggerLogin] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isWalletError, setIsWalletError] = useState(false);
+  const [acceptError, setAcceptError] = useState("");
   const [isAccepting, setIsAccepting] = useState(false);
 
-  const { setUserInfo, userInfo } = userStore();
+  const { userInfo } = userStore();
 
   const acceptUser = async (user: User) => {
     setIsAccepting(true);
     if (user?.id && user?.isVerified && user?.email !== invite?.email) {
-      setIsWalletError(true);
+      setAcceptError("You are not logged in!");
       setIsAccepting(false);
     } else if (user?.id && user?.isVerified && user?.email === invite?.email) {
       try {
-        await axios.post('/api/userSponsors/accept/', {
-          inviteId: invite?.id,
-          userId: user?.id,
+        await fetchClient({
+          method: "POST",
+          endpoint: "/api/members/accept/",
+          body: JSON.stringify({ inviteId: invite?.id }),
         });
-        router.push('/dashboard/jobs');
-      } catch (e) {
-        setIsWalletError(true);
+        router.push("/dashboard/jobs");
+      } catch (e: any) {
+        setAcceptError(e.message);
         setIsAccepting(false);
       }
     }
   };
 
   const handleSubmit = () => {
-    if (userInfo?.id) {
+    if (!userInfo?.id) {
+      setAcceptError("You are not logged in!");
       setIsError(true);
     } else {
-      setUserInfo({ email: invite?.email });
-      setTriggerLogin(true);
+      acceptUser(userInfo);
+      setAcceptError("");
     }
   };
 
   return (
-    <Container maxW={'3xl'}>
-      <LoginWrapper
-        acceptUser={acceptUser}
-        inviteInfo={{
-          emailInvite: invite?.email,
-          currentSponsorId: invite?.sponsorId,
-          memberType: invite?.memberType,
-        }}
-        triggerLogin={triggerLogin}
-        setTriggerLogin={setTriggerLogin}
-      />
-      <Stack as={Box} py={{ base: 20, md: 36 }} textAlign={'center'}>
+    <Container maxW={"3xl"}>
+      <Stack as={Box} py={{ base: 20, md: 36 }} textAlign={"center"}>
         <Heading
-          fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+          fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
           fontWeight={700}
-          lineHeight={'110%'}
+          lineHeight={"110%"}
         >
-          Welcome to <br />
-          <Text as={'span'} color={'brand.purple'}>
-            Superteam Earn
+          Hello{" "}
+          <Text as={"span"} color={"brand.purple"}>
+            There
           </Text>
           !
         </Heading>
-        <Text pt={2} color={'brand.slate.500'}>
-          Start your journey to access top global talent!
+        <Text pt={2} color={"brand.slate.500"}>
+          you have an invitation from
           <br />
           <Text as="span" fontWeight={700}>
-            Accept{' '}
-            {`${invite?.sender?.firstname} ${invite?.sender?.lastname}'s`}{' '}
-            invite to join Superteam Earn.
+            {`${invite?.sender?.firstname} ${invite?.sender?.lastname} `}
           </Text>
+          to join
+          <Text as="span" fontWeight={700}>{` ${invite?.company?.name}.`}</Text>
         </Text>
         <Stack
-          pos={'relative'}
-          align={'center'}
-          direction={'column'}
-          alignSelf={'center'}
+          pos={"relative"}
+          align={"center"}
+          direction={"column"}
+          alignSelf={"center"}
           pt={4}
         >
           <Button
@@ -93,27 +85,16 @@ function InviteView({ invite }: Props) {
             isLoading={isAccepting}
             loadingText="Accepting Invite..."
             onClick={() => handleSubmit()}
-            rounded={'full'}
+            rounded={"full"}
             size="lg"
             variant="solid"
           >
             Accept Invite
           </Button>
         </Stack>
-        {isError && (
-          <Text pt={2} color={'red'}>
-            You are already logged in!
-            <br />
-            Please log out and then click on the invite link.
-          </Text>
-        )}
-        {isWalletError && (
-          <Text pt={2} color={'red'}>
-            You have already signed up using the same wallet address.
-            <br />
-            Please log out, change your wallet & try again.
-          </Text>
-        )}
+        <Text pt={2} color={"red"}>
+          {acceptError}
+        </Text>
       </Stack>
     </Container>
   );

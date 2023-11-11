@@ -22,7 +22,7 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
-import type { SponsorType } from '../../interface/sponsor';
+import type { CompanyType } from '../../interface/company';
 import { TalentStore } from '../../store/talent';
 import { userStore } from '../../store/user';
 import { createUser, findTalentPubkey } from '../../utils/functions';
@@ -30,9 +30,9 @@ import { truncatedPublicKey } from '../../utils/helpers';
 import { ConnectWalletModal } from '../modals/connectWalletModal';
 
 interface Props {
-  sponsors?: SponsorType[];
+  companies?: CompanyType[];
 }
-export const Navbar = ({ sponsors }: Props) => {
+export const Navbar = ({ companies }: Props) => {
   const { setUserInfo } = userStore();
   const { setTalentInfo, talentInfo } = TalentStore();
   const router = useRouter();
@@ -114,12 +114,12 @@ export const Navbar = ({ sponsors }: Props) => {
             <Box cursor={'pointer'} onClick={() => router.push('/')}>
               <Image w={'12rem'} alt={'logo'} src={'/assets/logo/logo.png'} />
             </Box>
-            {sponsors && (
+            {companies && (
               <Select w={'12rem'}>
-                {sponsors?.map((sponsor, index) => {
+                {companies?.map((company, index) => {
                   return (
-                    <option key={sponsor.id} value={index}>
-                      {sponsor.name}
+                    <option key={company.id} value={index}>
+                      {company.name}
                     </option>
                   );
                 })}
@@ -146,7 +146,7 @@ export const Navbar = ({ sponsors }: Props) => {
               </Button>
             ) : (
               <HStack gap={2}>
-                {userInfo?.sponsor && (
+                {userInfo?.company && (
                   <Button
                     w="100%"
                     color="#6562FF"

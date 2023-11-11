@@ -108,7 +108,7 @@ export default function UserInfo({ isMobile }: UserInfoProps) {
                   fontSize="sm"
                   fontWeight={600}
                   onClick={() => {
-                    router.push(`/`);
+                    router.push(`/t/${userInfo.username}/edit`);
                   }}
                 >
                   Edit Profile

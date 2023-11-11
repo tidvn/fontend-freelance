@@ -7,7 +7,7 @@ export const WelcomeTalentTemplate = ({ name }: { name: string }) => {
     <div style={styles.container}>
       <p style={styles.greetings}>Hey there {name},</p>
       <p style={styles.textWithMargin}>
-        Congrats on joining the Talent Network on Superteam Earn &mdash;
+        Congrats on joining the Talent Network on FreLan &mdash;
         we&apos;re hyped to have you on board! 🎉&nbsp;
       </p>
       <p style={styles.text}>
@@ -16,7 +16,7 @@ export const WelcomeTalentTemplate = ({ name }: { name: string }) => {
       </p>
       <p style={styles.textWithMargin}>Wish you all the best!</p>
       <p style={styles.salutation}>Best,</p>
-      <p style={styles.text}>The&nbsp;Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The&nbsp;FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
     </div>
   );
 };

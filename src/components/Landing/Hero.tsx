@@ -11,7 +11,7 @@ export default function Component() {
       bg={'white'}
       borderTop="1px solid"
       borderTopColor="blackAlpha.200"
-    ><p>Signed {JSON.stringify(session)}</p>
+    ><pre>{JSON.stringify(session, null, 2)}</pre>
     </Box>) 
   }
 

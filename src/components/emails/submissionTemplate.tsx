@@ -22,7 +22,7 @@ export const SubmissionTemplate = ({ name, jobName }: SubmissionProps) => {
         the winners (hopefully including you!) are announced!
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
     </div>
   );
 };

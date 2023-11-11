@@ -23,7 +23,7 @@ export const NewJobTemplate = ({ name, link }: NewJobProps) => {
         to learn more about the job.
       </p>
       <p style={styles.salutation}>Best,&nbsp;</p>
-      <p style={styles.text}>The Superteam Earn Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
+      <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>
       <p style={styles.text}>&nbsp;</p>
       <p style={styles.unsubscribe}>
         Click{' '}
@@ -33,7 +33,7 @@ export const NewJobTemplate = ({ name, link }: NewJobProps) => {
         >
           here
         </a>{' '}
-        to unsubscribe from all emails from Superteam Earn.
+        to unsubscribe from all emails from FreLan.
       </p>
     </div>
   );

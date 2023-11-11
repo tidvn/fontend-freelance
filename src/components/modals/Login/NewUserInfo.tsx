@@ -24,7 +24,7 @@ interface Props {
   setOtp: (otp: { current: number; last: number }) => void;
   inviteInfo?: {
     emailInvite?: string;
-    currentSponsorId?: string;
+    currentCompanyId?: string;
     memberType?: 'MEMBER' | 'ADMIN';
   };
 }

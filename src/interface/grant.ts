@@ -1,4 +1,4 @@
-import type { SponsorType } from '@/interface/sponsor';
+import type { CompanyType } from '@/interface/company';
 import type { User } from '@/interface/user';
 
 import type { Skills } from './skills';
@@ -15,8 +15,8 @@ interface Grant {
   rewardAmount?: number;
   link?: string;
   source?: string;
-  sponsorId?: string;
-  sponsor?: SponsorType;
+  companyId?: string;
+  company?: CompanyType;
   pocId?: string;
   poc?: User;
   isPublished?: boolean;

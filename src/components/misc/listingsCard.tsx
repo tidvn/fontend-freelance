@@ -12,7 +12,6 @@ import {
   useDisclosure,
   useMediaQuery,
 } from '@chakra-ui/react';
-import type { JobType } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
@@ -23,9 +22,9 @@ import type { JobStatus } from '@/interface/job';
 import { dayjs } from '@/utils/dayjs';
 import { Mixpanel } from '@/utils/mixpanel';
 
-import { TalentStore } from '../../store/talent';
-import { userStore } from '../../store/user';
-import { updateNotification } from '../../utils/utils/functions';
+import { TalentStore } from '@/store/talent';
+import { userStore } from '@/store/user';
+import { updateNotification } from '@/utils/functions';
 import { EarningModal } from '../modals/earningModal';
 
 type ListingSectionProps = {
@@ -169,12 +168,12 @@ interface JobProps {
   status?: JobStatus;
   token?: string;
   slug?: string;
-  sponsorName?: string;
+  companyName?: string;
   type?: JobType | string;
   applicationType?: 'fixed' | 'rolling';
 }
 
-export const JobsCard = ({
+export const ListingsCard = ({
   rewardAmount,
   deadline,
   type,
@@ -182,7 +181,7 @@ export const JobsCard = ({
   title = '',
   token,
   slug = '',
-  sponsorName,
+  companyName,
   applicationType,
 }: JobProps) => {
   const router = useRouter();
@@ -215,9 +214,9 @@ export const JobsCard = ({
               w={isMobile ? 14 : 16}
               h={isMobile ? 14 : 16}
               mr={isMobile ? 3 : 5}
-              alt={sponsorName}
+              alt={companyName}
               rounded={5}
-              src={logo || `${router.basePath}/assets/images/sponsor-logo.png`}
+              src={logo || `${router.basePath}/assets/images/company-logo.png`}
             />
             <Flex justify={'space-between'} direction={'column'} w={'full'}>
               <Text
@@ -247,7 +246,7 @@ export const JobsCard = ({
                 color={'brand.slate.500'}
                 fontSize={{ md: 'sm', base: 'xs' }}
               >
-                {sponsorName}
+                {companyName}
               </Text>
               <Flex align={'center'} gap={isMobile ? 1 : 3}>
                 <>
@@ -327,7 +326,7 @@ export const JobsCard = ({
 
 interface GrantsProps {
   title: string;
-  sponsorName?: string;
+  companyName?: string;
   logo?: string;
   rewardAmount?: number;
   token?: string;
@@ -338,7 +337,7 @@ export const GrantsCard = ({
   title,
   logo,
   rewardAmount,
-  sponsorName,
+  companyName,
   slug,
   short_description,
 }: GrantsProps) => {
@@ -397,7 +396,7 @@ export const GrantsCard = ({
                 fontSize={['xs', 'xs', 'sm', 'sm']}
                 fontWeight="400"
               >
-                {sponsorName}
+                {companyName}
               </Text>
 
               {rewardAmount && (

@@ -248,7 +248,7 @@ function Talent() {
     <Default
       meta={
         <Meta
-          title="New Talent | Superteam Earn"
+          title="New Talent | FreLan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />

@@ -190,7 +190,7 @@ export default function SubmissionCard({
           py={{ base: '4', md: '6' }}
         >
           <Flex align={'center'} gap={3}>
-            <Avatar size={'xs'} src={sub?.listing?.sponsor?.logo} />
+            <Avatar size={'xs'} src={sub?.listing?.company?.logo} />
             <Text
               color={'brand.slate.500'}
               fontSize={{ base: 'sm', md: 'md' }}
