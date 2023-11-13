@@ -9,6 +9,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -20,6 +22,8 @@ import {
   RadioGroup,
   Stack,
   Text,
+  VStack,
+  useClipboard,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -27,6 +31,10 @@ import { AiOutlineSend } from "react-icons/ai";
 
 import { userStore } from "@/store/user";
 import fetchClient from "@/lib/fetch-client";
+import { getURL } from "@/utils/validUrl";
+import router, { useRouter } from "next/router";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { set } from "nprogress";
 
 interface Props {
   isOpen: boolean;
@@ -56,12 +64,14 @@ function InviteMembers({ isOpen, onClose }: Props) {
       setEmail(emailString);
     }
   };
-
+  const { hasCopied, onCopy } = useClipboard(``);
+  const [link, setLink] = useState(``);
+  const router = useRouter();
   const sendInvites = async () => {
     setIsInviting(true);
     setIsInviteError(false);
     try {
-      await fetchClient({
+      const res = await fetchClient({
         method: "POST",
         endpoint: "/api/members/invite/",
         body: JSON.stringify({
@@ -70,7 +80,7 @@ function InviteMembers({ isOpen, onClose }: Props) {
           memberType,
         }),
       });
-
+      setLink(`invite?id=${res?.data?.id}`);
       setIsInviteSuccess(true);
       setIsInviting(false);
     } catch (e) {
@@ -88,25 +98,55 @@ function InviteMembers({ isOpen, onClose }: Props) {
         {isInviteSuccess ? (
           <>
             <ModalBody>
-              <Alert
-                alignItems="center"
-                justifyContent="center"
-                flexDir="column"
-                py={8}
-                textAlign="center"
-                borderRadius="md"
-                status="success"
-                variant="subtle"
-              >
-                <AlertIcon boxSize="40px" mr={4} />
-                <Box>
-                  <AlertTitle>Sent Invite!</AlertTitle>
+              <Box>
+                {/* <AlertTitle>Sent Invite!</AlertTitle>
                   <AlertDescription>
                     Your team member will receive a link to join
                     FreLan.
                   </AlertDescription>
-                </Box>
-              </Alert>
+                   */}
+
+                <Text color={"gray.700"} fontFamily={"Inter"} fontWeight={600}>
+                  You Have Successfully Created A Invite Link
+                </Text>
+                <InputGroup mt={5}>
+                  <Input
+                    overflow="hidden"
+                    color="gray.400"
+                    fontSize="1rem"
+                    fontWeight={500}
+                    whiteSpace="nowrap"
+                    textOverflow="ellipsis"
+                    focusBorderColor="#CFD2D7"
+                    isReadOnly
+                    value={getURL() + link}
+                  />
+                  <InputRightElement h="100%" mr="1rem">
+                    {hasCopied ? (
+                      <CheckIcon h="1.3rem" w="1.3rem" color="gray.200" />
+                    ) : (
+                      <CopyIcon
+                        onClick={onCopy}
+                        cursor="pointer"
+                        h="1.3rem"
+                        w="1.3rem"
+                        color="gray.200"
+                      />
+                    )}
+                  </InputRightElement>
+                </InputGroup>
+                <VStack gap={2} w={"full"}>
+                  <Button
+                    w="100%"
+                    onClick={() => {
+                      router.push("/dashboard/jobs");
+                    }}
+                    variant="outline"
+                  >
+                    Back to Dashboard
+                  </Button>
+                </VStack>
+              </Box>
             </ModalBody>
             <ModalFooter>
               <Button onClick={onClose} variant="solid">
