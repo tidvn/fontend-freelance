@@ -19,19 +19,19 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import type { JobType } from '@prisma/client';
-import axios from 'axios';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import Countdown from 'react-countdown';
 
-import LoginWrapper from '@/components/Header/LoginWrapper';
 import { VerticalStep } from '@/components/misc/steps';
-import { SubmissionModal } from '@/components/modals/submissionModalJob';
+import { SubscribeModal } from '@/components/modals/subscribeModalJob';
 import WarningModal from '@/components/shared/WarningModal';
 import { tokenList } from '@/constants/index';
 import type { Eligibility, Rewards } from '@/interface/job';
 import { userStore } from '@/store/user';
+import { BACKEND_URL } from '@/env';
+import fetchClient from '@/lib/fetch-client';
+import axios from '@/lib/axios';
 
 interface Props {
   id: string;
@@ -40,13 +40,13 @@ interface Props {
   prizeList?: Partial<Rewards>;
   onOpen?: () => void;
   endingTime?: string;
-  submissionisOpen?: boolean;
-  submissiononClose?: () => void;
-  submissiononOpen?: () => void;
+  subscribeisOpen?: boolean;
+  subscribeonClose?: () => void;
+  subscribeonOpen?: () => void;
   token?: string;
   questions?: string;
   eligibility?: Eligibility[];
-  type?: JobType | string;
+  type?: string;
   jobtitle: string;
   requirements?: string;
   isWinnersAnnounced?: boolean;
@@ -73,11 +73,11 @@ function DetailSideCard({
   timeToComplete,
 }: Props) {
   const { userInfo } = userStore();
-  const [isSubmissionNumberLoading, setIsSubmissionNumberLoading] =
+  const [isSubscribeNumberLoading, setIsSubscribeNumberLoading] =
     useState(true);
-  const [submissionNumber, setSubmissionNumber] = useState(0);
-  const [submissionRange, setSubmissionRange] = useState('');
-  const [isUserSubmissionLoading, setIsUserSubmissionLoading] = useState(false);
+  const [subscribeNumber, setSubscribeNumber] = useState(0);
+  const [subscribeRange, setSubscribeRange] = useState('');
+  const [isUserSubscribeLoading, setIsUserSubscribeLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: warningIsOpen,
@@ -86,62 +86,68 @@ function DetailSideCard({
   } = useDisclosure();
   const [triggerLogin, setTriggerLogin] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  let submissionStatus = 0;
+  let subscribeStatus = 0;
   if (Number(moment(endingTime).format('x')) < Date.now()) {
-    submissionStatus = 1;
+    subscribeStatus = 1;
   }
   if (isWinnersAnnounced) {
-    submissionStatus = 3;
+    subscribeStatus = 3;
   }
 
-  const getUserSubmission = async () => {
-    setIsUserSubmissionLoading(true);
+  const getUserSubscribe = async () => {
+    setIsUserSubscribeLoading(true);
     try {
-      const submissionDetails = await axios.get(`/api/submission/${id}/user/`, {
-        params: {
-          userId: userInfo?.id,
-        },
-      });
-      setIsSubmitted(!!submissionDetails?.data?.id);
-      setIsUserSubmissionLoading(false);
+      const subscribeDetails = await fetchClient({
+        method:"Get",
+        endpoint:`/api/jobs/check_subscribe?jobId=${id}`
+      })
+      console.log(subscribeDetails)
+      // const subscribeDetails = await axios.get(``, {
+      //   params: {
+      //     userId: userInfo?.id,
+      //   },
+      // });
+      
+      setIsSubmitted(subscribeDetails?.data);
+      setIsUserSubscribeLoading(false);
     } catch (e) {
-      setIsUserSubmissionLoading(false);
+      setIsUserSubscribeLoading(false);
     }
   };
 
-  const getSubmissionsCount = async () => {
-    setIsSubmissionNumberLoading(true);
+  const getSubscribesCount = async () => {
+    setIsSubscribeNumberLoading(true);
     try {
-      const submissionCountDetails = await axios.get(
-        `/api/submission/${id}/count/`
+      const subscribeCountDetails =  await axios.get(`/api/getjob/count_subscribe?jobId=${id}`
       );
-      const count = submissionCountDetails?.data || 0;
-      setSubmissionNumber(count);
+      console.log()
+      const count = subscribeCountDetails?.data || 0;
+      setSubscribeNumber(count);
       if (count >= 0 && count <= 10) {
-        setSubmissionRange('0-10');
+        setSubscribeRange('0-10');
       } else if (count > 10 && count <= 25) {
-        setSubmissionRange('10-25');
+        setSubscribeRange('10-25');
       } else if (count > 25 && count <= 50) {
-        setSubmissionRange('25-50');
+        setSubscribeRange('25-50');
       } else if (count > 50 && count <= 100) {
-        setSubmissionRange('50-100');
+        setSubscribeRange('50-100');
       } else if (count > 100) {
-        setSubmissionRange('100+');
+        setSubscribeRange('100+');
       }
-      setIsSubmissionNumberLoading(false);
+      setIsSubscribeNumberLoading(false);
     } catch (e) {
-      setIsSubmissionNumberLoading(false);
+      setIsSubscribeNumberLoading(false);
     }
   };
 
   useEffect(() => {
     if (!userInfo?.id) return;
-    getUserSubmission();
+    getUserSubscribe();
   }, [userInfo?.id]);
 
   useEffect(() => {
-    if (!isSubmissionNumberLoading) return;
-    getSubmissionsCount();
+    if (!isSubscribeNumberLoading) return;
+    getSubscribesCount();
   }, []);
 
   const handleSubmit = () => {
@@ -188,14 +194,14 @@ function DetailSideCard({
   return (
     <>
       {isOpen && (
-        <SubmissionModal
+        <SubscribeModal
           id={id}
           type={type}
           eligibility={eligibility || []}
           onClose={onClose}
           isOpen={isOpen}
-          submissionNumber={submissionNumber}
-          setSubmissionNumber={setSubmissionNumber}
+          subscribeNumber={subscribeNumber}
+          setSubscribeNumber={setSubscribeNumber}
           setIsSubmitted={setIsSubmitted}
           jobtitle={jobtitle}
         />
@@ -212,10 +218,7 @@ function DetailSideCard({
           primaryCtaLink={'/new/talent'}
         />
       )}
-      <LoginWrapper
-        triggerLogin={triggerLogin}
-        setTriggerLogin={setTriggerLogin}
-      />
+      
       <VStack gap={2} pt={10} marginInlineStart={'0 !important'}>
         <VStack
           justify={'center'}
@@ -333,19 +336,19 @@ function DetailSideCard({
                   src={'/assets/icons/purple-suitcase.svg'}
                 />
                 <Text color={'#000000'} fontSize="1.3rem" fontWeight={500}>
-                  {isSubmissionNumberLoading
+                  {isSubscribeNumberLoading
                     ? '...'
                     : type === 'open'
-                    ? submissionNumber.toLocaleString()
-                    : submissionRange}
+                    ? subscribeNumber.toLocaleString()
+                    : subscribeRange}
                 </Text>
               </Flex>
               <Text color={'#94A3B8'}>
                 {type === 'open'
-                  ? submissionNumber === 1
-                    ? 'Submission'
-                    : 'Submissions'
-                  : submissionNumber === 1
+                  ? subscribeNumber === 1
+                    ? 'Subscribe'
+                    : 'Subscribes'
+                  : subscribeNumber === 1
                   ? 'Application'
                   : 'Applications'}
               </Text>
@@ -404,7 +407,7 @@ function DetailSideCard({
               >
                 {type === 'permissioned'
                   ? 'Applied Successfully'
-                  : 'Submitted Successfully'}
+                  : 'Applied Successfully'}
               </Button>
             ) : (
               <Button
@@ -413,13 +416,13 @@ function DetailSideCard({
                   bg: 'brand.purple',
                 }}
                 isDisabled={Date.now() > Number(moment(endingTime).format('x'))}
-                isLoading={isUserSubmissionLoading}
-                loadingText={'Checking Submission...'}
+                isLoading={isUserSubscribeLoading}
+                loadingText={'Checking Subscribe...'}
                 onClick={() => handleSubmit()}
                 size="lg"
                 variant="solid"
               >
-                {type === 'permissioned' ? 'Apply Now' : 'Submit Now'}
+                {type === 'permissioned' ? 'Apply Now' : 'Apply Now'}
               </Button>
             )}
             {type === 'permissioned' && (
@@ -520,9 +523,9 @@ function DetailSideCard({
           >
             <VerticalStep
               sublabel={'Give your best shot!'}
-              currentStep={submissionStatus + 1}
+              currentStep={subscribeStatus + 1}
               thisStep={1}
-              label={'Submissions Open'}
+              label={'Subscribes Open'}
             />
 
             <Divider
@@ -533,10 +536,10 @@ function DetailSideCard({
               orientation="vertical"
             />
             <VerticalStep
-              currentStep={submissionStatus + 1}
+              currentStep={subscribeStatus + 1}
               thisStep={2}
-              label={'Submissions Review'}
-              sublabel={'Submissions being assessed'}
+              label={'Subscribes Review'}
+              sublabel={'Subscribes being assessed'}
             />
             <Divider
               h={10}
@@ -546,7 +549,7 @@ function DetailSideCard({
               orientation="vertical"
             />
             <VerticalStep
-              currentStep={submissionStatus + 1}
+              currentStep={subscribeStatus + 1}
               thisStep={3}
               sublabel={
                 isWinnersAnnounced
@@ -555,7 +558,7 @@ function DetailSideCard({
                       .add(8, 'd')
                       .format('Do MMM, YY')}`
               }
-              label={'Winner Announced'}
+              label={'Announced'}
             />
           </VStack>
         )}

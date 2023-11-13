@@ -2,19 +2,19 @@ import React from 'react';
 
 import { styles } from './styles';
 
-interface SubmissionProps {
+interface SubscribeProps {
   name: string;
   jobName: string;
   personName: string;
   link: string;
 }
 
-export const CommentSubmissionTemplate = ({
+export const CommentSubscribeTemplate = ({
   name,
   jobName,
   personName,
   link,
-}: SubmissionProps) => {
+}: SubscribeProps) => {
   return (
     <div style={styles.container}>
       <p style={styles.greetings}>Hey&nbsp;{name},</p>

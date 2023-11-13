@@ -16,7 +16,7 @@ interface Props {
   onClose: () => void;
   eligibility: string;
 }
-export const SubmissionSuccess = ({ isOpen, onClose, eligibility }: Props) => {
+export const SubscribeSuccess = ({ isOpen, onClose, eligibility }: Props) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={'xxl'}>

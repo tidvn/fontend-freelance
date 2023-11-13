@@ -22,9 +22,9 @@ import type { JobStatus } from '@/interface/job';
 import { dayjs } from '@/utils/dayjs';
 import { Mixpanel } from '@/utils/mixpanel';
 
-import { TalentStore } from '@/store/talent';
-import { userStore } from '@/store/user';
-import { updateNotification } from '@/utils/functions';
+import { TalentStore } from '../../store/talent';
+import { userStore } from '../../store/user';
+import { updateNotification } from '../../utils/functions';
 import { EarningModal } from '../modals/earningModal';
 
 type ListingSectionProps = {
@@ -169,11 +169,11 @@ interface JobProps {
   token?: string;
   slug?: string;
   companyName?: string;
-  type?: JobType | string;
+  type?: string;
   applicationType?: 'fixed' | 'rolling';
 }
 
-export const ListingsCard = ({
+export const JobsCard = ({
   rewardAmount,
   deadline,
   type,
@@ -250,16 +250,12 @@ export const ListingsCard = ({
               </Text>
               <Flex align={'center'} gap={isMobile ? 1 : 3}>
                 <>
-                  <Image
+                  {/* <Image
                     h="4"
                     ml={type === 'open' ? -0.5 : 0}
                     alt={type}
-                    src={
-                      type === 'open'
-                        ? '/assets/icons/bolt.svg'
-                        : '/assets/icons/briefcase.svg'
-                    }
-                  />
+                    src={'/assets/icons/lite-purple-dollar.svg'}
+                  /> */}
                   <Text
                     ml={isMobile ? '-1' : type === 'open' ? '-3' : '-2.5'}
                     color="gray.500"
@@ -289,7 +285,7 @@ export const ListingsCard = ({
             </Flex>
           </Flex>
           <Flex align={'center'} justify="start" mr={3}>
-            <Image
+            {/* <Image
               w={4}
               h={4}
               mr={1}
@@ -300,7 +296,7 @@ export const ListingsCard = ({
                   return ele.tokenSymbol === token;
                 })?.icon
               }
-            />
+            /> */}
             <Flex align="baseline" gap={1}>
               <Text
                 color={'brand.slate.600'}
@@ -514,7 +510,7 @@ export const CategoryBanner = ({ type }: { type: string }) => {
       setIsSubscribed(true);
     }
 
-    await updateNotification(userInfo?.id as string, updatedNotifications);
+    await updateNotification(`${userInfo?.id}`, updatedNotifications);
 
     Mixpanel.track(eventName, {
       category: type,

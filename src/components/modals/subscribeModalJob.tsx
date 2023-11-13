@@ -13,16 +13,16 @@ import {
   ModalOverlay,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import type { JobType } from '@prisma/client';
-import axios from 'axios';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { QuestionHandler } from '@/components/listings/job/questions/questionHandler';
-import type { Eligibility } from '@/interface/job';
-import { userStore } from '@/store/user';
-import { Mixpanel } from '@/utils/mixpanel';
+import { QuestionHandler } from "@/components/listings/job/questions/questionHandler";
+import type { Eligibility } from "@/interface/job";
+import { userStore } from "@/store/user";
+import { Mixpanel } from "@/utils/mixpanel";
+import fetchClient from "@/lib/fetch-client";
 
 interface Props {
   id: string;
@@ -30,27 +30,27 @@ interface Props {
   onClose: () => void;
   eligibility: Eligibility[];
   setIsSubmitted: (arg0: boolean) => void;
-  setSubmissionNumber: (arg0: number) => void;
-  submissionNumber: number;
+  setSubscribeNumber: (arg0: number) => void;
+  subscribeNumber: number;
   jobtitle: string;
-  type?: JobType | string;
+  type?: string;
 }
-export const SubmissionModal = ({
+export const SubscribeModal = ({
   id,
   isOpen,
   onClose,
   eligibility,
   setIsSubmitted,
-  setSubmissionNumber,
-  submissionNumber,
+  setSubscribeNumber,
+  subscribeNumber,
   jobtitle,
   type,
 }: Props) => {
   const isPermissioned =
-    type === 'permissioned' && eligibility && eligibility?.length > 0;
+    type === "permissioned" && eligibility && eligibility?.length > 0;
   const { userInfo } = userStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
@@ -59,40 +59,36 @@ export const SubmissionModal = ({
     reset,
   } = useForm();
 
-  const submitSubmissions = async (data: any) => {
+  const submitSubscribes = async (data: any) => {
     setIsLoading(true);
     try {
-      const { applicationLink, tweetLink, otherInfo, ...answers } = data;
+      const { email, phoneNumber, otherInfo, ...answers } = data;
       const eligibilityAnswers = eligibility.map((q) => ({
         question: q.question,
         answer: answers[`eligibility-${q.order}`],
       }));
-      await axios.post('/api/submission/create/', {
-        userId: userInfo?.id,
-        listingId: id,
-        listingType: 'BOUNTY',
-        link: applicationLink || '',
-        tweet: tweetLink || '',
-        otherInfo: otherInfo || '',
-        eligibilityAnswers: eligibilityAnswers.length
-          ? eligibilityAnswers
-          : null,
+      await fetchClient({
+        method: "POST",
+        endpoint: "/api/jobs/subscribe",
+        body: JSON.stringify({
+          userId: userInfo?.id,
+          jobId: id,
+          email: email || "",
+          phoneNumber: phoneNumber || "",
+          otherInfo: otherInfo || "",
+          eligibilityAnswers: eligibilityAnswers.length
+            ? eligibilityAnswers
+            : null,
+        }),
       });
-      await axios.post(`/api/email/manual/submission`, {
-        listingId: id,
-        userId: userInfo?.id,
-      });
-      Mixpanel.track('job_submission', {
-        title: jobtitle,
-        user: userInfo?.username,
-      });
+      
       reset();
       setIsSubmitted(true);
-      setSubmissionNumber(submissionNumber + 1);
+      setSubscribeNumber(subscribeNumber + 1);
 
       onClose();
     } catch (e) {
-      setError('Sorry! Please try again or contact support.');
+      setError("Sorry! Please try again or contact support.");
       setIsLoading(false);
     }
   };
@@ -103,38 +99,38 @@ export const SubmissionModal = ({
       isCentered
       isOpen={isOpen}
       onClose={onClose}
-      scrollBehavior={'inside'}
-      size={'xl'}
+      scrollBehavior={"inside"}
+      size={"xl"}
     >
       <ModalOverlay></ModalOverlay>
       <ModalContent>
         <ModalHeader color="brand.slate.800">
-          {isPermissioned ? 'Submit Your Application' : 'Job Submission'}
+          {isPermissioned ? "Submit Your Application" : "Job Subscribe"}
         </ModalHeader>
         <ModalCloseButton />
         <VStack
-          align={'start'}
+          align={"start"}
           gap={3}
-          overflow={'scroll'}
-          maxH={'50rem'}
+          overflow={"scroll"}
+          maxH={"50rem"}
           pb={6}
           px={6}
         >
           <Box>
-            <Text mb={1} color={'brand.slate.500'} fontSize="sm">
+            <Text mb={1} color={"brand.slate.500"} fontSize="sm">
               {isPermissioned
                 ? "Don't start working just yet! Apply first, and then begin working only once you've been hired for the project by the company."
-                : `We can't wait to see what you've created!`}
+                : `Leave some of your information, maybe we will contact you soon`}
             </Text>
-            <Text color={'brand.slate.500'} fontSize="sm">
+            <Text color={"brand.slate.500"} fontSize="sm">
               {!!isPermissioned &&
-                'Please note that the company might contact you to assess fit before picking the winner.'}
+                "The company has received your application and may contact you in the near future"}
             </Text>
           </Box>
           <form
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             onSubmit={handleSubmit((e) => {
-              submitSubmissions(e);
+              submitSubscribes(e);
             })}
           >
             <VStack gap={4} mb={5}>
@@ -143,57 +139,44 @@ export const SubmissionModal = ({
                   <FormControl isRequired>
                     <FormLabel
                       mb={0}
-                      color={'brand.slate.800'}
+                      color={"brand.slate.800"}
                       fontWeight={600}
-                      htmlFor={'applicationLink'}
+                      htmlFor={"email"}
                     >
-                      Link to your submission
+                      Email
                     </FormLabel>
-                    <FormHelperText mt={0} mb={2} color="brand.slate.500">
-                      Make sure this link is accessible by everyone!
-                    </FormHelperText>
                     <Input
-                      borderColor={'brand.slate.300'}
-                      _placeholder={{ color: 'brand.slate.300' }}
+                      borderColor={"brand.slate.300"}
+                      _placeholder={{ color: "brand.slate.300" }}
                       focusBorderColor="brand.purple"
-                      id="applicationLink"
-                      placeholder="Add a link"
-                      {...register('applicationLink')}
+                      id="email"
+                      placeholder="Email"
+                      {...register("email")}
                     />
                     <FormErrorMessage>
-                      {errors.applicationLink ? (
-                        <>{errors.applicationLink.message}</>
-                      ) : (
-                        <></>
-                      )}
+                      {errors.email ? <>{errors.email.message}</> : <></>}
                     </FormErrorMessage>
                   </FormControl>
                   <FormControl>
                     <FormLabel
                       mb={0}
-                      color={'brand.slate.800'}
+                      color={"brand.slate.800"}
                       fontWeight={600}
-                      htmlFor={'tweetLink'}
+                      htmlFor={"phoneNumber"}
                     >
-                      Tweet Link
+                      Phone number
                     </FormLabel>
-                    <FormHelperText mt={0} mb={2} color="brand.slate.500">
-                      We generally recommend tweeting out your work so that (1)
-                      we can further share the best entries, and (2) its easier
-                      for partner projects to discover you too! In case you
-                      tweet it out, give us a link to the Tweet here!
-                    </FormHelperText>
                     <Input
-                      borderColor={'brand.slate.300'}
-                      _placeholder={{ color: 'brand.slate.300' }}
+                      borderColor={"brand.slate.300"}
+                      _placeholder={{ color: "brand.slate.300" }}
                       focusBorderColor="brand.purple"
-                      id="tweetLink"
+                      id="phoneNumber"
                       placeholder="Add a tweet's link"
-                      {...register('tweetLink')}
+                      {...register("phoneNumber")}
                     />
                     <FormErrorMessage>
-                      {errors.tweetLink ? (
-                        <>{errors.tweetLink.message}</>
+                      {errors.phoneNumber ? (
+                        <>{errors.phoneNumber.message}</>
                       ) : (
                         <></>
                       )}
@@ -207,7 +190,7 @@ export const SubmissionModal = ({
                       <QuestionHandler
                         register={register}
                         question={e?.question}
-                        type={e?.type ?? 'text'}
+                        type={e?.type ?? "text"}
                         label={`eligibility-${e?.order}`}
                       />
                     </FormControl>
@@ -217,35 +200,34 @@ export const SubmissionModal = ({
               <FormControl>
                 <FormLabel
                   mb={0}
-                  color={'brand.slate.800'}
+                  color={"brand.slate.800"}
                   fontWeight={600}
-                  htmlFor={'tweetLink'}
+                  htmlFor={"phoneNumber"}
                 >
                   Anything Else?
                 </FormLabel>
                 <FormHelperText mt={0} mb={2} color="brand.slate.500">
-                  If you have any other links or information you&apos;d like to
-                  share with us, please add them here!
+                  You can leave a message or anything that makes an impression!
                 </FormHelperText>
                 <Input
-                  borderColor={'brand.slate.300'}
-                  _placeholder={{ color: 'brand.slate.300' }}
+                  borderColor={"brand.slate.300"}
+                  _placeholder={{ color: "brand.slate.300" }}
                   focusBorderColor="brand.purple"
                   id="otherInfo"
                   maxLength={180}
                   placeholder="Add info or link"
-                  {...register('otherInfo')}
+                  {...register("otherInfo")}
                 />
                 <Text
                   color={
-                    (watch('otherInfo')?.length || 0) > 160
-                      ? 'red'
-                      : 'brand.slate.400'
+                    (watch("otherInfo")?.length || 0) > 160
+                      ? "red"
+                      : "brand.slate.400"
                   }
-                  fontSize={'xs'}
+                  fontSize={"xs"}
                   textAlign="right"
                 >
-                  {180 - (watch('otherInfo')?.length || 0)} characters left
+                  {180 - (watch("otherInfo")?.length || 0)} characters left
                 </Text>
                 <FormErrorMessage>
                   {errors.otherInfo ? <>{errors.otherInfo.message}</> : <></>}
@@ -259,13 +241,13 @@ export const SubmissionModal = ({
               </Text>
             )}
             <Button
-              w={'full'}
+              w={"full"}
               isLoading={!!isLoading}
               loadingText="Submitting..."
               type="submit"
               variant="solid"
             >
-              {!isPermissioned ? 'Submit' : 'Apply'}
+              {!isPermissioned ? "Submit" : "Apply"}
             </Button>
           </form>
         </VStack>

@@ -11,14 +11,12 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
-import { Regions } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 
 import { SkillSelect } from '@/components/misc/SkillSelect';
 import { userStore } from '@/store/user';
 import { dayjs } from '@/utils/dayjs';
-import { isValidHttpUrl } from '@/utils/validUrl';
 
 import type { MultiSelectOptions } from '../../../constants';
 import type { JobBasicType } from './Createjob';
@@ -34,8 +32,8 @@ interface Props {
   createDraft: () => void;
   draftLoading: boolean;
   isEditMode: boolean;
-  regions: Regions;
-  setRegions: Dispatch<SetStateAction<Regions>>;
+  regions: any;
+  setRegions: Dispatch<SetStateAction<any>>;
   type: 'open' | 'permissioned';
   timeToComplete?: string;
   isNewOrDraft?: boolean;
@@ -49,7 +47,7 @@ interface ErrorsBasic {
   applicationType: boolean;
   timeToComplete: boolean;
 }
-export const CreatejobBasic = ({
+export const CreateJobBasic = ({
   setjobBasic,
   setSteps,
   setSkills,
@@ -183,20 +181,20 @@ export const CreatejobBasic = ({
 
               <Select
                 onChange={(e) => {
-                  setRegions(e.target.value as Regions);
+                  setRegions(e.target.value);
                 }}
                 value={regions}
               >
-                <option value={Regions.GLOBAL}>Global</option>
-                <option value={Regions.INDIA}>India</option>
-                <option value={Regions.GERMANY}>Germany</option>
-                <option value={Regions.MEXICO}>Mexico</option>
-                <option value={Regions.TURKEY}>Turkey</option>
-                <option value={Regions.VIETNAM}>Vietnam</option>
-                <option value={Regions.UK}>UK</option>
-                <option value={Regions.UAE}>UAE</option>
-                <option value={Regions.NIGERIA}>Nigeria</option>
-                <option value={Regions.ISRAEL}>Israel</option>
+                <option value={`GLOBAL`}>Global</option>
+                <option value={`INDIA`}>India</option>
+                <option value={`GERMANY`}>Germany</option>
+                <option value={`MEXICO`}>Mexico</option>
+                <option value={`TURKEY`}>Turkey</option>
+                <option value={`VIETNAM`}>Vietnam</option>
+                <option value={`UK`}>UK</option>
+                <option value={`UAE`}>UAE</option>
+                <option value={`NIGERIA`}>Nigeria</option>
+                <option value={`ISRAEL`}>Israel</option>
               </Select>
             </FormControl>
           </>
@@ -243,10 +241,7 @@ export const CreatejobBasic = ({
             }}
             focusBorderColor="brand.purple"
             id="pocSocials"
-            onBlur={(e) => {
-              const url = e.target.value;
-              setIsUrlValid(isValidHttpUrl(url));
-            }}
+            
             onChange={(e) => {
               setjobBasic({
                 ...(jobBasic as JobBasicType),

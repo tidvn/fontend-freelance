@@ -19,7 +19,7 @@ import { TbBellRinging } from 'react-icons/tb';
 
 import { Mixpanel } from '@/utils/mixpanel';
 
-import type { SubscribeType } from '../../../interface/listings';
+import type { SubscribesType } from '../../../interface/listings';
 import type { CompanyType } from '../../../interface/company';
 import { TalentStore } from '../../../store/talent';
 import { userStore } from '../../../store/user';
@@ -37,7 +37,7 @@ interface Props {
   title: string;
   tabs: boolean;
   id?: string;
-  sub?: SubscribeType[];
+  sub?: SubscribesType[];
   endTime?: string;
   eligibility: Eligibility;
 }
@@ -118,7 +118,7 @@ export const ListingHeader = ({
                       bg={'green.100'}
                       rounded={'full'}
                     >
-                      Submission Open
+                      Subscribe Open
                     </Text>
                   ) : (
                     <Text
@@ -284,7 +284,7 @@ export const ListingHeader = ({
               rounded={0}
               variant={'ghost'}
             >
-              Submissions
+              Subscribes
             </Button>
           )}
         </HStack>

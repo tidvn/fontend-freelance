@@ -31,8 +31,6 @@ interface Props {
 function PublishResults({
   isOpen,
   onClose,
-  totalWinners,
-  totalPaymentsMade,
   rewards,
   jobId,
   isDeadlinePassed,
@@ -50,21 +48,21 @@ function PublishResults({
     | undefined = 'warning';
   let alertTitle = '';
   let alertDescription = '';
-  if (rewards?.length && totalWinners !== rewards?.length) {
-    const remainingWinners = (rewards?.length || 0) - totalWinners;
-    alertType = 'error';
-    alertTitle = 'Select All Winners!';
-    alertDescription = `You still have to select ${remainingWinners} more ${
-      remainingWinners === 1 ? 'winner' : 'winners'
-    } before you can publish the results publicly.`;
-  } else if (rewards?.length && totalPaymentsMade !== rewards?.length) {
-    const remainingPayments = (rewards?.length || 0) - totalPaymentsMade;
-    alertType = 'warning';
-    alertTitle = 'Pay All Winners!';
-    alertDescription = `Don't forget to pay your winners after publishing results. You have to pay to ${remainingPayments} ${
-      remainingPayments === 1 ? 'winner' : 'winners'
-    }.`;
-  }
+  // if (rewards?.length && totalWinners !== rewards?.length) {
+  //   const remainingWinners = (rewards?.length || 0) - totalWinners;
+  //   alertType = 'error';
+  //   alertTitle = 'Select All Winners!';
+  //   alertDescription = `You still have to select ${remainingWinners} more ${
+  //     remainingWinners === 1 ? 'winner' : 'winners'
+  //   } before you can publish the results publicly.`;
+  // } else if (rewards?.length && totalPaymentsMade !== rewards?.length) {
+  //   const remainingPayments = (rewards?.length || 0) - totalPaymentsMade;
+  //   alertType = 'warning';
+  //   alertTitle = 'Pay All Winners!';
+  //   alertDescription = `Don't forget to pay your winners after publishing results. You have to pay to ${remainingPayments} ${
+  //     remainingPayments === 1 ? 'winner' : 'winners'
+  //   }.`;
+  // }
 
   const publishResults = async () => {
     if (!jobId) return;
@@ -122,9 +120,7 @@ function PublishResults({
             </Alert>
           )}
           {!isWinnersAnnounced &&
-            rewards?.length &&
-            totalWinners === rewards?.length &&
-            alertType !== 'error' && (
+            rewards?.length && (
               <Text mb={4}>
                 Publishing the results of this job will make the results
                 public for everyone to see!
@@ -143,7 +139,6 @@ function PublishResults({
           )}
           {!isWinnersAnnounced &&
             rewards?.length &&
-            totalWinners === rewards?.length &&
             !isDeadlinePassed && (
               <Alert mt={4} status="error">
                 <AlertIcon boxSize={8} />
@@ -166,7 +161,7 @@ function PublishResults({
               <Button
                 ml={4}
                 isDisabled={
-                  (rewards?.length && totalWinners !== rewards?.length) ||
+                  (rewards?.length) ||
                   alertType === 'error'
                 }
                 isLoading={isPublishingResults}

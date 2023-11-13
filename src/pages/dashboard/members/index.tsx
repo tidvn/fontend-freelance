@@ -51,7 +51,7 @@ const Index = () => {
   const length = 15;
 
   const debouncedSetSearchText = useRef(debounce(setSearchText, 300)).current;
-console.log(userInfo)
+
   const getMembers = async () => {
     setIsMembersLoading(true);
     try {

@@ -2,7 +2,7 @@ import type { CompanyType } from '@/interface/company';
 import type { UserCompany } from '@/interface/userCompany';
 
 import type { PoW } from './pow';
-import type { SubmissionWithUser } from './submission';
+import type { SubscribeWithUser } from './subscribes';
 
 interface Notifications {
   label: string;
@@ -27,9 +27,7 @@ interface User {
   location?: string;
   photo?: string;
   experience?: string;
-  cryptoExperience?: string;
   currentEmployer?: string;
-  community?: string;
   interests?: string;
   skills?: string;
   subSkills?: string;
@@ -48,6 +46,6 @@ interface User {
   UserCompanies?: UserCompany[];
   PoW?: PoW[];
   private?: boolean;
-  Submission?: SubmissionWithUser[];
+  Subscribe?: SubscribeWithUser[];
 }
 export type { Notifications, User };

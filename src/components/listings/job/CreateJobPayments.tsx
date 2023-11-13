@@ -55,7 +55,7 @@ interface Props {
   isEditMode: boolean;
   isNewOrDraft?: boolean;
 }
-export const CreatejobPayment = ({
+export const CreateJobPayment = ({
   createDraft,
   draftLoading,
   createAndPublishListing,
@@ -116,8 +116,8 @@ export const CreatejobPayment = ({
   useEffect(() => {
     setJobPayment({
       rewardAmount: totalReward,
-      token: tokenName,
-      rewards: prizevalues,
+      token: "USD",
+      rewards: null,
     });
   }, [prizevalues, totalReward, tokenName]);
 
@@ -138,15 +138,17 @@ export const CreatejobPayment = ({
   };
 
   const handleSubmit = (isEdit?: boolean, mode?: string) => {
-    const rewardAmount: number = (
-      (Object.values(prizevalues) || []) as number[]
-    ).reduce((a, b) => a + b, 0);
+    // const rewardAmount: number = (
+    //   (Object.values(prizevalues) || []) as number[]
+    // ).reduce((a, b) => a + b, 0);
+
     setJobPayment({
       rewardAmount: totalReward,
-      token: tokenName,
-      rewards: prizevalues,
+      token: "USD",
+      rewards: null,
     });
-    if (!totalReward || totalReward !== rewardAmount) {
+
+    if (!totalReward ) {
       setIsRewardError(true);
     } else {
       setIsRewardError(false);
@@ -194,7 +196,7 @@ export const CreatejobPayment = ({
         pb={10}
         color={'gray.500'}
       >
-        <FormControl isRequired>
+        {/* <FormControl isRequired>
           <FormLabel color={'gray.500'}>Select Token</FormLabel>
           <Menu>
             <MenuButton
@@ -257,7 +259,7 @@ export const CreatejobPayment = ({
               })}
             </MenuList>
           </Menu>
-        </FormControl>
+        </FormControl> */}
         <FormControl w="full" isRequired>
           <Flex>
             <FormLabel
@@ -266,7 +268,7 @@ export const CreatejobPayment = ({
               fontWeight={600}
               htmlFor={'slug'}
             >
-              Total Reward Amount (in {tokenName})
+              Total Amount (USD)
             </FormLabel>
           </Flex>
 
@@ -284,7 +286,7 @@ export const CreatejobPayment = ({
             type="number"
           />
         </FormControl>
-        <VStack gap={4} w={'full'} mt={5} mb={8}>
+        {/* <VStack gap={4} w={'full'} mt={5} mb={8}>
           {prizes.map((el, index) => {
             return (
               <FormControl key={el.label}>
@@ -336,12 +338,12 @@ export const CreatejobPayment = ({
           >
             Add Prize
           </Button>
-        </VStack>
-        {isRewardError && (
+        </VStack> */}
+        {/* {isRewardError && (
           <Text w="full" color="red" textAlign={'center'}>
             Sorry! Total reward amount should be equal to the sum of all prizes.
           </Text>
-        )}
+        )} */}
         <Toaster />
         <VStack gap={4} w={'full'} pt={4}>
           {!isEditMode && (

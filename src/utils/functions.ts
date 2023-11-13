@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -11,20 +10,20 @@ import type {
   Listings,
   DraftType,
   GrantsType,
-  SubmissionType,
   SubscribeType,
+  SubscribesType,
 } from '../interface/listings';
 // types
 import type { CompanyType } from '../interface/company';
 import type { Talent } from '../interface/talent';
 import { CompanyStore } from '../store/company';
-import { BACKEND_URL } from '@/env';
+import axios from '@/lib/axios';
 
 
 export const createUser = async (publickey: string) => {
   const id = uuidV4();
   try {
-    const res = await axios.post(`${BACKEND_URL}/user/create`, {
+    const res = await axios.post(`/user/create`, {
       id,
       publickey,
     });
@@ -36,7 +35,7 @@ export const createUser = async (publickey: string) => {
 };
 export const UpdateUser = async (id: string, update: any) => {
   try {
-    const res = await axios.patch(`${BACKEND_URL}/user/update`, {
+    const res = await axios.patch(`/user/update`, {
       id,
       update,
     });
@@ -59,7 +58,7 @@ export const generateOtp = async (
   | undefined
 > => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/email/totp`, {
+    const res = await axios.post(`/email/totp`, {
       publicKey,
       email,
     });
@@ -72,7 +71,7 @@ export const generateOtp = async (
 // Companies
 export const createCompany = async (company: CompanyType) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/company/create`, {
+    const res = await axios.post(`/company/create`, {
       ...company,
     });
     return res.data;
@@ -86,7 +85,7 @@ export const findCompanies = async (publicKey: string) => {
   if (!publicKey) return null;
   try {
     const { data } = await axios.get(
-      `${BACKEND_URL}/company/find?publickey=${publicKey}`
+      `/company/find?publickey=${publicKey}`
     );
     CompanyStore.setState({
       currentCompany: data.data[0],
@@ -99,7 +98,7 @@ export const findCompanies = async (publicKey: string) => {
 };
 export const DeleteCompany = async (id: string) => {
   try {
-    const { data } = await axios.delete(`${BACKEND_URL}/company/delete/${id}`);
+    const { data } = await axios.delete(`/company/delete/${id}`);
     return data;
   } catch (e) {
     console.log(e);
@@ -112,7 +111,7 @@ export const findCompanyListing = async (orgId: string) => {
   if (!orgId) {
     throw new Error('orgId undefined!');
   }
-  const res = await axios.get(`${BACKEND_URL}/listings/find?orgId=${orgId}`);
+  const res = await axios.get(`/listings/find?orgId=${orgId}`);
   return res.data.data;
 };
 
@@ -121,12 +120,12 @@ export const findCompanyDrafts = async (orgId: string) => {
   if (!orgId) {
     throw new Error('orgId undefined!');
   }
-  const res = await axios.get(`${BACKEND_URL}/drafts/findall?orgId=${orgId}`);
+  const res = await axios.get(`/drafts/findall?orgId=${orgId}`);
   return res.data.data;
 };
 export const CreateDraft = async (draft: DraftType) => {
   try {
-    const { data } = await axios.post(`${BACKEND_URL}/drafts/create`, {
+    const { data } = await axios.post(`/drafts/create`, {
       ...draft,
     });
     return data.data;
@@ -136,7 +135,7 @@ export const CreateDraft = async (draft: DraftType) => {
 };
 export const findOneDraft = async (id: string) => {
   const { data, status } = await axios.get(
-    `${BACKEND_URL}/drafts/find?id=${id}`
+    `/drafts/find?id=${id}`
   );
   if (status === 200) {
     return data;
@@ -149,7 +148,7 @@ export const findOneDraft = async (id: string) => {
 export const findTeam = async (id: string) => {
   if (!id) return null;
   try {
-    const { data } = await axios.get(`${BACKEND_URL}/company/team?id=${id}`);
+    const { data } = await axios.get(`/company/team?id=${id}`);
 
     return data.data ?? [];
   } catch (error) {
@@ -164,7 +163,7 @@ export const createJob = async (
   company: CompanyType
 ) => {
   try {
-    const { data } = await axios.post(`${BACKEND_URL}/listings/job/create`, {
+    const { data } = await axios.post(`/listings/job/create`, {
       id: jobs.id,
       title: jobs.title,
       token: jobs.token,
@@ -197,7 +196,7 @@ type FindBoutiesReturn = {
 export const findBouties = async (slug: string): Promise<FindBoutiesReturn> => {
   if (!slug) return null;
   const { data, status } = await axios.get(
-    `${BACKEND_URL}/listings/job/find/${slug}`
+    `/listings/job/find/${slug}`
   );
   if (status === 204) {
     return null;
@@ -208,7 +207,7 @@ export const findBouties = async (slug: string): Promise<FindBoutiesReturn> => {
 
 export const createGrants = async (grants: GrantsType) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/listings/grants/create`, {
+    const res = await axios.post(`/listings/grants/create`, {
       ...grants,
     });
     return res;
@@ -220,7 +219,7 @@ export const createGrants = async (grants: GrantsType) => {
 };
 
 export const createComment = async (comment: Comment) => {
-  const { data, status } = await axios.post(`${BACKEND_URL}/comment/create`, {
+  const { data, status } = await axios.post(`/comment/create`, {
     ...comment,
   });
 
@@ -232,7 +231,7 @@ export const createComment = async (comment: Comment) => {
 
 export const findTalentPubkey = async (pubkey: string) => {
   const { data, status } = await axios.get(
-    `${BACKEND_URL}/talent/find/publickey/${pubkey}`
+    `/talent/find/publickey/${pubkey}`
   );
 
   if (status !== 200) {
@@ -243,14 +242,14 @@ export const findTalentPubkey = async (pubkey: string) => {
 
 export const fetchComments = async (id: string) => {
   if (!id) return null;
-  const { data } = await axios.get(`${BACKEND_URL}/comment/find/${id}`);
+  const { data } = await axios.get(`/comment/find/${id}`);
 
   return data.data ?? [];
 };
 
-export const createSubmission = async (sub: SubmissionType) => {
+export const createSubscribe = async (sub: SubscribeType) => {
   try {
-    const { data } = await axios.post(`${BACKEND_URL}/submission/create`, {
+    const { data } = await axios.post(`/submission/create`, {
       ...sub,
     });
     return data;
@@ -262,7 +261,7 @@ export const createSubmission = async (sub: SubmissionType) => {
 
 export const fetchOgImage = async (url: string) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/submission/ogimage`, {
+    const res = await axios.post(`/submission/ogimage`, {
       url,
     });
     return res.data;
@@ -272,7 +271,7 @@ export const fetchOgImage = async (url: string) => {
 };
 export const addLike = async (id: string, likeId: string) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/submission/create/like`, {
+    const res = await axios.post(`/submission/create/like`, {
       id,
       likeId,
     });
@@ -282,17 +281,17 @@ export const addLike = async (id: string, likeId: string) => {
   }
 };
 
-export const findSubmission = async (id: string) => {
+export const findSubscribe = async (id: string) => {
   try {
     const { status, data } = await axios.get(
-      `${BACKEND_URL}/submission/find/${id}`
+      `/submission/find/${id}`
     );
 
     if (status !== 200) {
       return null;
     }
 
-    return data.data as SubmissionType;
+    return data.data as SubscribeType;
   } catch (error) {
     console.log(error);
 
@@ -315,10 +314,10 @@ export const findGrants = async (slug: string): Promise<Grant | null> => {
     return null;
   }
 };
-export const createSubscription = async (sub: SubscribeType) => {
+export const createSubscription = async (sub: SubscribesType) => {
   try {
     const { data, status } = await axios.post(
-      `${BACKEND_URL}/listings/sub/create`,
+      `/listings/sub/create`,
       {
         ...sub,
       }
@@ -336,7 +335,7 @@ export const createSubscription = async (sub: SubscribeType) => {
 export const removeSubscription = async (id: string) => {
   try {
     const { data, status } = await axios.delete(
-      `${BACKEND_URL}/listings/sub/delete/${id}`
+      `/listings/sub/delete/${id}`
     );
     if (status !== 200) {
       return null;
@@ -355,7 +354,7 @@ export const createQuestions = async (questions: {
 }) => {
   try {
     const { data, status } = await axios.post(
-      `${BACKEND_URL}/listings/question/create`,
+      `/listings/question/create`,
       {
         ...questions,
       }
@@ -380,7 +379,7 @@ export const AllGrants = async (): Promise<
   | null
 > => {
   try {
-    const { data } = await axios.get(`${BACKEND_URL}/listings/grants/find/all`);
+    const { data } = await axios.get(`/listings/grants/find/all`);
     console.log(data);
 
     return data.data;
@@ -411,7 +410,7 @@ export const updateNotification = async (
 
 export const TalentTVE = async (): Promise<Talent[] | null> => {
   try {
-    const { data } = await axios.get(`${BACKEND_URL}/talent/find/tve`);
+    const { data } = await axios.get(`/talent/find/tve`);
     return data.data;
   } catch (error) {
     console.log(error);

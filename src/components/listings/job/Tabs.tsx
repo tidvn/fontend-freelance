@@ -2,7 +2,7 @@
 import { Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 
-import { listingsCard } from '@/components/misc/listingsCard';
+import { JobsCard } from '@/components/misc/listingsCard';
 import EmptySection from '@/components/shared/EmptySection';
 import Loading from '@/components/shared/Loading';
 import type { Job } from '@/interface/job';
@@ -14,13 +14,13 @@ interface TabProps {
 }
 
 interface JobTabsProps {
-  isjobsLoading: boolean;
+  isListingsLoading: boolean;
   jobs: { jobs: Job[] };
   take?: number;
 }
 
 export const JobTabs = ({
-  isjobsLoading,
+  isListingsLoading,
   jobs,
   take = 10,
 }: JobTabsProps) => {
@@ -30,7 +30,7 @@ export const JobTabs = ({
       title: 'OPEN',
       content: (
         <Flex direction={'column'} rowGap={1}>
-          {isjobsLoading ? (
+          {isListingsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -45,7 +45,7 @@ export const JobTabs = ({
               )
               .slice(0, take)
               .map((job) => (
-                <ListingsCard
+                <JobsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
@@ -62,7 +62,7 @@ export const JobTabs = ({
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
                 title="No jobs available!"
-                message="Subscribe to notifications to get notified about new jobs."
+                message="Subscribes to notifications to get notified about new jobs."
               />
             </Flex>
           )}
@@ -74,7 +74,7 @@ export const JobTabs = ({
       title: 'IN REVIEW',
       content: (
         <Flex direction={'column'} rowGap={'1'}>
-          {isjobsLoading ? (
+          {isListingsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -93,7 +93,7 @@ export const JobTabs = ({
               )
               .slice(0, 10)
               .map((job) => (
-                <ListingsCard
+                <JobsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
@@ -110,7 +110,7 @@ export const JobTabs = ({
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
                 title="No jobs in review!"
-                message="Subscribe to notifications to get notified about updates."
+                message="Subscribes to notifications to get notified about updates."
               />
             </Flex>
           )}
@@ -122,7 +122,7 @@ export const JobTabs = ({
       title: 'COMPLETED',
       content: (
         <Flex direction={'column'} rowGap={'1'}>
-          {isjobsLoading ? (
+          {isListingsLoading ? (
             <Flex align="center" justify="center" direction="column" minH={52}>
               <Loading />
             </Flex>
@@ -139,7 +139,7 @@ export const JobTabs = ({
               )
               .slice(0, 10)
               .map((job) => (
-                <ListingsCard
+                <JobsCard
                   slug={job.slug}
                   rewardAmount={job?.rewardAmount}
                   key={job?.id}
@@ -156,7 +156,7 @@ export const JobTabs = ({
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
                 title="No jobs announced!"
-                message="Subscribe to notifications to get notified about announcements."
+                message="Subscribes to notifications to get notified about announcements."
               />
             </Flex>
           )}

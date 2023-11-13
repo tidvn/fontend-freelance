@@ -12,11 +12,10 @@ import {
   import NextLink from 'next/link';
   import { useRouter } from 'next/router';
   import { useEffect, useRef, useState } from 'react';
-  
-  // import LoginWrapper from '@/components/Header/LoginWrapper';
-  // import { tokenList } from '@/constants';
+
   import type { User } from '@/interface/user';
   import { getURL } from '@/utils/validUrl';
+import { tokenList } from '@/constants';
   
   interface SideBarProps {
     total: number;
@@ -75,10 +74,7 @@ import {
     const [triggerLogin, setTriggerLogin] = useState(false);
     return (
       <Box>
-        <LoginWrapper
-          triggerLogin={triggerLogin}
-          setTriggerLogin={setTriggerLogin}
-        />
+        
         <Text mb={'1.5rem'} color={'gray.400'} fontWeight={500}>
           GETTING STARTED
         </Text>
@@ -253,7 +249,7 @@ import {
     token?: string;
   }
   const Earner = ({ amount, name, avatar, job, slug, token }: EarnerProps) => {
-    const tokenObj = tokenList.find((t) => t.tokenSymbol === token);
+    const tokenObj = tokenList.find((t:any) => t.tokenSymbol === token);
     const tokenIcon = tokenObj
       ? tokenObj.icon
       : '/assets/landingcompany/icons/usdc.svg';

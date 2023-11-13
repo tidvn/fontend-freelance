@@ -18,7 +18,7 @@ import { BiComment } from 'react-icons/bi';
 
 import { tokenList } from '@/constants';
 import { PrizeListMap } from '@/interface/listings';
-import type { SubmissionWithUser } from '@/interface/submission';
+import type { SubscribeWithUser } from '@/interface/subscribes';
 import type { User } from '@/interface/user';
 import { userStore } from '@/store/user';
 import { timeAgoShort } from '@/utils/timeAgo';
@@ -26,12 +26,12 @@ import { getURL } from '@/utils/validUrl';
 
 import OgImageViewer from '../misc/ogImageViewer';
 
-export default function SubmissionCard({
+export default function SubscribeCard({
   talent,
   sub,
 }: {
   talent: User;
-  sub: SubmissionWithUser;
+  sub: SubscribeWithUser;
 }) {
   const { userInfo } = userStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -216,7 +216,7 @@ export default function SubmissionCard({
                 fontSize={{ base: 'sm', md: 'md' }}
                 fontWeight={600}
               >
-                View Submission
+                View Subscribe
               </Text>
             </LinkOverlay>
             <ArrowForwardIcon color={'#6366F1'} />

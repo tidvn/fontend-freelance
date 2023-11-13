@@ -1,5 +1,5 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { Regions } from '@prisma/client';
+// import { Regions } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ import type {
 } from '@/components/listings/job/questions/builder';
 import { CreateGrants } from '@/components/listings/grants/CreateGrants';
 import Template from '@/components/listings/templates/template';
-import { Successjobs } from '@/components/modals/successjobs';
+import { SuccessListings } from '@/components/modals/successListings';
 import ErrorSection from '@/components/shared/ErrorSection';
 import type { MultiSelectOptions } from '@/constants';
 import type { Job, References } from '@/interface/job';
@@ -23,6 +23,7 @@ import { userStore } from '@/store/user';
 import { getJobDraftStatus } from '@/utils/job';
 import { dayjs } from '@/utils/dayjs';
 import { mergeSkills, splitSkills } from '@/utils/skills';
+import fetchClient from '@/lib/fetch-client';
 
 interface Props {
   job?: Job;
@@ -46,8 +47,8 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
   const [editorData, setEditorData] = useState<string | undefined>(
     isEditMode ? job?.description : undefined
   );
-  const [regions, setRegions] = useState<Regions>(
-    isEditMode ? job?.region || Regions.GLOBAL : Regions.GLOBAL
+  const [regions, setRegions] = useState<any>(
+    isEditMode ? job?.region || `GLOBAL`: `GLOBAL`
   );
   const skillsInfo = isEditMode ? splitSkills(job?.skills || []) : undefined;
   const [mainSkills, setMainSkills] = useState<MultiSelectOptions[]>(
@@ -110,8 +111,8 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
     setIsListingPublishing(true);
     try {
       const newJob: Job = {
-        companyId: userInfo?.currentCompany?.id ?? '',
-        pocId: userInfo?.id ?? '',
+        companyId: userInfo?.currentCompany?.id ?? 0,
+        pocId: userInfo?.id ?? 0,
         skills: mergeSkills({ skills: mainSkills, subskills: subSkill }),
         ...jobbasic,
         deadline: jobbasic?.deadline
@@ -134,10 +135,15 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
         ...jobPayment,
         isPublished: true,
       };
-      const result = await axios.post('/api/jobs/create/', newJob);
-      await axios.post('/api/email/manual/createJob', {
-        id: result?.data?.id,
-      });
+      // const result = await axios.post('/api/jobs/create/', newJob);
+      // await axios.post('/api/email/manual/createJob', {
+      //   id: result?.data?.id,
+      // });
+      const result = await fetchClient({
+        method: "POST",
+        endpoint: "/api/jobs/create/",
+        body: JSON.stringify(newJob)
+      })
       console.log(result?.data.id);
       setSlug(`/jobs/${result?.data?.slug}/`);
       onOpen();
@@ -154,8 +160,8 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
       api = `/api/jobs/update/${job?.id}/`;
     }
     let draft: Job = {
-      companyId: userInfo?.currentCompany?.id ?? '',
-      pocId: userInfo?.id ?? '',
+      companyId: userInfo?.currentCompany?.id ?? 0,
+      pocId: userInfo?.id ?? 0,
     };
     draft = {
       ...draft,
@@ -286,7 +292,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
           }
         >
           {isOpen && (
-            <Successjobs slug={slug} isOpen={isOpen} onClose={() => {}} />
+            <SuccessListings slug={slug} isOpen={isOpen} onClose={() => {}} />
           )}
           {steps === 1 && (
             <Template

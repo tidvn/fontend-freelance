@@ -23,7 +23,7 @@ interface Props {
   setUpdate: Dispatch<SetStateAction<boolean>>;
   link: string;
 }
-export const SubmissionCard = ({
+export const SubscribeCard = ({
   winnerPosition,
   id,
   winner,
@@ -52,8 +52,8 @@ export const SubmissionCard = ({
             userId: userInfo?.id,
           }),
           {
-            loading: 'Liking Submission...',
-            success: 'Submission Liked!',
+            loading: 'Liking Subscribe...',
+            success: 'Subscribe Liked!',
             error: 'Failed to like the submission',
           }
         );
@@ -120,7 +120,7 @@ export const SubmissionCard = ({
               fontWeight={600}
               onClick={navigateToTalentProfile}
             >
-              {talent?.firstname}
+              {talent?.firstName}
             </Text>
             <HStack>
               {talent?.photo ? (
@@ -128,13 +128,13 @@ export const SubmissionCard = ({
                   w={5}
                   h={5}
                   borderRadius="full"
-                  alt={`${talent?.firstname} ${talent?.lastname}`}
+                  alt={`${talent?.firstName} ${talent?.lastName}`}
                   rounded={'full'}
                   src={talent?.photo || undefined}
                 />
               ) : (
                 <Avatar
-                  name={`${talent?.firstname} ${talent?.lastname}`}
+                  name={`${talent?.firstName} ${talent?.lastName}`}
                   colors={['#92A1C6', '#F0AB3D', '#C271B4']}
                   size={20}
                   variant="marble"

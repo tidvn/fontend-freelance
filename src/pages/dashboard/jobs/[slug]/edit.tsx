@@ -1,13 +1,14 @@
-import axios from 'axios';
-import type { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import axios from "axios";
+import type { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import CreateListing from '@/components/listings/job/Job';
-import LoadingSection from '@/components/shared/LoadingSection';
-import type { Job } from '@/interface/job';
-import Sidebar from '@/layouts/Sidebar';
-import { userStore } from '@/store/user';
+import CreateListing from "@/components/listings/job/Job";
+import LoadingSection from "@/components/shared/LoadingSection";
+import type { Job } from "@/interface/job";
+import Sidebar from "@/layouts/Sidebar";
+import { userStore } from "@/store/user";
+import fetchClient from "@/lib/fetch-client";
 
 interface Props {
   slug: string;
@@ -22,9 +23,13 @@ function EditJob({ slug }: Props) {
   const getJob = async () => {
     setIsJobLoading(true);
     try {
-      const jobDetails = await axios.get(`/api/jobs/${slug}/`);
+      const jobDetails = await fetchClient({
+        method: "GET",
+        endpoint: `/api/jobs/?slug=${slug}/`,
+      });
+
       if (jobDetails.data.companyId !== userInfo?.currentCompanyId) {
-        router.push('/dashboard/jobs');
+        router.push("/dashboard/jobs");
       } else {
         setJob(jobDetails.data);
         setIsJobLoading(false);
@@ -48,7 +53,7 @@ function EditJob({ slug }: Props) {
         <CreateListing
           job={job}
           isEditMode
-          type={job?.type as 'permissioned' | 'open'}
+          type={job?.type as "permissioned" | "open"}
         />
       )}
     </Sidebar>

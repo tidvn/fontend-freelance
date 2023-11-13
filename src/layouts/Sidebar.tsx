@@ -113,17 +113,17 @@ const SidebarContent = ({ ...rest }: BoxProps) => {
             Create Listing <ChevronDownIcon w={3} h={3} />
           </MenuButton>
           <MenuList>
-            <NextLink href="/dashboard/create-bounty">
+            <NextLink href="/dashboard/create-job">
               <MenuItem>
                 <Image
                   h={5}
                   mr={3}
                   ml={1}
-                  alt="new bounty"
+                  alt="new job"
                   src={'/assets/icons/bolt.svg'}
                 />{' '}
                 <Text color="brand.slate.500" fontWeight={500}>
-                  New Bounty
+                  New job
                 </Text>
               </MenuItem>
             </NextLink>

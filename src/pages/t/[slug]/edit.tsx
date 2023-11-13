@@ -89,10 +89,10 @@ const keysToOmit = [
   "currentCompany",
   "poc",
   "Comment",
-  "Submission",
+  "Subscribe",
   "Grants",
   "UserInvites",
-  "SubscribeJob",
+  "SubscribesJob",
 ];
 
 const parseSkillsAndSubskills = (skillsObject: any) => {
@@ -299,7 +299,7 @@ export default function EditProfilePage() {
         }
         return acc;
       }, {} as Partial<FormData>);
-      console.log(userInfo);
+      ;
       const response = await fetchClient({
         method: "POST",
         endpoint: "/api/user/edit",

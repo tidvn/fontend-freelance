@@ -17,17 +17,17 @@ import type { Metadata } from 'unfurl.js/dist/types';
 
 import TalentBio from '@/components/TalentBio';
 import type { Job } from '@/interface/job';
-import type { SubmissionWithUser } from '@/interface/submission';
+import type { SubscribeWithUser } from '@/interface/subscribes';
 
 import { Comments } from '../comments';
 
 interface Props {
   job: Job;
-  submission?: SubmissionWithUser;
+  submission?: SubscribeWithUser;
   user: User;
   link: string;
 }
-export const SubmissionPage = ({ job, submission, user, link }: Props) => {
+export const SubscribePage = ({ job, submission, user, link }: Props) => {
   const router = useRouter();
   const [image, setImage] = useState<string>('/assets/bg/og.svg');
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -83,7 +83,7 @@ export const SubmissionPage = ({ job, submission, user, link }: Props) => {
         >
           <Flex justify={'space-between'} w={'full'} mt={5} px={8}>
             <Text color={'black'} fontSize={'22px'} fontWeight={600}>
-              {user?.firstname}&apos;s Submission
+              {user?.firstName}&apos;s Subscribe
             </Text>
           </Flex>
           <Image

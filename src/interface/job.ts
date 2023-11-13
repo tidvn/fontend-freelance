@@ -44,34 +44,38 @@ interface Job {
   isFeatured?: boolean;
   token?: string;
   rewardAmount?: number;
-  rewards?: Rewards;
-  companyId?: string;
+  rewards?: any;
+  companyId?: number;
   company?: CompanyType;
   pocSocials?: string;
-  pocId?: string;
+  pocId?: number;
   poc?: User;
   source?: string;
   sourceDetails?: string;
   type?:  string;
   applicationType?: 'fixed' | 'rolling';
   totalWinnersSelected?: number;
+  region?: any;
   totalPaymentsMade?: number;
   isWinnersAnnounced?: boolean;
   templateId?: string;
   timeToComplete?: string;
   hackathonprize?: boolean;
+  
+
 }
 
-interface JobWithSubmissions extends Job {
+interface JobWithSubscribes extends Job {
+  subscribes: any;
   _count?: {
-    Submission?: number;
+    Subscribe?: number;
   };
 }
 
 export type {
   Job,
   JobStatus,
-  JobWithSubmissions,
+  JobWithSubscribes,
   Eligibility,
   References,
   Rewards,

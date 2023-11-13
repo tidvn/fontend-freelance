@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GoCommentDiscussion } from 'react-icons/go';
 
-import LoginWrapper from '@/components/Header/LoginWrapper';
 import ErrorInfo from '@/components/shared/ErrorInfo';
 import Loading from '@/components/shared/Loading';
 import UserAvatar from '@/components/shared/UserAvatar';
@@ -24,7 +23,7 @@ import { getURL } from '@/utils/validUrl';
 
 interface Props {
   refId: string;
-  refType: 'BOUNTY';
+  refType: 'JOB';
 }
 export const Comments = ({ refId, refType }: Props) => {
   const { userInfo } = userStore();
@@ -47,19 +46,19 @@ export const Comments = ({ refId, refType }: Props) => {
         listingType: refType,
         listingId: refId,
       });
-      if (refType === 'BOUNTY') {
-        if (router.asPath.includes('submission')) {
-          await axios.post(`/api/email/manual/commentSubmission`, {
-            userId: userInfo?.id,
-            submissionId: router.query.subid,
-          });
-        } else {
-          await axios.post(`/api/email/manual/comment`, {
-            id: refId,
-            userId: userInfo?.id,
-          });
-        }
-      }
+      // if (refType === 'JOB') {
+      //   if (router.asPath.includes('submission')) {
+      //     await axios.post(`/api/email/manual/commentSubscribe`, {
+      //       userId: userInfo?.id,
+      //       submissionId: router.query.subid,
+      //     });
+      //   } else {
+      //     await axios.post(`/api/email/manual/comment`, {
+      //       id: refId,
+      //       userId: userInfo?.id,
+      //     });
+      //   }
+      // }
       setComments((prevComments) => [newCommentData.data, ...prevComments]);
       setNewComment('');
       setNewCommentLoading(false);
@@ -125,10 +124,7 @@ export const Comments = ({ refId, refType }: Props) => {
         bg={'#FFFFFF'}
         rounded={'xl'}
       >
-        <LoginWrapper
-          triggerLogin={triggerLogin}
-          setTriggerLogin={setTriggerLogin}
-        />
+        
         <HStack w={'full'} pt={4} px={6}>
           <GoCommentDiscussion fontWeight={600} fontSize={'1.5rem'} />
           <HStack>
@@ -171,7 +167,7 @@ export const Comments = ({ refId, refType }: Props) => {
           </Flex>
         </VStack>
         {comments?.map((comment: any) => {
-          const date = dayjs(comment?.updated_at).fromNow();
+          const date = dayjs(comment?.updatedAt).fromNow();
           return (
             <HStack key={comment.id} align={'start'} px={6}>
               <Flex
@@ -198,7 +194,7 @@ export const Comments = ({ refId, refType }: Props) => {
                       window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                   >
-                    {`${comment?.author?.firstname} ${comment?.author?.lastname}`}
+                    {`${comment?.author?.firstName} ${comment?.author?.lastName}`}
                   </Text>
                   <Text color="brand.slate.500" fontSize="sm">
                     {date}

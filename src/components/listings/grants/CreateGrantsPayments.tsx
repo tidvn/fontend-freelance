@@ -95,7 +95,7 @@ export const CreateGrantsPayment = ({
           })}
           style={{ width: '100%' }}
         >
-          <FormControl isRequired>
+          {/* <FormControl isRequired>
             <FormLabel color={'gray.500'}>Select Token</FormLabel>
             <Menu>
               <MenuButton
@@ -157,7 +157,7 @@ export const CreateGrantsPayment = ({
                 })}
               </MenuList>
             </Menu>
-          </FormControl>
+          </FormControl> */}
           <HStack my={6}>
             <FormControl w="full" isRequired>
               <Flex>

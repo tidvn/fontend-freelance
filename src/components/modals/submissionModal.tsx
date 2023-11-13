@@ -30,7 +30,7 @@ interface Props {
   questions: string;
   eligibility: string;
 }
-export const SubmissionModal = ({
+export const SubscribeModal = ({
   isOpen,
   onClose,
   SubmssionMutation,
@@ -47,7 +47,7 @@ export const SubmissionModal = ({
           <ModalHeader>
             {eligibility !== 'permission-less'
               ? 'Submit Your Application'
-              : 'Job Submission'}
+              : 'Job Subscribe'}
           </ModalHeader>
           <VStack align={'start'} gap={3} p={5}>
             <Text color={'gray.500'} fontSize={'1rem'} fontWeight={500}>

@@ -8,7 +8,7 @@ interface TemplateProps {
   link: string;
 }
 
-export const SubmissionCompanyTemplate = ({
+export const SubscribeCompanyTemplate = ({
   name,
   jobName,
   link,

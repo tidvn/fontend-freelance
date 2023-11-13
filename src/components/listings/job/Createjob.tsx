@@ -1,4 +1,3 @@
-import type { Regions } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
 
@@ -6,8 +5,8 @@ import type { References } from '@/interface/job';
 
 import type { MultiSelectOptions } from '../../../constants';
 import Description from '../description';
-import { CreatejobBasic } from './CreateJobBasic';
-import { CreatejobPayment } from './CreateJobPayments';
+import { CreateJobBasic } from './CreateJobBasic';
+import { CreateJobPayment } from './CreateJobPayments';
 import type { Ques } from './questions/builder';
 import Builder from './questions/builder';
 
@@ -44,8 +43,8 @@ interface Props {
   isEditMode: boolean;
   setJobRequirements?: Dispatch<SetStateAction<any | undefined>>;
   jobRequirements?: string | undefined;
-  regions: Regions;
-  setRegions: Dispatch<SetStateAction<Regions>>;
+  regions: any;
+  setRegions: Dispatch<SetStateAction<any>>;
   type: 'open' | 'permissioned';
   isNewOrDraft?: boolean;
 }
@@ -84,7 +83,7 @@ export const CreateJob = ({
   return (
     <>
       {steps === 2 && (
-        <CreatejobBasic
+        <CreateJobBasic
           regions={regions}
           setRegions={setRegions}
           isEditMode={isEditMode}
@@ -130,7 +129,7 @@ export const CreateJob = ({
       )}
 
       {steps === 5 && (
-        <CreatejobPayment
+        <CreateJobPayment
           isEditMode={isEditMode}
           createAndPublishListing={createAndPublishListing}
           isListingPublishing={isListingPublishing}

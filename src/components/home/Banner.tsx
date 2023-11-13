@@ -46,8 +46,7 @@ export default function HomeBanner({ setTriggerLogin }: BannerProps) {
 
   useEffect(() => {
     axios
-      .get('/api/user/count')
-      .then((response) => setUsersCount(response.data.totalUsers));
+       setUsersCount(1000000);
   }, []);
 
   return (

@@ -11,7 +11,6 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import type { JobType, Regions, SubscribeJob } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -36,11 +35,11 @@ interface Job {
   company?: CompanyType | undefined;
   poc?: User;
   slug?: string;
-  type?: JobType | string;
+  type?:  string;
   isWinnersAnnounced?: boolean;
   hackathonPrize?: boolean;
   isTemplate?: boolean;
-  region: Regions;
+  region: string;
   references?: References[];
 }
 
@@ -63,41 +62,37 @@ function ListingHeader({
   const { userInfo } = userStore();
   const hasDeadlineEnded = dayjs().isAfter(deadline);
   const [update, setUpdate] = useState<boolean>(false);
-  const [sub, setSub] = useState<
-    (SubscribeJob & {
-      User: User | null;
-    })[]
-  >([]);
-  const handleSubscribe = async () => {
+  const [sub, setSub] = useState<any>([])
+  const handleSubscribes = async () => {
     if (!userInfo?.isTalentFilled) {
       onOpen();
       return;
     }
 
     try {
-      const res = await axios.post('/api/jobs/subscribe/subscribe', {
-        userId: userInfo?.id,
-        jobId: id,
-      });
-      console.log(res);
+      // const res = await axios.post('/api/jobs/subscribe/subscribe', {
+      //   userId: userInfo?.id,
+      //   jobId: id,
+      // });
+      // console.log(res);
       setUpdate((prev) => !prev);
-      toast.success('Subscribed to job');
+      toast.success('Subscribesd to job');
     } catch (error) {
       console.log(error);
       toast.error('Error');
     }
   };
-  const handleUnSubscribe = async (idSub: string) => {
+  const handleUnSubscribes = async (idSub: string) => {
     if (!userInfo?.isTalentFilled) {
       onOpen();
       return;
     }
 
     try {
-      const res = await axios.post('/api/jobs/subscribe/unSubscribe', {
-        id: idSub,
-      });
-      console.log(res);
+      // const res = await axios.post('/api/jobs/subscribe/unSubscribes', {
+      //   id: idSub,
+      // });
+      // console.log(res);
       setUpdate((prev) => !prev);
       toast.success('Unsubscribe to job');
     } catch (error) {
@@ -108,10 +103,10 @@ function ListingHeader({
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await axios.post('/api/jobs/subscribe/get', {
-        listingId: id,
-      });
-      setSub(data);
+      // const { data } = await axios.post('/api/jobs/subscribe/get', {
+      //   listingId: id,
+      // });
+      // setSub(data);
     };
     fetchUser();
   }, [update]);
@@ -168,7 +163,7 @@ function ListingHeader({
                     bg={'orange.100'}
                     rounded={'full'}
                   >
-                    Submissions Closed
+                    Subscribes Closed
                   </Text>
                 )}
                 {!isWinnersAnnounced &&
@@ -181,7 +176,7 @@ function ListingHeader({
                       bg={'orange.100'}
                       rounded={'full'}
                     >
-                      Submissions In Review
+                      Subscribes In Review
                     </Text>
                   )}
                 {!hasDeadlineEnded && status === 'OPEN' && (
@@ -192,7 +187,7 @@ function ListingHeader({
                     bg={'green.100'}
                     rounded={'full'}
                   >
-                    Submissions Open
+                    Subscribes Open
                   </Text>
                 )}
               </Flex>
@@ -225,7 +220,7 @@ function ListingHeader({
                         label={
                           type === 'permissioned'
                             ? 'A Project is a short-term gig where companies solicit applications from multiple people, and select the best one to work on the Project.'
-                            : 'Listings are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
+                            : 'Jobs are open for anyone to participate in and submit their work (as long as they meet the eligibility requirements mentioned below). The best submissions win!'
                         }
                       >
                         <Flex>
@@ -279,7 +274,7 @@ function ListingHeader({
                 bg={'orange.100'}
                 rounded={'full'}
               >
-                Submissions Closed
+                Subscribes Closed
               </Text>
             )}
             {!isWinnersAnnounced && hasDeadlineEnded && status === 'OPEN' && (
@@ -301,7 +296,7 @@ function ListingHeader({
                 bg={'green.100'}
                 rounded={'full'}
               >
-                Submissions Open
+                Subscribes Open
               </Text>
             )}
           </Flex>
@@ -345,21 +340,21 @@ function ListingHeader({
               <IconButton
                 aria-label="Notify"
                 icon={
-                  sub.find((e) => e.userId === userInfo?.id) ? (
+                  sub.find((e:any) => e.userId === userInfo?.id) ? (
                     <TbBellRinging />
                   ) : (
                     <TbBell />
                   )
                 }
                 onClick={() => {
-                  if (sub.find((e) => e.userId === userInfo?.id)) {
-                    handleUnSubscribe(
-                      sub.find((e) => e.userId === userInfo?.id)?.id as string
+                  if (sub.find((e:any) => e.userId === userInfo?.id)) {
+                    handleUnSubscribes(
+                      sub.find((e:any) => e.userId === userInfo?.id)?.id as string
                     );
 
                     return;
                   }
-                  handleSubscribe();
+                  handleSubscribes();
                 }}
                 variant="solid"
               />
@@ -429,7 +424,7 @@ function ListingHeader({
             >
               Details
             </Link>
-            {type !== 'permissioned' && (
+            {/* {type !== 'permissioned' && (
               <Link
                 alignItems="center"
                 justifyContent="center"
@@ -451,9 +446,9 @@ function ListingHeader({
                 }}
                 href={`/listings/jobs/${slug}/submission`}
               >
-                Submissions
+                Subscribes
               </Link>
-            )}
+            )} */}
             {type === 'permissioned' && references && (
               <Link
                 alignItems="center"

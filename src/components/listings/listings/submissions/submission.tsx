@@ -4,17 +4,17 @@ import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
 
 import type { Job } from '@/interface/job';
-import type { SubmissionWithUser } from '@/interface/submission';
+import type { SubscribeWithUser } from '@/interface/subscribes';
 
-import { SubmissionCard } from './submissionCard';
+import { SubscribeCard } from './submissionCard';
 
 interface Props {
   job: Job;
-  submissions: SubmissionWithUser[];
+  submissions: SubscribeWithUser[];
   endTime: string;
   setUpdate: Dispatch<SetStateAction<boolean>>;
 }
-export const Submissions = ({
+export const Subscribes = ({
   job,
   submissions,
   endTime,
@@ -37,7 +37,7 @@ export const Submissions = ({
                   {submissions.length}
                 </Text>
                 <Text color={'#94A3B8'} fontSize={'1.2rem'} fontWeight={600}>
-                  Submissions
+                  Subscribes
                 </Text>
               </Flex>
               <Flex
@@ -48,7 +48,7 @@ export const Submissions = ({
               >
                 {submissions?.map((el) => {
                   return (
-                    <SubmissionCard
+                    <SubscribeCard
                       id={el.id}
                       likes={
                         (el.like as unknown as {
@@ -85,7 +85,7 @@ export const Submissions = ({
                 fontWeight={600}
                 textAlign="center"
               >
-                Submissions are not public until the submission deadline
+                Subscribes are not public until the submission deadline
                 <br />
                 has closed. Check back soon!
               </Text>

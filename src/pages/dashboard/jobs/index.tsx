@@ -49,7 +49,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import ErrorSection from "@/components/shared/ErrorSection";
 import LoadingSection from "@/components/shared/LoadingSection";
 import { tokenList } from "@/constants/index";
-import type { JobWithSubmissions } from "@/interface/job";
+import type { JobWithSubscribes } from "@/interface/job";
 import Sidebar from "@/layouts/Sidebar";
 import { userStore } from "@/store/user";
 import {
@@ -63,7 +63,7 @@ import fetchClient from "@/lib/fetch-client";
 
 const debounce = require("lodash.debounce");
 
-function Bounties() {
+function Jobs() {
   const router = useRouter();
   const {
     isOpen: publishIsOpen,
@@ -76,11 +76,11 @@ function Bounties() {
     onClose: unpublishOnClose,
   } = useDisclosure();
   const { userInfo } = userStore();
-  const [totalBounties, setTotalBounties] = useState(0);
-  const [bounties, setBounties] = useState<JobWithSubmissions[]>([]);
-  const [job, setJob] = useState<JobWithSubmissions>({});
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [jobs, setJobs] = useState<JobWithSubscribes[]>([]);
+  const [job, setJob] = useState<JobWithSubscribes>();
   const [isChangingStatus, setIsChangingStatus] = useState(false);
-  const [isBountiesLoading, setIsBountiesLoading] = useState(true);
+  const [isJobsLoading, setIsJobsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [skip, setSkip] = useState(0);
   const length = 15;
@@ -93,42 +93,34 @@ function Bounties() {
     };
   }, [debouncedSetSearchText]);
 
-  const getBounties = async () => {
-    setIsBountiesLoading(true);
+  const getJobs = async () => {
+    setIsJobsLoading(true);
     try {
-      const bountiesList = await fetchClient({
+      const jobsList = await fetchClient({
         method: "GET",
-        endpoint: "/api/jobs/",
-        body: JSON.stringify({
-          companyId: userInfo?.currentCompanyId,
-          searchText,
-          skip,
-          take: length,
-          showSubmissionDetails: true,
-        }),
+        endpoint: `/api/jobs?companyId=${userInfo?.currentCompanyId}&searchText=${searchText}&skip=${skip}&take=${length}&showSubscribeDetails=true`,
       });
 
-
-      setTotalBounties(bountiesList.data.total);
-      setBounties(bountiesList.data.data);
-      setIsBountiesLoading(false);
+      setTotalJobs(jobsList.data.total);
+      setJobs(jobsList.data.data);
+      setIsJobsLoading(false);
     } catch (error) {
-      setIsBountiesLoading(false);
+      setIsJobsLoading(false);
     }
   };
 
   useEffect(() => {
     if (userInfo?.currentCompanyId) {
-      getBounties();
+      getJobs();
     }
   }, [userInfo?.currentCompanyId, skip, searchText]);
 
-  const handlePublish = async (publishedJob: JobWithSubmissions) => {
+  const handlePublish = async (publishedJob: JobWithSubscribes) => {
     setJob(publishedJob);
     publishOnOpen();
   };
 
-  const handleUnpublish = async (unpublishedJob: JobWithSubmissions) => {
+  const handleUnpublish = async (unpublishedJob: JobWithSubscribes) => {
     setJob(unpublishedJob);
     unpublishOnOpen();
   };
@@ -136,19 +128,17 @@ function Bounties() {
   const changeJobStatus = async (status: boolean) => {
     setIsChangingStatus(true);
     try {
-      const result = await axios.post(`/api/bounties/update/${job.id}/`, {
+      const result = await axios.post(`/api/jobs/update/${job?.id}/`, {
         isPublished: status,
       });
 
-      const changedJobIndex = bounties.findIndex(
-        (b) => b.id === result.data.id
-      );
-      const newBounties = bounties.map((b, index) =>
+      const changedJobIndex = jobs.findIndex((b) => b.id === result.data.id);
+      const newJobs = jobs.map((b, index) =>
         changedJobIndex === index
           ? { ...b, isPublished: result.data.isPublished }
           : b
       );
-      setBounties(newBounties);
+      setJobs(newJobs);
       publishOnClose();
       unpublishOnClose();
       setIsChangingStatus(false);
@@ -157,8 +147,8 @@ function Bounties() {
     }
   };
 
-  const handleViewSubmissions = (slug: string | undefined) => {
-    router.push(`/dashboard/bounties/${slug}/submissions/`);
+  const handleViewSubscribes = (slug: string | undefined) => {
+    router.push(`/dashboard/jobs/${slug}/subscribes/`);
   };
 
   return (
@@ -229,7 +219,7 @@ function Bounties() {
             }}
             focusBorderColor="brand.purple"
             onChange={(e) => debouncedSetSearchText(e.target.value)}
-            placeholder="Search bounties..."
+            placeholder="Search jobs..."
             type="text"
           />
           <InputRightElement pointerEvents="none">
@@ -237,14 +227,14 @@ function Bounties() {
           </InputRightElement>
         </InputGroup>
       </Flex>
-      {isBountiesLoading && <LoadingSection />}
-      {!isBountiesLoading && !bounties?.length && (
+      {isJobsLoading && <LoadingSection />}
+      {!isJobsLoading && !jobs?.length && (
         <ErrorSection
-          title="No bounties found!"
+          title="No jobs found!"
           message="Create new job from the sidebar"
         />
       )}
-      {!isBountiesLoading && bounties?.length && (
+      {!isJobsLoading && jobs?.length && (
         <TableContainer mb={8}>
           <Table
             border="1px solid"
@@ -270,7 +260,7 @@ function Bounties() {
                   textAlign="right"
                   textTransform={"capitalize"}
                 >
-                  Submissions
+                  Subscribes
                 </Th>
                 <Th
                   align="center"
@@ -313,7 +303,7 @@ function Bounties() {
               </Tr>
             </Thead>
             <Tbody w="full">
-              {bounties.map((currentJob) => {
+              {jobs.map((currentJob) => {
                 const deadlineFromNow = getDeadlineFromNow(
                   currentJob?.deadline
                 );
@@ -333,7 +323,7 @@ function Bounties() {
                       wordBreak={"break-word"}
                     >
                       <NextLink
-                        href={`/dashboard/bounties/${currentJob.slug}/submissions/`}
+                        href={`/dashboard/jobs/${currentJob.slug}/subscribes/`}
                         passHref
                       >
                         <Text as="a" _hover={{ textDecoration: "underline" }}>
@@ -345,7 +335,7 @@ function Bounties() {
                       <Text textAlign={"right"}>
                         {
                           // eslint-disable-next-line no-underscore-dangle
-                          currentJob?._count?.Submission || 0
+                          currentJob?.subscribes?.length || 0
                         }
                       </Text>
                     </Td>
@@ -425,12 +415,12 @@ function Bounties() {
                             w="full"
                             leftIcon={<AiOutlineOrderedList />}
                             onClick={() =>
-                              handleViewSubmissions(currentJob.slug)
+                              handleViewSubscribes(currentJob.slug)
                             }
                             size="sm"
                             variant="outline"
                           >
-                            Submissions
+                            Subscribes
                           </Button>
                         )}
                       {currentJob.status === "OPEN" &&
@@ -460,7 +450,7 @@ function Bounties() {
                             icon={<ExternalLinkIcon />}
                             onClick={() =>
                               window.open(
-                                `${router.basePath}/listings/bounties/${currentJob.slug}`,
+                                `${router.basePath}/listings/jobs/${currentJob.slug}`,
                                 "_ blank"
                               )
                             }
@@ -469,7 +459,7 @@ function Bounties() {
                           </MenuItem>
                           <MenuDivider />
                           <NextLink
-                            href={`/dashboard/bounties/${currentJob.slug}/edit/`}
+                            href={`/dashboard/jobs/${currentJob.slug}/edit/`}
                             passHref
                           >
                             <MenuItem icon={<AiOutlineEdit />}>
@@ -507,13 +497,13 @@ function Bounties() {
           </Text>{" "}
           -{" "}
           <Text as="span" fontWeight={700}>
-            {Math.min(skip + length, totalBounties)}
+            {Math.min(skip + length, totalJobs)}
           </Text>{" "}
           of{" "}
           <Text as="span" fontWeight={700}>
-            {totalBounties}
+            {totalJobs}
           </Text>{" "}
-          Bounties
+          Jobs
         </Text>
         <Button
           mr={4}
@@ -527,7 +517,7 @@ function Bounties() {
         </Button>
         <Button
           isDisabled={
-            totalBounties < skip + length || (skip > 0 && skip % length !== 0)
+            totalJobs < skip + length || (skip > 0 && skip % length !== 0)
           }
           onClick={() => skip % length === 0 && setSkip(skip + length)}
           rightIcon={<ChevronRightIcon w={5} h={5} />}
@@ -541,4 +531,4 @@ function Bounties() {
   );
 }
 
-export default Bounties;
+export default Jobs;

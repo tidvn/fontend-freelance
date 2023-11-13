@@ -26,7 +26,7 @@ function SelectCompany() {
   );
 
   useEffect(() => {
-    console.log(userInfo)
+    
     if (userInfo?.currentCompany?.id) {
       setSelectedCompany({
         value: userInfo?.currentCompany?.id,

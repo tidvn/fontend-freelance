@@ -8,7 +8,7 @@ interface TemplateProps {
   link: string;
 }
 
-export const SubmissionLikeTemplate = ({
+export const SubscribeLikeTemplate = ({
   name,
   jobName,
   link,
@@ -25,7 +25,7 @@ export const SubmissionLikeTemplate = ({
         participants!
       </p>
       <a href={link} style={styles.link}>
-        View Submissions
+        View Subscribes
       </a>
       <p style={styles.salutation}>Best,</p>
       <p style={styles.text}>The FreLan Crew 🦸&zwj;♀️🦸&zwj;♂️</p>

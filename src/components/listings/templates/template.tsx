@@ -27,25 +27,25 @@ const Template = ({
   setJobBasic,
   type,
 }: Props) => {
-  const [jobsTemplates, setListingsTemplates] = useState([]);
-  const [isListingsTemplatesLoading, setIsListingsTemplatesLoading] =
+  const [jobsTemplates, setJobsTemplates] = useState([]);
+  const [isJobsTemplatesLoading, setIsJobsTemplatesLoading] =
     useState(false);
 
   const getJobTemplates = async () => {
-    setIsListingsTemplatesLoading(true);
+    setIsJobsTemplatesLoading(true);
     try {
       const templates: any = await axios.get('/api/jobs/templates/', {
         params: { type },
       });
-      setListingsTemplates(templates?.data || []);
-      setIsListingsTemplatesLoading(false);
+      setJobsTemplates(templates?.data || []);
+      setIsJobsTemplatesLoading(false);
     } catch (e) {
-      setIsListingsTemplatesLoading(false);
+      setIsJobsTemplatesLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!isListingsTemplatesLoading) {
+    if (!isJobsTemplatesLoading) {
       getJobTemplates();
     }
   }, []);
@@ -105,7 +105,7 @@ const Template = ({
             </Box>
             {jobsTemplates.map((template: any) => {
               const companies: any = [
-                ...new Set(template?.Listings?.map((b: any) => b.company)),
+                ...new Set(template?.Jobs?.map((b: any) => b.company)),
               ];
               return (
                 <Box key={template.id} w={'15rem'} h={'16rem'} bg={'white'}>

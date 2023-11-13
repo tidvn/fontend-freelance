@@ -26,7 +26,7 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   { label: 'Listings', href: '/jobs' },
-  { label: 'Projects', href: '/projects' },
+  { label: '', href: '' },
   {
     label: 'Browse Categories',
     children: [
@@ -118,6 +118,8 @@ const MobileNav = () => (
     ))}
   </Stack>
 );
+
+
 
 interface NavLinkProps extends LinkProps {
   href: string;
@@ -235,17 +237,17 @@ export default function WithSubnavigation() {
             />
             <NavLink
               display={{ base: 'none', lg: 'flex' }}
-              href="/jobs"
-              label="Listings"
-              isActive={router.asPath === '/jobs/'}
+              href="/all/jobs"
+              label="List Jobs"
+              isActive={router.asPath === '/all/jobs/'}
             />
 
-            <NavLink
+            {/* <NavLink
               display={{ base: 'none', lg: 'flex' }}
               href="/projects"
               label="Projects"
               isActive={router.asPath === '/projects/'}
-            />
+            /> */}
           </Flex>
           <Flex
             align="center"

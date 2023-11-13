@@ -113,8 +113,9 @@ export default function UserInfo({ isMobile }: UserInfoProps) {
                 >
                   Edit Profile
                 </MenuItem>
-  
-                <MenuItem
+                {userInfo?.currentCompany && (
+                  <>
+                    <MenuItem
                   color="brand.slate.500"
                   fontSize="sm"
                   fontWeight={600}
@@ -124,6 +125,9 @@ export default function UserInfo({ isMobile }: UserInfoProps) {
                 >
                   Company Dashboard
                 </MenuItem>
+                  </>
+                )}
+                
   
                 {userInfo?.role === "GOD" && (
                   <>

@@ -1,4 +1,4 @@
-import type { Job, JobWithSubmissions } from '@/interface/job';
+import type { Job, JobWithSubscribes } from '@/interface/job';
 import { dayjs } from '@/utils/dayjs';
 
 export const getDeadlineFromNow = (deadline: string | undefined) =>
@@ -20,7 +20,7 @@ export const getJobDraftStatus = (
 };
 
 export const getJobProgress = (
-  job: Job | JobWithSubmissions | null
+  job: Job | JobWithSubscribes | null
 ) => {
   if (!job) return '-';
   const rewardsLength = Object.keys(job?.rewards || {})?.length || 0;

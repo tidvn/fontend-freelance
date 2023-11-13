@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 
 import type { Job, Rewards } from '@/interface/job';
-import type { SubmissionWithUser } from '@/interface/submission';
+import type { SubscribeWithUser } from '@/interface/subscribes';
 import { sortRank } from '@/utils/rank';
 
 interface Props {
@@ -14,9 +14,9 @@ interface Props {
 
 function JobWinners({ job }: Props) {
   const [isJobLoading, setIsJobLoading] = useState(true);
-  const [submissions, setSubmissions] = useState<SubmissionWithUser[]>([]);
+  const [submissions, setSubscribes] = useState<SubscribeWithUser[]>([]);
 
-  const getSubmissions = async (id?: string) => {
+  const getSubscribes = async (id?: string) => {
     setIsJobLoading(true);
     try {
       const submissionsDetails = await axios.get(
@@ -25,13 +25,13 @@ function JobWinners({ job }: Props) {
       const { data } = submissionsDetails;
       const winners = sortRank(
         data.map(
-          (submission: SubmissionWithUser) => submission.winnerPosition || ''
+          (submission: SubscribeWithUser) => submission.winnerPosition || ''
         )
       );
-      const sortedSubmissions = winners.map((position) =>
-        data.find((d: SubmissionWithUser) => d.winnerPosition === position)
+      const sortedSubscribes = winners.map((position) =>
+        data.find((d: SubscribeWithUser) => d.winnerPosition === position)
       );
-      setSubmissions(sortedSubmissions);
+      setSubscribes(sortedSubscribes);
       setIsJobLoading(false);
     } catch (e) {
       setIsJobLoading(false);
@@ -39,7 +39,7 @@ function JobWinners({ job }: Props) {
   };
 
   useEffect(() => {
-    getSubmissions();
+    getSubscribes();
   }, []);
 
   if (isJobLoading || !submissions.length) {
@@ -103,12 +103,12 @@ function JobWinners({ job }: Props) {
                     <Image
                       boxSize="72px"
                       borderRadius="full"
-                      alt={`${submission?.user?.firstname} ${submission?.user?.lastname}`}
+                      alt={`${submission?.user?.firstName} ${submission?.user?.lastName}`}
                       src={submission?.user?.photo}
                     />
                   ) : (
                     <Avatar
-                      name={`${submission?.user?.firstname} ${submission?.user?.lastname}`}
+                      name={`${submission?.user?.firstName} ${submission?.user?.lastName}`}
                       colors={['#92A1C6', '#F0AB3D', '#C271B4']}
                       size={72}
                       variant="marble"
@@ -118,7 +118,7 @@ function JobWinners({ job }: Props) {
                     fontSize="sm"
                     fontWeight={600}
                     textAlign={'center'}
-                  >{`${submission?.user?.firstname} ${submission?.user?.lastname}`}</Text>
+                  >{`${submission?.user?.firstName} ${submission?.user?.lastName}`}</Text>
                   <Text
                     fontSize="xs"
                     fontWeight={300}

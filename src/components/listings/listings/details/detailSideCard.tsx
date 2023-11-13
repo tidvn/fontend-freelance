@@ -15,7 +15,6 @@ import {
   Tr,
   VStack,
 } from '@chakra-ui/react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import type { UseMutationResult } from '@tanstack/react-query';
 import moment from 'moment';
 import Countdown from 'react-countdown';
@@ -24,7 +23,7 @@ import { tokenList } from '../../../../constants';
 import type { PrizeListType } from '../../../../interface/listings';
 import { userStore } from '../../../../store/user';
 import { VerticalStep } from '../../../misc/steps';
-import { SubmissionModal } from '../../../modals/submissionModal';
+import { SubscribeModal } from '../../../modals/submissionModal';
 
 interface Props {
   total: number;
@@ -72,7 +71,7 @@ export const DetailSideCard = ({
   return (
     <>
       {submissionisOpen && (
-        <SubmissionModal
+        <SubscribeModal
           eligibility={eligibility as string}
           questions={questions}
           SubmssionMutation={SubmssionMutation}
@@ -308,7 +307,7 @@ export const DetailSideCard = ({
                   {submissionNumber}
                 </Text>
               </Flex>
-              <Text color={'#94A3B8'}>Submissions</Text>
+              <Text color={'#94A3B8'}>Subscribes</Text>
             </Flex>
             <Flex
               align={'start'}
@@ -348,7 +347,7 @@ export const DetailSideCard = ({
               submissiononOpen();
             }}
           >
-            Submit Now
+            Apply Now
           </Button>
         </VStack>
         <VStack
@@ -364,7 +363,7 @@ export const DetailSideCard = ({
             sublabel={'Give your best shot'}
             currentStep={submissionStatus + 1}
             thisStep={1}
-            label={'Submission Open'}
+            label={'Subscribe Open'}
           />
 
           <Divider
@@ -377,8 +376,8 @@ export const DetailSideCard = ({
           <VerticalStep
             currentStep={submissionStatus + 1}
             thisStep={2}
-            label={'Submission Review'}
-            sublabel={'Listings being assessed'}
+            label={'Subscribe Review'}
+            sublabel={'Jobs being assessed'}
           />
           <Divider
             h={10}

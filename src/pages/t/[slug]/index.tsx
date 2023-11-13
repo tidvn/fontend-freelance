@@ -26,11 +26,11 @@ import { AddProject } from '@/components/Form/AddProject';
 import ShareIcon from '@/components/misc/shareIcon';
 import { ShareProfile } from '@/components/modals/shareProfile';
 import PowCard from '@/components/ProfileFeed/powCard';
-import SubmissionCard from '@/components/ProfileFeed/submissionCard';
+import SubscribeCard from '@/components/ProfileFeed/submissionCard';
 import ErrorSection from '@/components/shared/EmptySection';
 import LoadingSection from '@/components/shared/LoadingSection';
 import type { PoW } from '@/interface/pow';
-import type { SubmissionWithUser } from '@/interface/submission';
+import type { SubscribeWithUser } from '@/interface/subscribes';
 import type { User } from '@/interface/user';
 import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
@@ -130,7 +130,7 @@ function TalentProfile({ slug }: TalentProps) {
   ];
 
   const winnerCount =
-    talent?.Submission?.filter((sub) => sub.isWinner).length ?? 0;
+    talent?.Subscribe?.filter((sub) => sub.isWinner).length ?? 0;
 
   const router = useRouter();
 
@@ -139,15 +139,15 @@ function TalentProfile({ slug }: TalentProps) {
   };
 
   const combinedAndSortedFeed = useMemo(() => {
-    const submissions = talent?.Submission ?? [];
+    const submissions = talent?.Subscribe ?? [];
     const pows = talent?.PoW ?? [];
-    const typedSubmissions = submissions.map((s) => ({
+    const typedSubscribes = submissions.map((s) => ({
       ...s,
       type: 'submission',
     }));
     const typedPows = pows.map((p) => ({ ...p, type: 'pow' }));
 
-    return [...typedSubmissions, ...typedPows].sort((a, b) => {
+    return [...typedSubscribes, ...typedPows].sort((a, b) => {
       const dateA = new Date(a.created_at ?? 0).getTime();
       const dateB = new Date(b.created_at ?? 0).getTime();
 
@@ -501,11 +501,11 @@ function TalentProfile({ slug }: TalentProps) {
                     </Text>
                   </Flex>
                   <Flex direction={'column'}>
-                    <Text fontWeight={600}>{talent?.Submission?.length || 0}</Text>
+                    <Text fontWeight={600}>{talent?.Subscribe?.length || 0}</Text>
                     <Text color={'brand.slate.500'} fontWeight={500}>
-                      {talent?.Submission?.length === 1
-                        ? 'Submission'
-                        : 'Submissions'}
+                      {talent?.Subscribe?.length === 1
+                        ? 'Subscribe'
+                        : 'Subscribes'}
                     </Text>
                   </Flex>
                   <Flex direction={'column'}>
@@ -627,9 +627,9 @@ function TalentProfile({ slug }: TalentProps) {
                   filteredFeed.map((item, index) => {
                     if (item.type === 'submission') {
                       return (
-                        <SubmissionCard
+                        <SubscribeCard
                           key={index}
-                          sub={item as SubmissionWithUser}
+                          sub={item as SubscribeWithUser}
                           talent={talent}
                         />
                       );

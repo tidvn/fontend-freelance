@@ -20,9 +20,8 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import { useAlert } from "@/context/AlertContext";
-import axios from "axios";
 import { useRouter } from "next/router";
-import { BACKEND_URL } from "@/env";
+import axios from "@/lib/axios";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -41,7 +40,7 @@ export default function SignupCard() {
     },
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(BACKEND_URL + "/api/register", values, {
+        const res = await axios.post("/api/register", values, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

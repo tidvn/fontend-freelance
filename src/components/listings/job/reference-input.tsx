@@ -38,14 +38,14 @@ export const ReferenceCard = ({
       });
     });
 
-    const isValid = isValidHttpUrl(newLink);
-    if (!isValid) {
-      setErrorState('Link URL needs to contain "https://" prefix');
-      setReferenceError(true);
-    } else {
-      setErrorState(null);
-      setReferenceError(false);
-    }
+    // const isValid = isValidHttpUrl(newLink);
+    // if (!isValid) {
+    //   setErrorState('Link URL needs to contain "https://" prefix');
+    //   setReferenceError(true);
+    // } else {
+    //   setErrorState(null);
+    //   setReferenceError(false);
+    // }
   };
 
   return (

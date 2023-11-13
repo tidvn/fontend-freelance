@@ -43,8 +43,8 @@ interface Listings {
   status: JobStatus;
   slug: string;
   winner?: Winner[];
-  submission?: SubmissionType[];
-  subscribe?: SubscribeType[];
+  submission?: SubscribeType[];
+  subscribe?: SubscribesType[];
   Questions?: Questions;
   company?: CompanyType;
   rewards?: Partial<PrizeListType>;
@@ -96,7 +96,7 @@ interface DraftType {
   payments?: string;
   question?: string;
 }
-interface SubmissionType {
+interface SubscribeType {
   id: string;
   image: string;
   likes: string;
@@ -107,7 +107,7 @@ interface SubmissionType {
   Talent?: Talent;
 }
 
-interface SubscribeType {
+interface SubscribesType {
   id?: string;
   talentId: string;
   jobsId: string;
@@ -121,7 +121,7 @@ export type {
   GrantsBasicType,
   GrantsType,
   PrizeListType,
-  SubmissionType,
   SubscribeType,
+  SubscribesType,
   Winner,
 };

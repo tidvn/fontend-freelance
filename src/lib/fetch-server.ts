@@ -1,46 +1,43 @@
-import { authOptions } from "@/lib/auth";
+import axios from "axios";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import "server-only";
+import { authOptions } from "./auth";
+import { BACKEND_URL } from "@/env";
 
-interface fetchServerProps {
-  method?: string;
-  url: string;
-  body?: string;
-}
-
-async function fetchServer({ method = "GET", url, body = "" }: fetchServerProps) {
+const fetchServer = async ({ method = "GET", url, body = "" }: any) => {
   try {
-    const session : any = await getServerSession(authOptions);
+    const session: any = await getServerSession(authOptions);
+    const accessToken = session?.accessToken;
 
-    const response = await fetch(url.toString(), {
+    const response = await axios({
       method: method,
+      url: BACKEND_URL+ url.toString(),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer" + session?.accessToken,
+        Authorization: `Bearer${accessToken}`,
       },
-      body: body || undefined,
+      data: body || undefined,
     });
 
-    if (!response.ok) {
-      throw response;
+    if (!response) {
+      throw new Error("Empty response");
     }
 
     return response;
   } catch (error) {
-    if (error instanceof Response) {
-      if (error.status === 401) {
+    if (axios.isAxiosError(error)) {
+      if (error?.response?.status === 401) {
         return redirect("/login");
       }
 
-      if (error.status === 409) {
+      if (error?.response?.status === 409) {
         return redirect("/request-email-verification");
       }
     }
 
     throw new Error("Failed to fetch data from the server", { cause: error });
   }
-}
+};
 
 export default fetchServer;
