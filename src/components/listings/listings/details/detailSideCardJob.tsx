@@ -101,7 +101,7 @@ function DetailSideCard({
         method:"Get",
         endpoint:`/api/jobs/check_subscribe?jobId=${id}`
       })
-      console.log(subscribeDetails)
+     
       // const subscribeDetails = await axios.get(``, {
       //   params: {
       //     userId: userInfo?.id,

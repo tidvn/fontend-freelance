@@ -21,7 +21,7 @@ interface Listings {
 
 const HomePage: NextPage = () => {
   const [isListingsLoading, setIsListingsLoading] = useState(true);
-  const [jobs, setBounties] = useState<{ jobs: Job[] }>({
+  const [jobs, setJobs] = useState<{ jobs: Job[] }>({
     jobs: [],
   });
   const [listings, setListings] = useState<Listings>({
@@ -36,7 +36,7 @@ const HomePage: NextPage = () => {
       ;
 
       setListings(listingsData.data);
-      setBounties(jobData.data);
+      setJobs(jobData.data);
       setIsListingsLoading(false);
     } catch (e) {
       console.log(e);
@@ -170,7 +170,7 @@ const HomePage: NextPage = () => {
           </Link>
         </Box>
 
-        <ListingSection
+        {/* <ListingSection
           type="grants"
           title="Grants"
           sub="Equity-free funding opportunities for builders"
@@ -189,12 +189,12 @@ const HomePage: NextPage = () => {
               />
             </Flex>
           )}
-          {/* {!isListingsLoading &&
+          {!isListingsLoading &&
             listings?.grants?.map((grant) => {
               return (
                 <GrantsCard
-                  sponsorName={grant?.sponsor?.name}
-                  logo={grant?.sponsor?.logo}
+                  companyName={grant?.company?.name}
+                  logo={grant?.company?.logo}
                   key={grant?.id}
                   slug={grant.slug}
                   rewardAmount={grant?.rewardAmount}
@@ -202,8 +202,8 @@ const HomePage: NextPage = () => {
                   short_description={grant?.shortDescription}
                 />
               );
-            })} */}
-        </ListingSection>
+            })} 
+        </ListingSection> */}
       </Box>
     </Home>
   );

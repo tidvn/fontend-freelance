@@ -20,24 +20,24 @@ function EditJob({ slug }: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query;
 
-  let bountyData;
+  let jobData;
   try {
-    // const bountyDetails = await fetchServer({
+    // const jobDetails = await fetchServer({
     //   method: "GET",
     //   endpoint: `/api/getjob?slug=${slug}`,
     // });
-    // const bountyDetails = await axios.get(`${BACKEND_URL}/api/getjob?slug=${slug}`) || null;
+    // const jobDetails = await axios.get(`${BACKEND_URL}/api/getjob?slug=${slug}`) || null;
 
-    // bountyDetails = null;
-    // bountyData = bountyDetails.data;
+    // jobDetails = null;
+    // jobData = jobDetails.data;
   } catch (e:any) {
     console.error(e.message);
-    bountyData = null;
+    jobData = null;
   }
 
   return {
     props: {
-      bounty: bountyData,
+      job: jobData,
     },
   };
 };

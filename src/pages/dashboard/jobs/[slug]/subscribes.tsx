@@ -111,9 +111,7 @@ function JobSubscribes({ slug }: Props) {
       });
 
       setJob(jobDetails.data.data[0]);
-      // if (jobDetails.data.data[0].companyId !== userInfo?.currentCompanyId) {
-      //   router.push("/dashboard/jobs");
-      // }
+
       getSubscribes(jobDetails.data.data[0]);
       const ranks = sortRank(Object.keys(jobDetails.data.rewards || {}));
       setRewards(ranks);
@@ -156,7 +154,7 @@ function JobSubscribes({ slug }: Props) {
                   <BreadcrumbLink color="brand.slate.400">
                     <Flex align="center">
                       <ChevronLeftIcon mr={1} w={6} h={6} />
-                      Bounties
+                      Jobs
                     </Flex>
                   </BreadcrumbLink>
                 </NextLink>

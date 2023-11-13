@@ -6,24 +6,25 @@ import {
   Textarea,
   useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { GoCommentDiscussion } from 'react-icons/go';
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { GoCommentDiscussion } from "react-icons/go";
 
-import ErrorInfo from '@/components/shared/ErrorInfo';
-import Loading from '@/components/shared/Loading';
-import UserAvatar from '@/components/shared/UserAvatar';
-import WarningModal from '@/components/shared/WarningModal';
-import type { Comment } from '@/interface/comments';
-import { userStore } from '@/store/user';
-import { dayjs } from '@/utils/dayjs';
-import { getURL } from '@/utils/validUrl';
+import ErrorInfo from "@/components/shared/ErrorInfo";
+import Loading from "@/components/shared/Loading";
+import UserAvatar from "@/components/shared/UserAvatar";
+import WarningModal from "@/components/shared/WarningModal";
+import type { Comment } from "@/interface/comments";
+import { userStore } from "@/store/user";
+import { dayjs } from "@/utils/dayjs";
+import { getURL } from "@/utils/validUrl";
+import fetchClient from "@/lib/fetch-client";
+import axios from "@/lib/axios";
 
 interface Props {
   refId: string;
-  refType: 'JOB';
+  refType: "JOB";
 }
 export const Comments = ({ refId, refType }: Props) => {
   const { userInfo } = userStore();
@@ -33,34 +34,24 @@ export const Comments = ({ refId, refType }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [newCommentLoading, setNewCommentLoading] = useState(false);
   const [newCommentError, setNewCommentError] = useState(false);
   const addNewComment = async () => {
     setNewCommentLoading(true);
     setNewCommentError(false);
     try {
-      const newCommentData = await axios.post(`/api/comment/create`, {
-        authorId: userInfo?.id,
-        message: newComment,
-        listingType: refType,
-        listingId: refId,
+      const newCommentData = await fetchClient({
+        method: "POST",
+        endpoint: "/api/comment/create",
+        body: JSON.stringify({
+          message: newComment,
+          jobId: refId,
+        }),
       });
-      // if (refType === 'JOB') {
-      //   if (router.asPath.includes('submission')) {
-      //     await axios.post(`/api/email/manual/commentSubscribe`, {
-      //       userId: userInfo?.id,
-      //       submissionId: router.query.subid,
-      //     });
-      //   } else {
-      //     await axios.post(`/api/email/manual/comment`, {
-      //       id: refId,
-      //       userId: userInfo?.id,
-      //     });
-      //   }
-      // }
+
       setComments((prevComments) => [newCommentData.data, ...prevComments]);
-      setNewComment('');
+      setNewComment("");
       setNewCommentLoading(false);
     } catch (e) {
       setNewCommentError(true);
@@ -71,11 +62,10 @@ export const Comments = ({ refId, refType }: Props) => {
   const getComments = async (skip = 0) => {
     setIsLoading(true);
     try {
-      const commentsData = await axios.get(`/api/comment/${refId}`, {
-        params: {
-          skip,
-        },
-      });
+      const commentsData = await axios.get(
+        `/api/comment?jobId=${refId}&skip=${skip}`
+      );
+      // setComments([]);
       setComments([...comments, ...commentsData.data]);
     } catch (e) {
       setError(true);
@@ -97,7 +87,6 @@ export const Comments = ({ refId, refType }: Props) => {
       addNewComment();
     }
   };
-
   if (isLoading && !comments?.length) return <Loading />;
 
   if (error) return <ErrorInfo />;
@@ -108,39 +97,38 @@ export const Comments = ({ refId, refType }: Props) => {
         <WarningModal
           isOpen={isOpen}
           onClose={onClose}
-          title={'Complete your profile'}
+          title={"Complete your profile"}
           bodyText={
-            'Please complete your profile before commenting on the job.'
+            "Please complete your profile before commenting on the job."
           }
-          primaryCtaText={'Complete Profile'}
-          primaryCtaLink={'/new/talent'}
+          primaryCtaText={"Complete Profile"}
+          primaryCtaLink={"/new/talent"}
         />
       )}
       <VStack
-        align={'start'}
+        align={"start"}
         gap={3}
-        w={'full'}
+        w={"full"}
         pb={5}
-        bg={'#FFFFFF'}
-        rounded={'xl'}
+        bg={"#FFFFFF"}
+        rounded={"xl"}
       >
-        
-        <HStack w={'full'} pt={4} px={6}>
-          <GoCommentDiscussion fontWeight={600} fontSize={'1.5rem'} />
+        <HStack w={"full"} pt={4} px={6}>
+          <GoCommentDiscussion fontWeight={600} fontSize={"1.5rem"} />
           <HStack>
-            <Text color={'#64758B'} fontSize={'1.1rem'} fontWeight={600}>
+            <Text color={"#64758B"} fontSize={"1.1rem"} fontWeight={600}>
               {comments?.length ?? 0}
             </Text>
-            <Text color={'#64758B'} fontSize={'1.1rem'} fontWeight={400}>
-              {comments?.length === 1 ? 'Comment' : 'Comments'}
+            <Text color={"#64758B"} fontSize={"1.1rem"} fontWeight={400}>
+              {comments?.length === 1 ? "Comment" : "Comments"}
             </Text>
           </HStack>
         </HStack>
-        <VStack w={'full'} px={6}>
+        <VStack w={"full"} px={6}>
           <Textarea
             borderColor="brand.slate.300"
             _placeholder={{
-              color: 'brand.slate.300',
+              color: "brand.slate.300",
             }}
             focusBorderColor="brand.purple"
             onChange={(e) => {
@@ -154,7 +142,7 @@ export const Comments = ({ refId, refType }: Props) => {
               Error in adding your comment! Please try again!
             </Text>
           )}
-          <Flex justify={'end'} w="full">
+          <Flex justify={"end"} w="full">
             <Button
               isDisabled={!!newCommentLoading || !newComment}
               isLoading={!!newCommentLoading}
@@ -169,38 +157,38 @@ export const Comments = ({ refId, refType }: Props) => {
         {comments?.map((comment: any) => {
           const date = dayjs(comment?.updatedAt).fromNow();
           return (
-            <HStack key={comment.id} align={'start'} px={6}>
+            <HStack key={comment.id} align={"start"} px={6}>
               <Flex
                 minW="32px"
                 minH="32px"
-                cursor={'pointer'}
+                cursor={"pointer"}
                 onClick={() => {
                   const url = `${getURL()}t/${comment?.author?.username}`;
-                  window.open(url, '_blank', 'noopener,noreferrer');
+                  window.open(url, "_blank", "noopener,noreferrer");
                 }}
               >
                 <UserAvatar user={comment?.author} />
               </Flex>
 
-              <VStack align={'start'}>
+              <VStack align={"start"}>
                 <HStack>
                   <Text
                     color="brand.slate.800"
                     fontSize="sm"
                     fontWeight={600}
-                    cursor={'pointer'}
+                    cursor={"pointer"}
                     onClick={() => {
                       const url = `${getURL()}t/${comment?.author?.username}`;
-                      window.open(url, '_blank', 'noopener,noreferrer');
+                      window.open(url, "_blank", "noopener,noreferrer");
                     }}
                   >
-                    {`${comment?.author?.firstName} ${comment?.author?.lastName}`}
+                    {`${comment?.author?.firstname} ${comment?.author?.lastname}`}
                   </Text>
                   <Text color="brand.slate.500" fontSize="sm">
                     {date}
                   </Text>
                 </HStack>
-                <Text mt={'0px !important'} color="brand.slate.800">
+                <Text mt={"0px !important"} color="brand.slate.800">
                   {comment?.message}
                 </Text>
               </VStack>

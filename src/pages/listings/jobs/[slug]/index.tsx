@@ -6,14 +6,13 @@ import { useEffect, useState } from "react";
 
 import { jobSnackbarAtom } from "@/components/Header/JobSnackbar";
 import JobWinners from "@/components/listings/job/JobWinners";
-// import { Comments } from "@/components/listings/listings/comments";
+import { Comments } from "@/components/listings/listings/comments";
 import DetailDescription from "@/components/listings/listings/details/detailDescriptionJob";
 import DetailSideCard from "@/components/listings/listings/details/detailSideCardJob";
 import ListingHeader from "@/components/listings/listings/ListingHeaderJob";
 import ErrorSection from "@/components/shared/ErrorSection";
 import type { Job } from "@/interface/job";
 import { Default } from "@/layouts/Default";
-import { getURL } from "@/utils/validUrl";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import axios from "@/lib/axios";
@@ -22,17 +21,16 @@ function JobDetails() {
   const fetchJob = (url: string) => axios.get(url).then((res) => res.data);
   const router = useRouter();
   const { slug } = router.query;
-
-  const [submissionNumber, setSubscribeNumber] = useState<number>(0);
-
   const { data: job } = useSWR(
     slug ? `/api/getjob?slug=${slug}` : "",
     fetchJob
   );
+  const [submissionNumber, setSubscribeNumber] = useState<number>(0);
+
   const getSubscribesCount = async () => {
     try {
       const submissionCountDetails = await axios.get(
-        `/api/getjob/count_subscribe ?jobid=${job?.id}`
+        `/api/getjob/count_subscribe?jobid=${job?.id}`
       );
       setSubscribeNumber(submissionCountDetails?.data || 0);
     } catch (e) {
@@ -124,7 +122,7 @@ function JobDetails() {
                     skills={job?.skills?.map((e:any) => e.skills) ?? []}
                     description={job?.description}
                   />
-                  {/* <Comments refId={job?.id ?? ""} refType="JOB" /> */}
+                  <Comments refId={job?.id ?? ""} refType="JOB" />
                 </VStack>
                 <DetailSideCard
                   jobtitle={job.title ?? ""}
