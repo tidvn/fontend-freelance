@@ -1,34 +1,34 @@
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from "@chakra-ui/react";
 // import { Regions } from '@prisma/client';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
-import type { JobBasicType } from '@/components/listings/job/Createjob';
-import { CreateJob } from '@/components/listings/job/Createjob';
+import type { JobBasicType } from "@/components/listings/job/Createjob";
+import { CreateJob } from "@/components/listings/job/Createjob";
 import type {
   Ques,
   QuestionType,
-} from '@/components/listings/job/questions/builder';
-import { CreateGrants } from '@/components/listings/grants/CreateGrants';
-import Template from '@/components/listings/templates/template';
-import { SuccessListings } from '@/components/modals/successListings';
-import ErrorSection from '@/components/shared/ErrorSection';
-import type { MultiSelectOptions } from '@/constants';
-import type { Job, References } from '@/interface/job';
-import type { GrantsBasicType } from '@/interface/listings';
-import FormLayout from '@/layouts/FormLayout';
-import { userStore } from '@/store/user';
-import { getJobDraftStatus } from '@/utils/job';
-import { dayjs } from '@/utils/dayjs';
-import { mergeSkills, splitSkills } from '@/utils/skills';
-import fetchClient from '@/lib/fetch-client';
+} from "@/components/listings/job/questions/builder";
+import { CreateGrants } from "@/components/listings/grants/CreateGrants";
+import Template from "@/components/listings/templates/template";
+import { SuccessListings } from "@/components/modals/successListings";
+import ErrorSection from "@/components/shared/ErrorSection";
+import type { MultiSelectOptions } from "@/constants";
+import type { Job, References } from "@/interface/job";
+import type { GrantsBasicType } from "@/interface/listings";
+import FormLayout from "@/layouts/FormLayout";
+import { userStore } from "@/store/user";
+import { getJobDraftStatus } from "@/utils/job";
+import { dayjs } from "@/utils/dayjs";
+import { mergeSkills, splitSkills } from "@/utils/skills";
+import fetchClient from "@/lib/fetch-client";
 
 interface Props {
   job?: Job;
   isEditMode?: boolean;
-  type: 'open' | 'permissioned';
+  type: "open" | "permissioned";
 }
 
 function CreateListing({ job, isEditMode = false, type }: Props) {
@@ -39,16 +39,16 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
   // Description - 3
   // payment form - 4
   const [steps, setSteps] = useState<number>(isEditMode ? 2 : 1);
-  const [listingType, setListingType] = useState('BOUNTY');
+  const [listingType, setListingType] = useState("BOUNTY");
   const [draftLoading, setDraftLoading] = useState<boolean>(false);
-  const [jobRequirements, setJobRequirements] = useState<
-    string | undefined
-  >(isEditMode ? job?.requirements : undefined);
+  const [jobRequirements, setJobRequirements] = useState<string | undefined>(
+    isEditMode ? job?.requirements : undefined
+  );
   const [editorData, setEditorData] = useState<string | undefined>(
     isEditMode ? job?.description : undefined
   );
   const [regions, setRegions] = useState<any>(
-    isEditMode ? job?.region || `GLOBAL`: `GLOBAL`
+    isEditMode ? job?.region || `GLOBAL` : `GLOBAL`
   );
   const skillsInfo = isEditMode ? splitSkills(job?.skills || []) : undefined;
   const [mainSkills, setMainSkills] = useState<MultiSelectOptions[]>(
@@ -57,7 +57,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
   const [subSkill, setSubSkill] = useState<MultiSelectOptions[]>(
     isEditMode ? skillsInfo?.subskills || [] : []
   );
-  const [slug, setSlug] = useState<string>('');
+  const [slug, setSlug] = useState<string>("");
 
   const { isOpen, onOpen } = useDisclosure();
 
@@ -87,14 +87,12 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
     title: isEditMode ? job?.title || undefined : undefined,
     deadline:
       isEditMode && job?.deadline
-        ? dayjs(job?.deadline).format('YYYY-MM-DDTHH:mm') || undefined
+        ? dayjs(job?.deadline).format("YYYY-MM-DDTHH:mm") || undefined
         : undefined,
     templateId: isEditMode ? job?.templateId || undefined : undefined,
     pocSocials: isEditMode ? job?.pocSocials || undefined : undefined,
-    applicationType: isEditMode ? job?.applicationType || 'fixed' : 'fixed',
-    timeToComplete: isEditMode
-      ? job?.timeToComplete || undefined
-      : undefined,
+    applicationType: isEditMode ? job?.applicationType || "fixed" : "fixed",
+    timeToComplete: isEditMode ? job?.timeToComplete || undefined : undefined,
   });
   const [jobPayment, setJobPayment] = useState({
     rewardAmount: isEditMode ? job?.rewardAmount || 0 : 0,
@@ -118,7 +116,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
         deadline: jobbasic?.deadline
           ? new Date(jobbasic?.deadline).toISOString()
           : undefined,
-        description: editorData || '',
+        description: editorData || "",
         type,
         pocSocials: jobbasic?.pocSocials,
         region: regions,
@@ -142,8 +140,9 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
       const result = await fetchClient({
         method: "POST",
         endpoint: "/api/jobs/create/",
-        body: JSON.stringify(newJob)
-      })
+        body: JSON.stringify(newJob),
+      });
+
       console.log(result?.data.id);
       setSlug(`/jobs/${result?.data?.slug}/`);
       onOpen();
@@ -155,9 +154,9 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
 
   const createDraft = async () => {
     setDraftLoading(true);
-    let api = '/api/jobs/create/';
+    let api = "/api/jobs/create/";
     if (isEditMode) {
-      api = `/api/jobs/update/${job?.id}/`;
+      api = `/api/jobs/update/`;
     }
     let draft: Job = {
       companyId: userInfo?.currentCompany?.id ?? 0,
@@ -170,7 +169,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
       deadline: jobbasic?.deadline
         ? new Date(jobbasic?.deadline).toISOString()
         : undefined,
-      description: editorData || '',
+      description: editorData || "",
       eligibility: (questions || []).map((q) => ({
         question: q.question,
         order: q.order,
@@ -186,16 +185,24 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
       ...jobPayment,
     };
     try {
-      await axios.post(api, {
-        ...draft,
-        isPublished: isEditMode ? job?.isPublished : false,
+      const result = await fetchClient({
+        method: "POST",
+        endpoint: api,
+        body: JSON.stringify({
+          jobId: job?.id,
+          data: {
+            ...draft,
+            isPublished: isEditMode ? job?.isPublished : false,
+          },
+        }),
       });
+
       // if (isEditMode) {
       //   await axios.post('/api/email/manual/jobUpdate', {
       //     id: job?.id,
       //   });
       // }
-      router.push('/dashboard/jobs');
+      router.push("/dashboard/jobs");
     } catch (e) {
       setDraftLoading(false);
     }
@@ -203,17 +210,14 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
 
   const newJob = job?.id === undefined;
 
-  const jobDraftStatus = getJobDraftStatus(
-    job?.status,
-    job?.isPublished
-  );
+  const jobDraftStatus = getJobDraftStatus(job?.status, job?.isPublished);
 
-  const isNewOrDraft = jobDraftStatus === 'DRAFT' || newJob === true;
+  const isNewOrDraft = jobDraftStatus === "DRAFT" || newJob === true;
 
   return (
     <>
       {!userInfo?.id ||
-      !(userInfo?.role === 'GOD' || !!userInfo?.currentCompanyId) ? (
+      !(userInfo?.role === "GOD" || !!userInfo?.currentCompanyId) ? (
         <ErrorSection
           title="Access is Forbidden!"
           message="Please contact support to access this section."
@@ -223,70 +227,70 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
           setStep={setSteps}
           currentStep={steps}
           stepList={
-            listingType !== 'BOUNTY'
+            listingType !== "BOUNTY"
               ? [
                   {
-                    label: 'Template',
+                    label: "Template",
                     number: 1,
-                    mainHead: 'List your Opportunity',
+                    mainHead: "List your Opportunity",
                     description:
                       'To save time, check out our ready made templates below. If you already have a listing elsewhere, use "Start from Scratch" and copy/paste your text.',
                   },
                   {
-                    label: 'Basics',
+                    label: "Basics",
                     number: 2,
-                    mainHead: 'Create a Listing',
+                    mainHead: "Create a Listing",
                     description: `Now let's learn a bit more about the work you need completed`,
                   },
                   {
-                    label: 'Description',
+                    label: "Description",
                     number: 3,
-                    mainHead: 'Tell us some more',
+                    mainHead: "Tell us some more",
                     description:
-                      'Add more details about the opportunity, submission requirements, reward(s) details, and resources',
+                      "Add more details about the opportunity, submission requirements, reward(s) details, and resources",
                   },
                   {
-                    label: 'Reward',
+                    label: "Reward",
                     number: 4,
-                    mainHead: 'Add the reward amount',
+                    mainHead: "Add the reward amount",
                     description:
-                      'Decide the compensation amount for your listing',
+                      "Decide the compensation amount for your listing",
                   },
                 ]
               : [
                   {
-                    label: 'Template',
+                    label: "Template",
                     number: 1,
-                    mainHead: 'List your Opportunity',
+                    mainHead: "List your Opportunity",
                     description:
                       'To save time, check out our ready made templates below. If you already have a listing elsewhere, use "Start from Scratch" and copy/paste your text.',
                   },
                   {
-                    label: 'Basics',
+                    label: "Basics",
                     number: 2,
-                    mainHead: 'Create a Listing',
+                    mainHead: "Create a Listing",
                     description: `Now let's learn a bit more about the work you need completed`,
                   },
                   {
-                    label: 'Description',
+                    label: "Description",
                     number: 3,
-                    mainHead: 'Tell us some more',
+                    mainHead: "Tell us some more",
                     description:
-                      'Add more details about the opportunity, submission requirements, reward(s) details, and resources',
+                      "Add more details about the opportunity, submission requirements, reward(s) details, and resources",
                   },
                   {
-                    label: 'Questions',
+                    label: "Questions",
                     number: 4,
-                    mainHead: 'Enter your questions',
+                    mainHead: "Enter your questions",
                     description:
-                      'What would you like to know about your applicants?',
+                      "What would you like to know about your applicants?",
                   },
                   {
-                    label: 'Reward',
+                    label: "Reward",
                     number: 5,
-                    mainHead: 'Add the reward amount',
+                    mainHead: "Add the reward amount",
                     description:
-                      'Decide the compensation amount for your listing',
+                      "Decide the compensation amount for your listing",
                   },
                 ]
           }
@@ -305,7 +309,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
               type={type}
             />
           )}
-          {steps > 1 && listingType === 'BOUNTY' && (
+          {steps > 1 && listingType === "BOUNTY" && (
             <CreateJob
               type={type}
               regions={regions}
@@ -337,7 +341,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
               isNewOrDraft={isNewOrDraft}
             />
           )}
-          {steps > 1 && listingType === 'GRANT' && (
+          {steps > 1 && listingType === "GRANT" && (
             <CreateGrants
               createDraft={createDraft}
               onOpen={onOpen}

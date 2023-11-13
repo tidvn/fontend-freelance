@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { jobSnackbarAtom } from "@/components/Header/JobSnackbar";
 import JobWinners from "@/components/listings/job/JobWinners";
-import { Comments } from "@/components/listings/listings/comments";
+// import { Comments } from "@/components/listings/listings/comments";
 import DetailDescription from "@/components/listings/listings/details/detailDescriptionJob";
 import DetailSideCard from "@/components/listings/listings/details/detailSideCardJob";
 import ListingHeader from "@/components/listings/listings/ListingHeaderJob";
@@ -124,7 +124,7 @@ function JobDetails() {
                     skills={job?.skills?.map((e:any) => e.skills) ?? []}
                     description={job?.description}
                   />
-                  <Comments refId={job?.id ?? ""} refType="JOB" />
+                  {/* <Comments refId={job?.id ?? ""} refType="JOB" /> */}
                 </VStack>
                 <DetailSideCard
                   jobtitle={job.title ?? ""}

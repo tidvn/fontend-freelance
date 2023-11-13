@@ -42,10 +42,10 @@ const NAV_ITEMS: Array<NavItem> = [
         label: 'Development',
         href: '/all/Development/',
       },
-      {
-        label: 'HYPERDRIVE',
-        href: '/all/Hyperdrive/',
-      },
+      // {
+      //   label: 'HYPERDRIVE',
+      //   href: '/all/Hyperdrive/',
+      // },
     ],
   },
 ];
@@ -235,12 +235,12 @@ export default function WithSubnavigation() {
               }}
               src={'/images/logo/logo.png'}
             />
-            <NavLink
+            {/* <NavLink
               display={{ base: 'none', lg: 'flex' }}
               href="/all/jobs"
               label="List Jobs"
               isActive={router.asPath === '/all/jobs/'}
-            />
+            /> */}
 
             {/* <NavLink
               display={{ base: 'none', lg: 'flex' }}

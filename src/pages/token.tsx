@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Default
         meta={
-          <Meta title="NFT" description="" />
+          <Meta title="" description="" />
         }
       >
         <CallToActionWithVideo/>

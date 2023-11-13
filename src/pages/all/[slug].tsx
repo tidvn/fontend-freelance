@@ -10,20 +10,17 @@ import {
 import EmptySection from '@/components/shared/EmptySection';
 import Loading from '@/components/shared/Loading';
 import type { Job } from '@/interface/job';
-import type { Grant } from '@/interface/grant';
 import Home from '@/layouts/Home';
 import axios from '@/lib/axios';
 
 interface Listings {
-  bounties?: Job[];
-  grants?: Grant[];
+  jobs?: Job[];
 }
 
 function ListingCategoryPage({ slug }: { slug: string }) {
   const [isListingsLoading, setIsListingsLoading] = useState(true);
   const [listings, setListings] = useState<Listings>({
-    bounties: [],
-    grants: [],
+    jobs: [],
   });
 
   const getListings = async () => {
@@ -61,16 +58,16 @@ function ListingCategoryPage({ slug }: { slug: string }) {
               <Loading />
             </Flex>
           )}
-          {!isListingsLoading && !listings?.bounties?.length && (
+          {!isListingsLoading && !listings?.jobs?.length && (
             <Flex align="center" justify="center" mt={8}>
               <EmptySection
-                title="No bounties available!"
-                message="Subscribe to notifications to get notified about new bounties."
+                title="No jobs available!"
+                message="Subscribe to notifications to get notified about new jobs."
               />
             </Flex>
           )}
           {!isListingsLoading &&
-            listings?.bounties?.map((job) => {
+            listings?.jobs?.map((job) => {
               return (
                 <JobsCard
                   slug={job?.slug}
@@ -87,41 +84,7 @@ function ListingCategoryPage({ slug }: { slug: string }) {
               );
             })}
         </ListingSection>
-        <ListingSection
-          type="grants"
-          title={`${slug} Grants`}
-          sub="Equity-free funding opportunities for builders"
-          emoji="/assets/home/emojis/grants.png"
-          all
-        >
-          {isListingsLoading && (
-            <Flex align="center" justify="center" direction="column" minH={52}>
-              <Loading />
-            </Flex>
-          )}
-          {!isListingsLoading && !listings?.grants?.length && (
-            <Flex align="center" justify="center" mt={8}>
-              <EmptySection
-                title="No grants available!"
-                message="Subscribe to notifications to get notified about new grants."
-              />
-            </Flex>
-          )}
-          {!isListingsLoading &&
-            listings?.grants?.map((grant) => {
-              return (
-                <GrantsCard
-                  companyName={grant?.company?.name}
-                  logo={grant?.company?.logo}
-                  key={grant?.id}
-                  slug={grant.slug}
-                  rewardAmount={grant?.rewardAmount}
-                  title={grant?.title}
-                  short_description={grant?.shortDescription}
-                />
-              );
-            })}
-        </ListingSection>
+        
       </Box>
     </Home>
   );
@@ -130,7 +93,7 @@ function ListingCategoryPage({ slug }: { slug: string }) {
 export async function getServerSideProps(context: NextPageContext) {
   const { slug } = context.query;
 
-  const validCategories = ['Design', 'Content', 'Development', 'Hyperdrive'];
+  const validCategories = ['Design', 'Content', 'Development', 'jobs'];
 
   if (!validCategories.includes(slug as string)) {
     return {
@@ -141,6 +104,6 @@ export async function getServerSideProps(context: NextPageContext) {
   return {
     props: { slug },
   };
-}
+} 
 
 export default ListingCategoryPage;

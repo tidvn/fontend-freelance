@@ -128,8 +128,13 @@ function Jobs() {
   const changeJobStatus = async (status: boolean) => {
     setIsChangingStatus(true);
     try {
-      const result = await axios.post(`/api/jobs/update/${job?.id}/`, {
-        isPublished: status,
+      const result = await fetchClient({
+        method: "POST",
+        endpoint: `/api/jobs/update`,
+        body: JSON.stringify({
+          jobId: job?.id,
+          data: { isPublished: status },
+        }),
       });
 
       const changedJobIndex = jobs.findIndex((b) => b.id === result.data.id);

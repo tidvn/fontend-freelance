@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -25,15 +24,18 @@ function EditJob({ slug }: Props) {
     try {
       const jobDetails = await fetchClient({
         method: "GET",
-        endpoint: `/api/jobs/?slug=${slug}/`,
+        endpoint: `/api/jobs?slug=${slug}`,
       });
+      console.log(jobDetails)
+      setJob(jobDetails.data.data[0]);
 
-      if (jobDetails.data.companyId !== userInfo?.currentCompanyId) {
-        router.push("/dashboard/jobs");
-      } else {
-        setJob(jobDetails.data);
-        setIsJobLoading(false);
-      }
+      setIsJobLoading(false);
+      // if (jobDetails.data.companyId !== userInfo?.currentCompanyId) {
+      //   // router.push("/dashboard/jobs");
+      // } else {
+      //   setJob(jobDetails.data);
+      //   setIsJobLoading(false);
+      // }
     } catch (e) {
       setIsJobLoading(false);
     }

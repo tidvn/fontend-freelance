@@ -1,4 +1,4 @@
-export const genNFT = () => {
+export const gen = () => {
   return `<svg
   width="565"
   height="783"

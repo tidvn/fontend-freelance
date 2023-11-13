@@ -163,15 +163,15 @@ import { tokenList } from '@/constants';
                     }
                   }}
                 >
-                  Win a job
+                  Earn money
                 </Text>
               ) : (
                 <Text color={'brand.purple'} fontSize={'md'} fontWeight={500}>
-                  Win a job
+                  Earn money
                 </Text>
               )}
               <Text color={'gray.500'} fontSize={'md'} fontWeight={500}>
-                and get your Proof-of-Work NFT
+                and get your Proof-of-Work 
               </Text>
             </Box>
           </VStack>
