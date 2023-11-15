@@ -20,11 +20,10 @@ import { TiTick } from 'react-icons/ti';
 import { tokenList } from '@/constants';
 import type { JobStatus } from '@/interface/job';
 import { dayjs } from '@/utils/dayjs';
-import { Mixpanel } from '@/utils/mixpanel';
 
-import { TalentStore } from '../../store/talent';
-import { userStore } from '../../store/user';
-import { updateNotification } from '../../utils/functions';
+import { TalentStore } from '@/store/talent';
+import { userStore } from '@/store/user';
+// import { updateNotification } from '@/utils/functions';
 import { EarningModal } from '../modals/earningModal';
 
 type ListingSectionProps = {
@@ -111,11 +110,7 @@ export const ListingSection = ({
                 ? `/${type}/${router?.query?.filter}/`
                 : `/${type}/`)
             }
-            onClick={() => {
-              Mixpanel.track('view_all', {
-                type: title,
-              });
-            }}
+            
           >
             <Button color="brand.slate.400" size="sm" variant="ghost">
               View All
@@ -136,11 +131,7 @@ export const ListingSection = ({
               ? `/${type}/${router?.query?.filter}/`
               : `/${type}/`)
           }
-          onClick={() => {
-            Mixpanel.track('view_all', {
-              type: title,
-            });
-          }}
+         
         >
           <Button
             w="100%"
@@ -197,12 +188,7 @@ export const JobsCard = ({
           bg: 'gray.100',
         }}
         href={`/listings/jobs/${slug}`}
-        onClick={() => {
-          Mixpanel.track('job_clicked', {
-            element: 'title',
-            'Job Title': title,
-          });
-        }}
+        
       >
         <Flex
           align="center"
@@ -226,12 +212,7 @@ export const JobsCard = ({
                 _hover={{
                   textDecoration: 'underline',
                 }}
-                onClick={() => {
-                  Mixpanel.track('job_clicked', {
-                    element: 'title',
-                    'Job Title': title,
-                  });
-                }}
+                
                 style={{
                   display: '-webkit-box',
                   WebkitLineClamp: 1,
@@ -349,12 +330,7 @@ export const GrantsCard = ({
           bg: 'gray.100',
         }}
         href={`/listings/grants/${slug}`}
-        onClick={() => {
-          Mixpanel.track('grant_clicked', {
-            element: 'title',
-            'Grant Title': title,
-          });
-        }}
+       
       >
         <Flex
           align="center"
@@ -510,12 +486,9 @@ export const CategoryBanner = ({ type }: { type: string }) => {
       setIsSubscribed(true);
     }
 
-    await updateNotification(`${userInfo?.id}`, updatedNotifications);
+    // await updateNotification(`${userInfo?.id}`, updatedNotifications);
 
-    Mixpanel.track(eventName, {
-      category: type,
-      name: `${talentInfo?.firstname} ${talentInfo?.lastname}`,
-    });
+    
 
     setLoading(false);
     toast.success(subscriptionMessage);

@@ -75,6 +75,11 @@ function Jobs() {
     onOpen: unpublishOnOpen,
     onClose: unpublishOnClose,
   } = useDisclosure();
+  const {
+    isOpen: closeJobIsOpen,
+    onOpen: closeJobOnOpen,
+    onClose: closeJobOnClose,
+  } = useDisclosure();
   const { userInfo } = userStore();
   const [totalJobs, setTotalJobs] = useState(0);
   const [jobs, setJobs] = useState<JobWithSubscribes[]>([]);
@@ -113,7 +118,14 @@ function Jobs() {
     if (userInfo?.currentCompanyId) {
       getJobs();
     }
-  }, [userInfo?.currentCompanyId, skip, searchText]);
+  }, [
+    userInfo?.currentCompanyId,
+    skip,
+    searchText,
+    unpublishIsOpen,
+    publishIsOpen,
+    closeJobIsOpen,
+  ]);
 
   const handlePublish = async (publishedJob: JobWithSubscribes) => {
     setJob(publishedJob);
@@ -123,6 +135,11 @@ function Jobs() {
   const handleUnpublish = async (unpublishedJob: JobWithSubscribes) => {
     setJob(unpublishedJob);
     unpublishOnOpen();
+  };
+
+  const handleClosejob = async (closedJob: JobWithSubscribes) => {
+    setJob(closedJob);
+    closeJobOnOpen();
   };
 
   const changeJobStatus = async (status: boolean) => {
@@ -146,6 +163,38 @@ function Jobs() {
       setJobs(newJobs);
       publishOnClose();
       unpublishOnClose();
+      closeJobOnClose();
+      setIsChangingStatus(false);
+    } catch (e) {
+    } finally {
+      setIsChangingStatus(false);
+    }
+  };
+  const closeJobHanlde = async (status: boolean) => {
+    setIsChangingStatus(true);
+    try {
+      if (status != false) {
+        return;
+      }
+      const result = await fetchClient({
+        method: "POST",
+        endpoint: `/api/jobs/update`,
+        body: JSON.stringify({
+          jobId: job?.id,
+          data: { status: "CLOSED" },
+        }),
+      });
+
+      const changedJobIndex = jobs.findIndex((b) => b.id === result.data.id);
+      const newJobs = jobs.map((b, index) =>
+        changedJobIndex === index
+          ? { ...b, isPublished: result.data.isPublished }
+          : b
+      );
+      setJobs(newJobs);
+      publishOnClose();
+      unpublishOnClose();
+      closeJobOnClose();
       setIsChangingStatus(false);
     } catch (e) {
       setIsChangingStatus(false);
@@ -214,6 +263,33 @@ function Jobs() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Modal isOpen={closeJobIsOpen} onClose={closeJobOnClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Close this Job?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text color="brand.slate.500">
+              you will not be able to undo this action
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={4} onClick={closeJobOnClose} variant="ghost">
+              No, Take me Back
+            </Button>
+            <Button
+              isLoading={isChangingStatus}
+              leftIcon={<ViewOffIcon />}
+              loadingText="Closing..."
+              onClick={() => closeJobHanlde(false)}
+              variant="solid"
+            >
+              Confirm
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Flex justify="between" mb={4}>
         <InputGroup w={52}>
           <Input
@@ -275,7 +351,7 @@ function Jobs() {
                   textAlign="center"
                   textTransform={"capitalize"}
                 >
-                  Deadline ↓
+                  Expires on
                 </Th>
                 <Th
                   color="brand.slate.400"
@@ -409,25 +485,28 @@ function Jobs() {
                             {jobProgress}
                           </Tag>
                         ) : (
-                          "-"
+                          <Tag
+                            color={"white"}
+                            bg={getBgColor(jobStatus)}
+                            wordBreak={"break-all"}
+                            variant="solid"
+                          >
+                            {jobStatus}
+                          </Tag>
                         )}
                       </Flex>
                     </Td>
                     <Td pl={0}>
-                      {currentJob.status === "OPEN" &&
-                        currentJob.isPublished && (
-                          <Button
-                            w="full"
-                            leftIcon={<AiOutlineOrderedList />}
-                            onClick={() =>
-                              handleViewSubscribes(currentJob.slug)
-                            }
-                            size="sm"
-                            variant="outline"
-                          >
-                            Subscribes
-                          </Button>
-                        )}
+                      <Button
+                        w="full"
+                        leftIcon={<AiOutlineOrderedList />}
+                        onClick={() => handleViewSubscribes(currentJob.slug)}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Subscribes
+                      </Button>
+
                       {currentJob.status === "OPEN" &&
                         !currentJob.isPublished && (
                           <Button
@@ -471,17 +550,26 @@ function Jobs() {
                               Edit Job
                             </MenuItem>
                           </NextLink>
-                          {!(
-                            currentJob.status === "OPEN" &&
-                            !currentJob.isPublished
-                          ) && (
+                          {currentJob.status === "OPEN" &&
+                            currentJob.isPublished && (
+                              <>
+                                <MenuDivider />
+                                <MenuItem
+                                  icon={<ViewOffIcon />}
+                                  onClick={() => handleUnpublish(currentJob)}
+                                >
+                                  Unpublish
+                                </MenuItem>
+                              </>
+                            )}
+                          {!(currentJob.status === "CLOSED") && (
                             <>
                               <MenuDivider />
                               <MenuItem
                                 icon={<ViewOffIcon />}
-                                onClick={() => handleUnpublish(currentJob)}
+                                onClick={() => handleClosejob(currentJob)}
                               >
-                                Unpublish
+                                Close Job
                               </MenuItem>
                             </>
                           )}

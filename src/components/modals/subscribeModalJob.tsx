@@ -21,7 +21,6 @@ import { useForm } from "react-hook-form";
 import { QuestionHandler } from "@/components/listings/job/questions/questionHandler";
 import type { Eligibility } from "@/interface/job";
 import { userStore } from "@/store/user";
-import { Mixpanel } from "@/utils/mixpanel";
 import fetchClient from "@/lib/fetch-client";
 
 interface Props {

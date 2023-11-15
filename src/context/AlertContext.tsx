@@ -41,7 +41,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
   }, [session]);
   
   const [isVisible, setIsVisible] = useState(false);
-  const [arlertData, setArlertData] = useState({
+  const [arlertData, setArlertData] = useState<any>({
     status: "",
     variant: "",
     message: "",
@@ -64,7 +64,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
     });
     setIsVisible(false);
   };
-  const alertStyle = {
+  const alertStyle:React.CSSProperties = {
     position: "fixed",
     top: "80px", // Điều chỉnh top để điều chỉnh vị trí theo yêu cầu của bạn
     right: "40px", // Điều chỉnh right để điều chỉnh vị trí theo yêu cầu của bạn

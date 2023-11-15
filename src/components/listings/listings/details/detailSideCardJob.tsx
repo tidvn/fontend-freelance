@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { ExternalLinkIcon, WarningIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon, WarningIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -18,20 +18,20 @@ import {
   Tr,
   useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import Countdown from 'react-countdown';
+} from "@chakra-ui/react";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import Countdown from "react-countdown";
 
-import { VerticalStep } from '@/components/misc/steps';
-import { SubscribeModal } from '@/components/modals/subscribeModalJob';
-import WarningModal from '@/components/shared/WarningModal';
-import { tokenList } from '@/constants/index';
-import type { Eligibility, Rewards } from '@/interface/job';
-import { userStore } from '@/store/user';
-import { BACKEND_URL } from '@/env';
-import fetchClient from '@/lib/fetch-client';
-import axios from '@/lib/axios';
+import { VerticalStep } from "@/components/misc/steps";
+import { SubscribeModal } from "@/components/modals/subscribeModalJob";
+import WarningModal from "@/components/shared/WarningModal";
+import { tokenList } from "@/constants/index";
+import type { Eligibility, Rewards } from "@/interface/job";
+import { userStore } from "@/store/user";
+import { BACKEND_URL } from "@/env";
+import fetchClient from "@/lib/fetch-client";
+import axios from "@/lib/axios";
 
 interface Props {
   id: string;
@@ -47,12 +47,13 @@ interface Props {
   questions?: string;
   eligibility?: Eligibility[];
   type?: string;
+  status: string;
   jobtitle: string;
   requirements?: string;
   isWinnersAnnounced?: boolean;
   hackathonPrize?: boolean;
   pocSocials?: string;
-  applicationType?: 'fixed' | 'rolling';
+  applicationType?: "fixed" | "rolling";
   timeToComplete?: string;
 }
 function DetailSideCard({
@@ -66,6 +67,7 @@ function DetailSideCard({
   jobtitle,
   requirements,
   type,
+  status,
   pocSocials,
   hackathonPrize,
   isWinnersAnnounced = false,
@@ -76,7 +78,7 @@ function DetailSideCard({
   const [isSubscribeNumberLoading, setIsSubscribeNumberLoading] =
     useState(true);
   const [subscribeNumber, setSubscribeNumber] = useState(0);
-  const [subscribeRange, setSubscribeRange] = useState('');
+  const [subscribeRange, setSubscribeRange] = useState("");
   const [isUserSubscribeLoading, setIsUserSubscribeLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -87,7 +89,7 @@ function DetailSideCard({
   const [triggerLogin, setTriggerLogin] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   let subscribeStatus = 0;
-  if (Number(moment(endingTime).format('x')) < Date.now()) {
+  if (Number(moment(endingTime).format("x")) < Date.now()) {
     subscribeStatus = 1;
   }
   if (isWinnersAnnounced) {
@@ -98,16 +100,16 @@ function DetailSideCard({
     setIsUserSubscribeLoading(true);
     try {
       const subscribeDetails = await fetchClient({
-        method:"Get",
-        endpoint:`/api/jobs/check_subscribe?jobId=${id}`
-      })
-     
+        method: "Get",
+        endpoint: `/api/jobs/check_subscribe?jobId=${id}`,
+      });
+
       // const subscribeDetails = await axios.get(``, {
       //   params: {
       //     userId: userInfo?.id,
       //   },
       // });
-      
+
       setIsSubmitted(subscribeDetails?.data);
       setIsUserSubscribeLoading(false);
     } catch (e) {
@@ -118,21 +120,22 @@ function DetailSideCard({
   const getSubscribesCount = async () => {
     setIsSubscribeNumberLoading(true);
     try {
-      const subscribeCountDetails =  await axios.get(`/api/getjob/count_subscribe?jobId=${id}`
+      const subscribeCountDetails = await axios.get(
+        `/api/getjob/count_subscribe?jobId=${id}`
       );
-      console.log()
+      console.log();
       const count = subscribeCountDetails?.data || 0;
       setSubscribeNumber(count);
       if (count >= 0 && count <= 10) {
-        setSubscribeRange('0-10');
+        setSubscribeRange("0-10");
       } else if (count > 10 && count <= 25) {
-        setSubscribeRange('10-25');
+        setSubscribeRange("10-25");
       } else if (count > 25 && count <= 50) {
-        setSubscribeRange('25-50');
+        setSubscribeRange("25-50");
       } else if (count > 50 && count <= 100) {
-        setSubscribeRange('50-100');
+        setSubscribeRange("50-100");
       } else if (count > 100) {
-        setSubscribeRange('100+');
+        setSubscribeRange("100+");
       }
       setIsSubscribeNumberLoading(false);
     } catch (e) {
@@ -152,7 +155,7 @@ function DetailSideCard({
 
   const handleSubmit = () => {
     if (applicationLink) {
-      window.open(applicationLink, '_blank');
+      window.open(applicationLink, "_blank");
       return;
     }
     if (!userInfo?.id) {
@@ -184,11 +187,11 @@ function DetailSideCard({
   type PrizeKey = keyof Rewards;
 
   const prizeMapping = [
-    { key: 'first' as PrizeKey, label: '1st', description: 'First Prize' },
-    { key: 'second' as PrizeKey, label: '2nd', description: 'Second Prize' },
-    { key: 'third' as PrizeKey, label: '3rd', description: 'Third Prize' },
-    { key: 'fourth' as PrizeKey, label: '4th', description: 'Fourth Prize' },
-    { key: 'fifth' as PrizeKey, label: '5th', description: 'Fifth Prize' },
+    { key: "first" as PrizeKey, label: "1st", description: "First Prize" },
+    { key: "second" as PrizeKey, label: "2nd", description: "Second Prize" },
+    { key: "third" as PrizeKey, label: "3rd", description: "Third Prize" },
+    { key: "fourth" as PrizeKey, label: "4th", description: "Fourth Prize" },
+    { key: "fifth" as PrizeKey, label: "5th", description: "Fifth Prize" },
   ];
 
   return (
@@ -210,44 +213,42 @@ function DetailSideCard({
         <WarningModal
           isOpen={warningIsOpen}
           onClose={warningOnClose}
-          title={'Complete your profile'}
-          bodyText={
-            'Please complete your profile before submitting to a job.'
-          }
-          primaryCtaText={'Complete Profile'}
-          primaryCtaLink={'/new/talent'}
+          title={"Complete your profile"}
+          bodyText={"Please complete your profile before submitting to a job."}
+          primaryCtaText={"Complete Profile"}
+          primaryCtaLink={"/new/talent"}
         />
       )}
-      
-      <VStack gap={2} pt={10} marginInlineStart={'0 !important'}>
+
+      <VStack gap={2} pt={10} marginInlineStart={"0 !important"}>
         <VStack
-          justify={'center'}
+          justify={"center"}
           gap={0}
-          minW={'22rem'}
+          minW={"22rem"}
           pb={5}
-          bg={'#FFFFFF'}
-          rounded={'xl'}
+          bg={"#FFFFFF"}
+          rounded={"xl"}
         >
           <HStack
-            justify={'space-between'}
-            w={'full'}
+            justify={"space-between"}
+            w={"full"}
             h={16}
-            px={'1.5rem'}
-            borderBottom={'1px solid #E2E8EF'}
+            px={"1.5rem"}
+            borderBottom={"1px solid #E2E8EF"}
           >
             <Flex align="center">
               <Image
                 w={7}
                 h="auto"
                 mr={2}
-                alt={'green doller'}
-                rounded={'full'}
+                alt={"green doller"}
+                rounded={"full"}
                 src={
                   tokenList.filter((e) => e?.tokenSymbol === token)[0]?.icon ??
-                  '/assets/icons/green-doller.svg'
+                  "/assets/icons/green-doller.svg"
                 }
               />
-              <Text color="color.slate.800" fontSize={'2xl'} fontWeight={500}>
+              <Text color="color.slate.800" fontSize={"2xl"} fontWeight={500}>
                 {total?.toLocaleString() ?? 0}
                 <Text
                   as="span"
@@ -260,16 +261,16 @@ function DetailSideCard({
                 </Text>
               </Text>
             </Flex>
-            {type === 'open' && (
-              <Text color={'brand.slate.300'} fontSize={'lg'} fontWeight={400}>
+            {type === "open" && (
+              <Text color={"brand.slate.300"} fontSize={"lg"} fontWeight={400}>
                 Total Prizes
               </Text>
             )}
           </HStack>
-          {type === 'open' && (
-            <VStack w={'full'} borderBottom={'1px solid #E2E8EF'}>
-              <TableContainer w={'full'}>
-                <Table mt={-8} variant={'unstyled'}>
+          {type === "open" && (
+            <VStack w={"full"} borderBottom={"1px solid #E2E8EF"}>
+              <TableContainer w={"full"}>
+                <Table mt={-8} variant={"unstyled"}>
                   <Thead>
                     <Tr>
                       <Th></Th>
@@ -284,22 +285,22 @@ function DetailSideCard({
                           <Tr key={index}>
                             <Td>
                               <Flex
-                                align={'center'}
-                                justify={'center'}
+                                align={"center"}
+                                justify={"center"}
                                 w={8}
                                 h={8}
                                 p={1.5}
-                                fontSize={'0.7rem'}
-                                bg={'#C6C6C62B'}
-                                rounded={'full'}
+                                fontSize={"0.7rem"}
+                                bg={"#C6C6C62B"}
+                                rounded={"full"}
                               >
                                 {prize.label}
                               </Flex>
                             </Td>
                             <Td>
                               <Text
-                                color={'#64758B'}
-                                fontSize={'1.1rem'}
+                                color={"#64758B"}
+                                fontSize={"1.1rem"}
                                 fontWeight={600}
                               >
                                 {prizeList[prize.key]}
@@ -314,7 +315,7 @@ function DetailSideCard({
                               </Text>
                             </Td>
                             <Td>
-                              <Text color={'#CBD5E1'} fontWeight={500}>
+                              <Text color={"#CBD5E1"} fontWeight={500}>
                                 {prize.description}
                               </Text>
                             </Td>
@@ -326,61 +327,61 @@ function DetailSideCard({
               </TableContainer>
             </VStack>
           )}
-          <Flex justify={'space-between'} w={'full'} px={5}>
-            <Flex align={'start'} justify={'center'} direction={'column'}>
-              <Flex align={'center'} justify={'center'} gap={2}>
+          <Flex justify={"space-between"} w={"full"} px={5}>
+            <Flex align={"start"} justify={"center"} direction={"column"}>
+              <Flex align={"center"} justify={"center"} gap={2}>
                 <Image
-                  w={'1.4rem'}
+                  w={"1.4rem"}
                   mt={-1}
-                  alt={'suit case'}
-                  src={'/assets/icons/purple-suitcase.svg'}
+                  alt={"suit case"}
+                  src={"/assets/icons/purple-suitcase.svg"}
                 />
-                <Text color={'#000000'} fontSize="1.3rem" fontWeight={500}>
+                <Text color={"#000000"} fontSize="1.3rem" fontWeight={500}>
                   {isSubscribeNumberLoading
-                    ? '...'
-                    : type === 'open'
+                    ? "..."
+                    : type === "open"
                     ? subscribeNumber.toLocaleString()
                     : subscribeRange}
                 </Text>
               </Flex>
-              <Text color={'#94A3B8'}>
-                {type === 'open'
+              <Text color={"#94A3B8"}>
+                {type === "open"
                   ? subscribeNumber === 1
-                    ? 'Subscribe'
-                    : 'Subscribes'
+                    ? "Subscribe"
+                    : "Subscribes"
                   : subscribeNumber === 1
-                  ? 'Application'
-                  : 'Applications'}
+                  ? "Application"
+                  : "Applications"}
               </Text>
             </Flex>
 
             <Flex
-              align={'start'}
-              justify={'center'}
-              direction={'column'}
+              align={"start"}
+              justify={"center"}
+              direction={"column"}
               py={3}
             >
-              <Flex align={'start'} justify={'center'} gap={1}>
+              <Flex align={"start"} justify={"center"} gap={1}>
                 <Image
-                  w={'1.4rem'}
+                  w={"1.4rem"}
                   mt={1}
-                  alt={'suit case'}
-                  src={'/assets/icons/purple-timer.svg'}
+                  alt={"suit case"}
+                  src={"/assets/icons/purple-timer.svg"}
                 />
-                <VStack align={'start'} gap={0}>
-                  <Text color={'#000000'} fontSize="1.3rem" fontWeight={500}>
-                    {applicationType === 'fixed' ? (
+                <VStack align={"start"} gap={0}>
+                  <Text color={"#000000"} fontSize="1.3rem" fontWeight={500}>
+                    {applicationType === "fixed" ? (
                       <Countdown
                         date={endingTime}
                         renderer={countDownRenderer}
                         zeroPadDays={1}
                       />
                     ) : (
-                      'Rolling'
+                      "Rolling"
                     )}
                   </Text>
-                  <Text color={'#94A3B8'}>
-                    {applicationType === 'fixed' ? 'Remaining' : 'Deadline'}
+                  <Text color={"#94A3B8"}>
+                    {applicationType === "fixed" ? "Remaining" : "Deadline"}
                   </Text>
                 </VStack>
               </Flex>
@@ -388,47 +389,47 @@ function DetailSideCard({
           </Flex>
 
           <Box w="full" px={5}>
-            {type === 'permissioned' && (
-              <Flex align={'start'} direction={'column'} my={4}>
-                <Text color={'#000000'} fontSize="1.3rem" fontWeight={500}>
+            {type === "permissioned" && (
+              <Flex align={"start"} direction={"column"} my={4}>
+                <Text color={"#000000"} fontSize="1.3rem" fontWeight={500}>
                   {timeToComplete}
                 </Text>
-                <Text color={'#94A3B8'}>Time to Complete</Text>
+                <Text color={"#94A3B8"}>Time to Complete</Text>
               </Flex>
             )}
-            {isSubmitted ? (
+            {isSubmitted || status === "CLOSED" ? (
               <Button
                 w="full"
                 bg="green"
-                pointerEvents={'none'}
+                pointerEvents={"none"}
                 isDisabled={true}
                 size="lg"
                 variant="solid"
               >
-                {type === 'permissioned'
-                  ? 'Applied Successfully'
-                  : 'Applied Successfully'}
+                {isSubmitted
+                  ? "Applied Successfully"
+                  : status === "CLOSED" && "Job Close"}
               </Button>
             ) : (
               <Button
                 w="full"
                 _hover={{
-                  bg: 'brand.purple',
+                  bg: "brand.purple",
                 }}
-                isDisabled={Date.now() > Number(moment(endingTime).format('x'))}
+                isDisabled={Date.now() > Number(moment(endingTime).format("x"))}
                 isLoading={isUserSubscribeLoading}
-                loadingText={'Checking Subscribe...'}
+                loadingText={"Checking Subscribe..."}
                 onClick={() => handleSubmit()}
                 size="lg"
                 variant="solid"
               >
-                {type === 'permissioned' ? 'Apply Now' : 'Apply Now'}
+                {type === "permissioned" ? "Apply Now" : "Apply Now"}
               </Button>
             )}
-            {type === 'permissioned' && (
-              <Flex gap="2" w="20rem" mt={4} p="3" bg={'#62F6FF10'}>
+            {type === "permissioned" && (
+              <Flex gap="2" w="20rem" mt={4} p="3" bg={"#62F6FF10"}>
                 <WarningIcon color="#1A7F86" />
-                <Text color="#1A7F86" fontSize={'xs'} fontWeight={500}>
+                <Text color="#1A7F86" fontSize={"xs"} fontWeight={500}>
                   Don&apos;t start working just yet! Apply first, and then begin
                   working only once you&apos;ve been hired for the project.
                 </Text>
@@ -438,71 +439,71 @@ function DetailSideCard({
         </VStack>
         {!hackathonPrize && (
           <VStack
-            align={'start'}
-            justify={'center'}
-            w={'22rem'}
+            align={"start"}
+            justify={"center"}
+            w={"22rem"}
             mt={4}
             p={6}
-            bg={'#FFFFFF'}
-            rounded={'xl'}
+            bg={"#FFFFFF"}
+            rounded={"xl"}
           >
-            <Text h="100%" color={'#94A3B8'} fontSize="1rem" textAlign="center">
+            <Text h="100%" color={"#94A3B8"} fontSize="1rem" textAlign="center">
               TYPE
             </Text>
-            <Text color={'#64768b'} fontSize="1.1rem" fontWeight={500}>
-              {type === 'permissioned' ? 'Project' : 'Job'}
+            <Text color={"#64768b"} fontSize="1.1rem" fontWeight={500}>
+              {type === "permissioned" ? "Project" : "Job"}
             </Text>
-            <Text color={'#94A3B8'} fontSize="1rem" fontWeight={400}>
-              {type === 'permissioned'
+            <Text color={"#94A3B8"} fontSize="1rem" fontWeight={400}>
+              {type === "permissioned"
                 ? "Don't start working just yet! Apply first, and then you'll be notified if you're selected to work on this job."
-                : 'This is an open competition job! Anyone can start working and submit their work before the deadline!'}
+                : "This is an open competition job! Anyone can start working and submit their work before the deadline!"}
             </Text>
           </VStack>
         )}
         {requirements && (
           <VStack
             align="start"
-            w={'22rem'}
+            w={"22rem"}
             mt={4}
             p={6}
             bg="white"
-            rounded={'xl'}
+            rounded={"xl"}
           >
-            <Text h="100%" color={'#94A3B8'} fontSize="1rem" textAlign="center">
+            <Text h="100%" color={"#94A3B8"} fontSize="1rem" textAlign="center">
               ELIGIBILITY
             </Text>
-            <Text color={'gray.500'} fontSize={'md'} fontWeight={400}>
+            <Text color={"gray.500"} fontSize={"md"} fontWeight={400}>
               {requirements}
             </Text>
           </VStack>
         )}
         {pocSocials && (
           <VStack
-            align={'start'}
-            justify={'center'}
-            w={'22rem'}
+            align={"start"}
+            justify={"center"}
+            w={"22rem"}
             mt={4}
             p={6}
-            bg={'#FFFFFF'}
-            rounded={'xl'}
+            bg={"#FFFFFF"}
+            rounded={"xl"}
           >
-            <Text h="100%" color={'#94A3B8'} fontSize="1rem" textAlign="center">
+            <Text h="100%" color={"#94A3B8"} fontSize="1rem" textAlign="center">
               CONTACT
             </Text>
             <Text>
               <Link
-                color={'#64768b'}
+                color={"#64768b"}
                 fontSize="1rem"
                 fontWeight={500}
                 href={pocSocials}
                 isExternal
               >
                 Reach out
-                <ExternalLinkIcon color={'#64768b'} mb={1} as="span" mx={1} />
+                <ExternalLinkIcon color={"#64768b"} mb={1} as="span" mx={1} />
               </Link>
               <Text
                 as="span"
-                color={'#94A3B8'}
+                color={"#94A3B8"}
                 fontSize="1rem"
                 fontWeight={400}
               >
@@ -511,41 +512,41 @@ function DetailSideCard({
             </Text>
           </VStack>
         )}
-        {type !== 'permissioned' && (
+        {type !== "permissioned" && (
           <VStack
-            align={'start'}
-            justify={'center'}
-            minW={'22rem'}
+            align={"start"}
+            justify={"center"}
+            minW={"22rem"}
             mt={4}
             p={6}
-            bg={'#FFFFFF'}
-            rounded={'xl'}
+            bg={"#FFFFFF"}
+            rounded={"xl"}
           >
             <VerticalStep
-              sublabel={'Give your best shot!'}
+              sublabel={"Give your best shot!"}
               currentStep={subscribeStatus + 1}
               thisStep={1}
-              label={'Subscribes Open'}
+              label={"Subscribes Open"}
             />
 
             <Divider
               h={10}
-              border={'2px'}
-              borderColor={'#6562FF'}
-              transform={'translate(1rem)'}
+              border={"2px"}
+              borderColor={"#6562FF"}
+              transform={"translate(1rem)"}
               orientation="vertical"
             />
             <VerticalStep
               currentStep={subscribeStatus + 1}
               thisStep={2}
-              label={'Subscribes Review'}
-              sublabel={'Subscribes being assessed'}
+              label={"Subscribes Review"}
+              sublabel={"Subscribes being assessed"}
             />
             <Divider
               h={10}
-              border={'2px'}
-              borderColor={'#CBD5E1'}
-              transform={'translate(1rem)'}
+              border={"2px"}
+              borderColor={"#CBD5E1"}
+              transform={"translate(1rem)"}
               orientation="vertical"
             />
             <VerticalStep
@@ -553,12 +554,12 @@ function DetailSideCard({
               thisStep={3}
               sublabel={
                 isWinnersAnnounced
-                  ? 'Congratulations!'
+                  ? "Congratulations!"
                   : `Around ${moment(endingTime)
-                      .add(8, 'd')
-                      .format('Do MMM, YY')}`
+                      .add(8, "d")
+                      .format("Do MMM, YY")}`
               }
-              label={'Announced'}
+              label={"Announced"}
             />
           </VStack>
         )}

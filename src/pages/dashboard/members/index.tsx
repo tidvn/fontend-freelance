@@ -73,7 +73,7 @@ const Index = () => {
       getMembers();
     }
   }, [userInfo?.currentCompanyId, skip, searchText]);
-
+console.log(userInfo)
   return (
     <Sidebar>
       {isOpen && <InviteMembers isOpen={isOpen} onClose={onClose} />}
@@ -95,8 +95,8 @@ const Index = () => {
           </InputRightElement>
         </InputGroup>
         {(userInfo?.role === "GOD" ||
-          (userInfo?.UserCompanies?.length &&
-            userInfo?.UserCompanies[0]?.role === "ADMIN")) && (
+          (userInfo?.userCompanies?.length &&
+            userInfo?.userCompanies[0]?.role === "ADMIN")) && (
           <Button leftIcon={<AddIcon />} onClick={onOpen} variant="solid">
             Invite Members
           </Button>

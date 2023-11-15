@@ -43,7 +43,7 @@ interface User {
   totalEarned?: number;
   currentCompanyId?: string;
   currentCompany?: CompanyType;
-  UserCompanies?: UserCompany[];
+  userCompanies?: UserCompany[];
   PoW?: PoW[];
   private?: boolean;
   Subscribe?: SubscribeWithUser[];

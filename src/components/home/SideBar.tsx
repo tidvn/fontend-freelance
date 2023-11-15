@@ -20,7 +20,7 @@ import { tokenList } from '@/constants';
   interface SideBarProps {
     total: number;
     listings: number;
-    earners?: User[];
+    earners?: any[];
     userInfo?: User;
   }
   
@@ -250,11 +250,9 @@ import { tokenList } from '@/constants';
   }
   const Earner = ({ amount, name, avatar, job, slug, token }: EarnerProps) => {
     const tokenObj = tokenList.find((t:any) => t.tokenSymbol === token);
-    const tokenIcon = tokenObj
-      ? tokenObj.icon
-      : '/assets/landingcompany/icons/usdc.svg';
+    const tokenIcon ='/assets/icons/green-doller.svg';
     return (
-      <NextLink href={`${getURL()}listings/jobs/${slug}`}>
+      // <NextLink href={`${getURL()}listings/jobs/${slug}`}>
         <Flex align={'center'} w={'100%'} my={4}>
           {avatar ? (
             <Image
@@ -287,14 +285,14 @@ import { tokenList } from '@/constants';
           <Flex align={'center'} columnGap={1} ml={'auto'}>
             <Image w={5} h={5} alt={`${token} icon`} src={tokenIcon} />
             <Text color={'gray.600'} fontSize={'sm'} fontWeight={500}>
-              ${amount.toLocaleString()}
+              {amount.toLocaleString()}
             </Text>
             <Text color={'gray.400'} fontSize={'sm'} fontWeight={500}>
-              USDC
+              USD
             </Text>
           </Flex>
         </Flex>
-      </NextLink>
+      // </NextLink>
     );
   };
   
@@ -445,7 +443,7 @@ import { tokenList } from '@/constants';
     return (
       <Flex direction={'column'} rowGap={'2.5rem'} w={'22.125rem'} pl={6}>
         <GettingStarted userInfo={userInfo} />
-        <TotalStats jobCount={listings} TVL={total} />
+        {/* <TotalStats jobCount={listings} TVL={total} /> */}
         <RecentEarners earners={earners} />
         <AlphaAccess />
       </Flex>

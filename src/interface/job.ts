@@ -27,7 +27,7 @@ interface Rewards {
 type JobStatus = 'OPEN' | 'REVIEW' | 'CLOSED';
 
 interface Job {
-  id?: string;
+  id?: number;
   title?: string;
   slug?: string;
   description?: string;

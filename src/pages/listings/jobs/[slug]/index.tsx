@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { jobSnackbarAtom } from "@/components/Header/JobSnackbar";
-import JobWinners from "@/components/listings/job/JobWinners";
+// import JobWinners from "@/components/listings/job/JobWinners";
 import { Comments } from "@/components/listings/listings/comments";
 import DetailDescription from "@/components/listings/listings/details/detailDescriptionJob";
 import DetailSideCard from "@/components/listings/listings/details/detailSideCardJob";
@@ -107,7 +107,7 @@ function JobDetails() {
                 hackathonPrize={job?.hackathonprize}
                 references={job?.references}
               />
-              {job?.isWinnersAnnounced && <JobWinners job={job} />}
+              {/* {job?.isWinnersAnnounced && <JobWinners job={job} />} */}
               <HStack
                 align={["center", "center", "start", "start"]}
                 justify={["center", "center", "space-between", "space-between"]}
@@ -133,6 +133,7 @@ function JobDetails() {
                   endingTime={job?.deadline ?? ""}
                   prizeList={job?.rewards}
                   total={job?.rewardAmount || 0}
+                  status={job?.status}
                   applicationLink={job?.applicationLink || ""}
                   requirements={job?.requirements}
                   isWinnersAnnounced={job?.isWinnersAnnounced}

@@ -22,7 +22,7 @@ interface Props {
   onClose: () => void;
   isOpen: boolean;
   username: string;
-  id: string;
+  id: number;
 }
 
 interface SocialPlatform {

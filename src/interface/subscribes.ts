@@ -4,12 +4,12 @@ import type { Job, Rewards } from '@/interface/job';
 import { User } from './user';
 
 interface SubscribeWithUser {
-  id: string;
+  id: number;
   email?: string;
   phoneNumber?: string;
   otherInfo?: string;
-  userId: string;
-  jobId: string;
+  userId: number;
+  jobId: number;
   isChosen: boolean;
   isActive: boolean;
   created_at: string;

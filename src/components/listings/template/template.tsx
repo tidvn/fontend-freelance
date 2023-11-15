@@ -1,14 +1,13 @@
-import { AddIcon, ViewIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Image, Text, VStack } from '@chakra-ui/react';
-import axios from 'axios';
-import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect, useState } from 'react';
+import { AddIcon, ViewIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Image, Text, VStack } from "@chakra-ui/react";
+import type { Dispatch, SetStateAction } from "react";
+import React, { useEffect, useState } from "react";
 
-import type { JobBasicType } from '@/components/listings/job/Createjob';
-import type { MultiSelectOptions } from '@/constants';
-import { splitSkills } from '@/utils/skills';
-import { getURL } from '@/utils/validUrl';
-
+import type { JobBasicType } from "@/components/listings/job/Createjob";
+import type { MultiSelectOptions } from "@/constants";
+import { splitSkills } from "@/utils/skills";
+import { getURL } from "@/utils/validUrl";
+import { jobsTemplates } from "@/lib/jobTemplate";
 interface Props {
   setSteps: Dispatch<SetStateAction<number>>;
   setListingType: Dispatch<SetStateAction<string>>;
@@ -16,7 +15,7 @@ interface Props {
   setMainSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
   setSubSkills: Dispatch<SetStateAction<MultiSelectOptions[]>>;
   setJobBasic: Dispatch<SetStateAction<JobBasicType | undefined>>;
-  type: 'open' | 'permissioned';
+  type: "open" | "permissioned";
 }
 const Template = ({
   setSteps,
@@ -27,39 +26,38 @@ const Template = ({
   setJobBasic,
   type,
 }: Props) => {
-  const [jobsTemplates, setJobsTemplates] = useState([]);
-  const [isJobsTemplatesLoading, setIsJobsTemplatesLoading] =
-    useState(false);
+  // const [jobsTemplates, setJobsTemplates] = useState([]);
+  // const [isJobsTemplatesLoading, setIsJobsTemplatesLoading] = useState(false);
 
-  const getJobTemplates = async () => {
-    setIsJobsTemplatesLoading(true);
-    try {
-      const templates: any = await axios.get('/api/jobs/templates/', {
-        params: { type },
-      });
-      setJobsTemplates(templates?.data || []);
-      setIsJobsTemplatesLoading(false);
-    } catch (e) {
-      setIsJobsTemplatesLoading(false);
-    }
-  };
+  // // const getJobTemplates = async () => {
+  // //   setIsJobsTemplatesLoading(true);
+  // //   try {
+  // //     const templates: any = dataTemplate
+  // //     console.log(dataTemplate)
+  // //     setJobsTemplates(templates?.data || []);
+  // //     setIsJobsTemplatesLoading(false);
+  // //   } catch (e) {
+  // //     setIsJobsTemplatesLoading(false);
+  // //   }
+  // // };
 
-  useEffect(() => {
-    if (!isJobsTemplatesLoading) {
-      getJobTemplates();
-    }
-  }, []);
+  // console
+  // useEffect(() => {
+  //   if (!isJobsTemplatesLoading) {
+  //     getJobTemplates();
+  //   }
+  // }, []);
 
   const createTemplate = (templateId: string) => {
     const template: any = jobsTemplates.find((t: any) => {
       return t?.id === templateId;
     });
-    setListingType('BOUNTY');
+    setListingType("BOUNTY");
     setJobBasic({
       title: template?.title || undefined,
       templateId: template?.id || undefined,
     });
-    setEditorData(template?.description || '');
+    setEditorData(template?.description || "");
     const skillsInfo = splitSkills(template?.skills || []);
     setMainSkills(skillsInfo?.skills || []);
     setSubSkills(skillsInfo?.subskills || []);
@@ -68,33 +66,33 @@ const Template = ({
 
   return (
     <>
-      <VStack align={'start'} gap={8} w="full">
-        <VStack align="start" w={'full'}>
+      <VStack align={"start"} gap={8} w="full">
+        <VStack align="start" w={"full"}>
           <Flex align="center" justify="center" gap="2rem" w="full" mb="2rem">
             <Text color="gray.600" fontSize="1.3rem" fontWeight={600}>
               Job
             </Text>
             <hr
               style={{
-                width: '100%',
-                outline: '1px solid #CBD5E1',
-                border: 'none',
+                width: "100%",
+                outline: "1px solid #CBD5E1",
+                border: "none",
               }}
             />
           </Flex>
-          <Flex wrap={'wrap'} gap={6}>
+          <Flex wrap={"wrap"} gap={6}>
             <Box
-              alignItems={'center'}
-              justifyContent={'center'}
-              flexDir={'column'}
-              display={'flex'}
-              w={'15rem'}
-              h={'16rem'}
-              bg={'white'}
-              border={'1px solid #cbd5e1'}
-              cursor={'pointer'}
+              alignItems={"center"}
+              justifyContent={"center"}
+              flexDir={"column"}
+              display={"flex"}
+              w={"15rem"}
+              h={"16rem"}
+              bg={"white"}
+              border={"1px solid #cbd5e1"}
+              cursor={"pointer"}
               onClick={() => {
-                setListingType('BOUNTY');
+                setListingType("BOUNTY");
                 setSteps(2);
               }}
             >
@@ -104,36 +102,38 @@ const Template = ({
               </Text>
             </Box>
             {jobsTemplates.map((template: any) => {
-              const companies: any = [
-                ...new Set(template?.Jobs?.map((b: any) => b.company)),
-              ];
+              const companies: any = Array.from(
+                new Set(template?.Jobs?.map((b: any) => b.company))
+              );
+              console.log(template);
+
               return (
-                <Box key={template.id} w={'15rem'} h={'16rem'} bg={'white'}>
+                <Box key={template.id} w={"15rem"} h={"16rem"} bg={"white"}>
                   <Flex
                     align="center"
                     justify="center"
                     h="45%"
                     fontSize="3xl"
-                    bg={template.color || 'white'}
+                    bg={template.color || "white"}
                   >
                     {template?.emoji}
                   </Flex>
                   <Flex
                     align="start"
-                    justify={'space-between'}
-                    direction={'column'}
+                    justify={"space-between"}
+                    direction={"column"}
                     h="55%"
                     px={4}
                     py={4}
                     bg="white"
                   >
                     <Box>
-                      <Text color={'brand.slate.700'} fontWeight={500}>
+                      <Text color={"brand.slate.700"} fontWeight={500}>
                         {template?.templateTitle}
                       </Text>
                       {companies?.length > 0 ? (
-                        <Flex align="center" justify={'start'} mt={1}>
-                          <Flex align="center" justify={'start'} mr={6}>
+                        <Flex align="center" justify={"start"} mt={1}>
+                          <Flex align="center" justify={"start"} mr={6}>
                             {companies.length >= 1 && (
                               <Image
                                 boxSize="24px"
@@ -167,15 +167,15 @@ const Template = ({
                           <Text
                             color="brand.slate.400"
                             fontSize="xs"
-                            wordBreak={'break-word'}
+                            wordBreak={"break-word"}
                           >
-                            Used by{' '}
+                            Used by{" "}
                             {companies.length >= 1 && (
                               <Text as="span">{companies[0]?.name}</Text>
                             )}
                             {companies.length >= 2 && (
                               <Text as="span">
-                                {companies.length > 2 ? ',' : ' &'}{' '}
+                                {companies.length > 2 ? "," : " &"}{" "}
                                 {companies[1]?.name}
                               </Text>
                             )}
@@ -193,7 +193,7 @@ const Template = ({
                     </Box>
                     <Flex
                       align="center"
-                      justify={'space-between'}
+                      justify={"space-between"}
                       gap={4}
                       w="full"
                     >
@@ -202,8 +202,8 @@ const Template = ({
                         leftIcon={<ViewIcon />}
                         onClick={() => {
                           window.open(
-                            `${getURL()}templates/jobs/${template?.slug}`,
-                            '_blank'
+                            `${getURL()}template/jobs/${template?.slug}`,
+                            "_blank"
                           );
                         }}
                         size="sm"

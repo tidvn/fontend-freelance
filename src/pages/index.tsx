@@ -1,41 +1,48 @@
 /* eslint-disable no-nested-ternary */
-import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, HStack, Image, Link, Text } from '@chakra-ui/react';
-import { css } from '@emotion/react';
-import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  HStack,
+  Image,
+  Input,
+  Link,
+  Text,
+} from "@chakra-ui/react";
+import { css } from "@emotion/react";
+import type { NextPage } from "next";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { JobTabs } from '@/components/listings/job/Tabs';
-import { GrantsCard, ListingSection } from '@/components/misc/listingsCard';
-import EmptySection from '@/components/shared/EmptySection';
-import Loading from '@/components/shared/Loading';
-import type { Job } from '@/interface/job';
-import type { Grant } from '@/interface/grant';
-import Home from '@/layouts/Home';
-import { Mixpanel } from '@/utils/mixpanel';
-import axios from '@/lib/axios';
+import { JobTabs } from "@/components/listings/job/Tabs";
+import { GrantsCard, ListingSection } from "@/components/misc/listingsCard";
+import EmptySection from "@/components/shared/EmptySection";
+import Loading from "@/components/shared/Loading";
+import type { Job } from "@/interface/job";
+import type { Grant } from "@/interface/grant";
+import Home from "@/layouts/Home";
+import axios from "@/lib/axios";
+const debounce = require("lodash.debounce");
 
 interface Listings {
   jobs?: Job[];
 }
 
 const HomePage: NextPage = () => {
+  const [searchText, setSearchText] = useState<string>("");
+  const debouncedSetSearchText = useRef(debounce(setSearchText, 300)).current;
+
   const [isListingsLoading, setIsListingsLoading] = useState(true);
   const [jobs, setJobs] = useState<{ jobs: Job[] }>({
     jobs: [],
   });
-  const [listings, setListings] = useState<Listings>({
-    jobs: [],
-  });
-
-  const getListings = async () => {
+  const getListings = async (searchText: string) => {
     setIsListingsLoading(true);
     try {
-      const listingsData = await axios.get('/api/listings/');
-      const jobData = await axios.get('/api/listings?take=10');
-      ;
-
-      setListings(listingsData.data);
+      const jobData = await axios.get(
+        `/api/listings?take=10&searchText=${searchText}`
+      );
       setJobs(jobData.data);
       setIsListingsLoading(false);
     } catch (e) {
@@ -46,20 +53,35 @@ const HomePage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (!isListingsLoading) return;
-    getListings();
-  }, []);
+    console.log('ok')
+    // if (!isListingsLoading) return;
+    getListings(searchText);
+  }, [searchText]);
 
   const tabs = JobTabs({ isListingsLoading, jobs });
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0]!.id);
-
-  useEffect(() => {
-    Mixpanel.track('home_page_load');
-  }, []);
+console.log(jobs)
   return (
     <Home type="home">
-      <Box w={'100%'}>
+      <FormControl>
+        <Input
+          variant={"solid"}
+          borderWidth={1}
+          color={"gray.800"}
+          _placeholder={{
+            color: "gray.400",
+          }}
+          id={"inputSearch"}
+          type={"text"}
+          required
+          placeholder={"Search something"}
+          aria-label={"Search here"}
+          // value={searchText}
+          onChange={(e) => debouncedSetSearchText(e.target.value)}
+        />
+      </FormControl>
+      <Box w={"100%"}>
         <Box my={10}>
           <HStack
             align="center"
@@ -69,28 +91,28 @@ const HomePage: NextPage = () => {
             borderBottom="2px solid"
             borderBottomColor="#E2E8F0"
           >
-            <Flex align={'center'}>
+            <Flex align={"center"}>
               <Image
-                display={{ md: 'block', base: 'none' }}
-                w={'1.4375rem'}
-                h={'1.4375rem'}
-                mr={'0.75rem'}
+                display={{ md: "block", base: "none" }}
+                w={"1.4375rem"}
+                h={"1.4375rem"}
+                mr={"0.75rem"}
                 alt="emoji"
-                src={'/assets/home/emojis/moneyman.png'}
+                src={"/assets/home/emojis/moneyman.png"}
               />
               <Text
                 pr={2}
-                color={'#334155'}
-                fontSize={['13', '14', '16', '16']}
-                fontWeight={'600'}
+                color={"#334155"}
+                fontSize={["13", "14", "16", "16"]}
+                fontWeight={"600"}
               >
                 Freelance Gigs
               </Text>
               <Text
-                display={['none', 'none', 'block', 'block']}
+                display={["none", "none", "block", "block"]}
                 mx={3}
-                color={'brand.slate.300'}
-                fontSize={'xxs'}
+                color={"brand.slate.300"}
+                fontSize={"xxs"}
               >
                 |
               </Text>
@@ -104,13 +126,13 @@ const HomePage: NextPage = () => {
                   display="inline-flex"
                   p={2}
                   color="#475668"
-                  fontSize={['x-small', '11', '14', '14']}
+                  fontSize={["x-small", "11", "14", "14"]}
                   cursor="pointer"
                   css={
                     tab.id === activeTab
                       ? css`
                           &::after {
-                            content: '';
+                            content: "";
                             position: absolute;
                             right: 0;
                             bottom: -13px;
@@ -128,19 +150,14 @@ const HomePage: NextPage = () => {
               ))}
             </Flex>
             <Flex>
-              <Link
-                href={'/all'}
-                onClick={() => {
-                  Mixpanel.track('view_all', {});
-                }}
-              >
+              <Link href={"/all"}>
                 <Button
                   px={2}
                   py={1}
                   color="brand.slate.400"
-                  fontSize={['x-small', 'sm', 'sm', 'sm']}
-                  size={{ base: 'x-small', md: 'sm' }}
-                  variant={'ghost'}
+                  fontSize={["x-small", "sm", "sm", "sm"]}
+                  size={{ base: "x-small", md: "sm" }}
+                  variant={"ghost"}
                 >
                   View All
                 </Button>
@@ -149,12 +166,7 @@ const HomePage: NextPage = () => {
           </HStack>
 
           {tabs.map((tab) => tab.id === activeTab && tab.content)}
-          <Link
-            href={'/all'}
-            onClick={() => {
-              Mixpanel.track('view_all', {});
-            }}
-          >
+          <Link href={"/all"}>
             <Button
               w="100%"
               my={8}

@@ -11,7 +11,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { MediaPicker } from 'degen';
+
+const { MediaPicker } = require('degen');
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

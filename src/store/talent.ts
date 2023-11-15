@@ -1,8 +1,7 @@
-import produce from 'immer';
-import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { create } from 'zustand';
+import { mountStoreDevtool } from "simple-zustand-devtools";
+import { create } from "zustand";
 
-import type { Talent } from '../interface/talent';
+import type { Talent } from "../interface/talent";
 
 interface TalentState {
   talentInfo: Talent | null;
@@ -11,14 +10,8 @@ interface TalentState {
 
 export const TalentStore = create<TalentState>((set) => ({
   talentInfo: null,
-  setTalentInfo: (talent: Talent): void =>
-    set(
-      produce((state: TalentState) => {
-        // eslint-disable-next-line no-param-reassign
-        state.talentInfo = talent;
-      })
-    ),
+  setTalentInfo: (talent: Talent): void => set({ talentInfo: talent }),
 }));
-if (process.env.NODE_ENV === 'development') {
-  mountStoreDevtool('profileStore', TalentStore);
+if (process.env.NODE_ENV === "development") {
+  mountStoreDevtool("profileStore", TalentStore);
 }

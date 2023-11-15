@@ -69,9 +69,57 @@ export const JobTabs = ({
         </Flex>
       ),
     },
+    // {
+    //   id: 'tab2',
+    //   title: 'IN REVIEW',
+    //   content: (
+    //     <Flex direction={'column'} rowGap={'1'}>
+    //       {isListingsLoading ? (
+    //         <Flex align="center" justify="center" direction="column" minH={52}>
+    //           <Loading />
+    //         </Flex>
+    //       ) : jobs?.jobs?.filter(
+    //           (job) =>
+    //             !job.isWinnersAnnounced &&
+    //             dayjs().isAfter(job.deadline) &&
+    //             job.status === 'OPEN'
+    //         ).length ? (
+    //         jobs.jobs
+    //           .filter(
+    //             (job) =>
+    //               !job.isWinnersAnnounced &&
+    //               dayjs().isAfter(job.deadline) &&
+    //               job.status === 'OPEN'
+    //           )
+    //           .slice(0, 10)
+    //           .map((job) => (
+    //             <JobsCard
+    //               slug={job.slug}
+    //               rewardAmount={job?.rewardAmount}
+    //               key={job?.id}
+    //               companyName={job?.company?.name}
+    //               deadline={job?.deadline}
+    //               title={job?.title}
+    //               logo={job?.company?.logo}
+    //               token={job?.token}
+    //               type={job?.type}
+    //               applicationType={job.applicationType}
+    //             />
+    //           ))
+    //       ) : (
+    //         <Flex align="center" justify="center" mt={8}>
+    //           <EmptySection
+    //             title="No jobs in review!"
+    //             message="Subscribes to notifications to get notified about updates."
+    //           />
+    //         </Flex>
+    //       )}
+    //     </Flex>
+    //   ),
+    // },
     {
       id: 'tab2',
-      title: 'IN REVIEW',
+      title: 'CLOSED',
       content: (
         <Flex direction={'column'} rowGap={'1'}>
           {isListingsLoading ? (
@@ -80,62 +128,12 @@ export const JobTabs = ({
             </Flex>
           ) : jobs?.jobs?.filter(
               (job) =>
-                !job.isWinnersAnnounced &&
-                dayjs().isAfter(job.deadline) &&
-                job.status === 'OPEN'
+                job.status === 'CLOSED' 
             ).length ? (
             jobs.jobs
               .filter(
                 (job) =>
-                  !job.isWinnersAnnounced &&
-                  dayjs().isAfter(job.deadline) &&
-                  job.status === 'OPEN'
-              )
-              .slice(0, 10)
-              .map((job) => (
-                <JobsCard
-                  slug={job.slug}
-                  rewardAmount={job?.rewardAmount}
-                  key={job?.id}
-                  companyName={job?.company?.name}
-                  deadline={job?.deadline}
-                  title={job?.title}
-                  logo={job?.company?.logo}
-                  token={job?.token}
-                  type={job?.type}
-                  applicationType={job.applicationType}
-                />
-              ))
-          ) : (
-            <Flex align="center" justify="center" mt={8}>
-              <EmptySection
-                title="No jobs in review!"
-                message="Subscribes to notifications to get notified about updates."
-              />
-            </Flex>
-          )}
-        </Flex>
-      ),
-    },
-    {
-      id: 'tab3',
-      title: 'COMPLETED',
-      content: (
-        <Flex direction={'column'} rowGap={'1'}>
-          {isListingsLoading ? (
-            <Flex align="center" justify="center" direction="column" minH={52}>
-              <Loading />
-            </Flex>
-          ) : jobs?.jobs?.filter(
-              (job) =>
-                job.status === 'CLOSED' ||
-                (job.isWinnersAnnounced && job.status === 'OPEN')
-            ).length ? (
-            jobs.jobs
-              .filter(
-                (job) =>
-                  job.status === 'CLOSED' ||
-                  (job.isWinnersAnnounced && job.status === 'OPEN')
+                  job.status === 'CLOSED'
               )
               .slice(0, 10)
               .map((job) => (

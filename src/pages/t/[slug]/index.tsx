@@ -26,7 +26,7 @@ import { AddProject } from '@/components/Form/AddProject';
 import ShareIcon from '@/components/misc/shareIcon';
 import { ShareProfile } from '@/components/modals/shareProfile';
 import PowCard from '@/components/ProfileFeed/powCard';
-import SubscribeCard from '@/components/ProfileFeed/submissionCard';
+// import SubscribeCard from '@/components/ProfileFeed/submissionCard';
 import ErrorSection from '@/components/shared/EmptySection';
 import LoadingSection from '@/components/shared/LoadingSection';
 import type { PoW } from '@/interface/pow';
@@ -129,8 +129,7 @@ function TalentProfile({ slug }: TalentProps) {
     },
   ];
 
-  const winnerCount =
-    talent?.Subscribe?.filter((sub) => sub.isWinner).length ?? 0;
+  const winnerCount = 0;
 
   const router = useRouter();
 
@@ -626,13 +625,14 @@ function TalentProfile({ slug }: TalentProps) {
                 ) : (
                   filteredFeed.map((item, index) => {
                     if (item.type === 'submission') {
-                      return (
-                        <SubscribeCard
-                          key={index}
-                          sub={item as SubscribeWithUser}
-                          talent={talent}
-                        />
-                      );
+                      return
+                      // (
+                      //   <SubscribeCard
+                      //     key={index}
+                      //     sub={item as SubscribeWithUser}
+                      //     talent={talent}
+                      //   />
+                      // );
                     }
                     if (item.type === 'pow') {
                       return (

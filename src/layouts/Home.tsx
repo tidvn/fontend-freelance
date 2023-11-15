@@ -21,6 +21,7 @@ import type { User } from '@/interface/user';
 import { Default } from '@/layouts/Default';
 import { Meta } from '@/layouts/Meta';
 import { userStore } from '@/store/user';
+import { earners } from '@/lib/earner';
 
 interface TotalType {
   total?: number;
@@ -48,8 +49,7 @@ function Home({ children, type }: HomeProps) {
   const getTotalInfo = async () => {
     setIsTotalLoading(true);
     try {
-      const aggregatesData = await axios.get('/api/sidebar/');
-      setSidebarInfo(aggregatesData.data);
+      // setSidebarInfo(earners);
       setIsTotalLoading(false);
     } catch (e) {
       setIsTotalLoading(false);
@@ -161,7 +161,7 @@ function Home({ children, type }: HomeProps) {
             <SideBar
               total={sidebarInfo?.totals?.totalInUSD ?? 0}
               listings={sidebarInfo?.totals?.count ?? 0}
-              earners={sidebarInfo?.earners ?? []}
+              earners={earners}
               userInfo={userInfo! || {}}
             />
           </Flex>

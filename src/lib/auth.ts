@@ -97,10 +97,6 @@ export const authOptions: NextAuthOptions = {
       if (token.error) {
         throw new Error("Refresh token has expired");
       }
-
-      //  const {accessToken,iat,exp,jti,...user } = token
-      // session.JWT = {accessToken,iat,exp,jti};
-      // session.user = user;
       session.accessToken = token.accessToken;
       session.user.username = token.username || "";
       session.user.email = token.email || "";

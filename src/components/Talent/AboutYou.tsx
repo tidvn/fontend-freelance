@@ -9,7 +9,8 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { MediaPicker } from 'degen';
+
+const  { MediaPicker } = require('degen');
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

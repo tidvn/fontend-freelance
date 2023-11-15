@@ -13,7 +13,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { MediaPicker } from "degen";
+const { MediaPicker } = require('degen');
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -85,7 +85,7 @@ const keysToOmit = [
   "superteamLevel",
   "notifications",
   "currentCompanyId",
-  "UserCompanies",
+  "userCompanies",
   "currentCompany",
   "poc",
   "Comment",

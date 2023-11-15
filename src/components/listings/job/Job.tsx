@@ -11,8 +11,8 @@ import type {
   Ques,
   QuestionType,
 } from "@/components/listings/job/questions/builder";
-import { CreateGrants } from "@/components/listings/grants/CreateGrants";
-import Template from "@/components/listings/templates/template";
+// import { CreateGrants } from "@/components/listings/grants/CreateGrants";
+import Template from "@/components/listings/template/template";
 import { SuccessListings } from "@/components/modals/successListings";
 import ErrorSection from "@/components/shared/ErrorSection";
 import type { MultiSelectOptions } from "@/constants";
@@ -341,7 +341,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
               isNewOrDraft={isNewOrDraft}
             />
           )}
-          {steps > 1 && listingType === "GRANT" && (
+          {/* {steps > 1 && listingType === "GRANT" && (
             <CreateGrants
               createDraft={createDraft}
               onOpen={onOpen}
@@ -357,7 +357,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
               setSteps={setSteps}
               steps={steps}
             />
-          )}
+          )} */}
           <Toaster />
         </FormLayout>
       )}

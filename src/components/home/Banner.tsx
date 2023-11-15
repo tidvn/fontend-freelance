@@ -6,12 +6,12 @@ import {
   Flex,
   Text,
   useMediaQuery,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+} from "@chakra-ui/react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-import { userStore } from '@/store/user';
-import { Mixpanel } from '@/utils/mixpanel';
+import { userStore } from "@/store/user";
+import { useRouter } from "next/router";
 
 interface BannerProps {
   setTriggerLogin: (arg0: boolean) => void;
@@ -19,21 +19,22 @@ interface BannerProps {
 
 const avatars = [
   {
-    name: 'Anoushk',
-    src: 'https://res.cloudinary.com/dgvnuwspr/image/upload/v1683132586/People%20DPs/recA3Sa7t1loYvDHo.jpg',
+    name: "Anoushk",
+    src: "https://res.cloudinary.com/dgvnuwspr/image/upload/v1683132586/People%20DPs/recA3Sa7t1loYvDHo.jpg",
   },
   {
-    name: 'Ujjwal',
-    src: 'https://res.cloudinary.com/dgvnuwspr/image/upload/v1683135404/People%20DPs/rec4XUFtbh6upVYpA.jpg',
+    name: "Ujjwal",
+    src: "https://res.cloudinary.com/dgvnuwspr/image/upload/v1683135404/People%20DPs/rec4XUFtbh6upVYpA.jpg",
   },
   {
-    name: 'Yash',
-    src: 'https://res.cloudinary.com/dgvnuwspr/image/upload/v1683135395/People%20DPs/recb4gDjdKoFDAyo7.png',
+    name: "Yash",
+    src: "https://res.cloudinary.com/dgvnuwspr/image/upload/v1683135395/People%20DPs/recb4gDjdKoFDAyo7.png",
   },
 ];
 
 export default function HomeBanner({ setTriggerLogin }: BannerProps) {
-  const [isLessThan768px] = useMediaQuery('(max-width: 768px)');
+  const router = useRouter();
+  const [isLessThan768px] = useMediaQuery("(max-width: 768px)");
 
   const [usersCount, setUsersCount] = useState<number | null>(null);
   const { userInfo } = userStore();
@@ -45,63 +46,60 @@ export default function HomeBanner({ setTriggerLogin }: BannerProps) {
   };
 
   useEffect(() => {
-    axios
-       setUsersCount(1000000);
+    axios;
+    setUsersCount(1000000);
   }, []);
 
   return (
     <>
       <Box
-        w={'100%'}
-        h={isLessThan768px ? '96' : 'auto'}
-        maxH={'500px'}
+        w={"100%"}
+        h={isLessThan768px ? "96" : "auto"}
+        maxH={"500px"}
         mb={8}
-        mx={'auto'}
-        p={{ base: '6', md: '10' }}
+        mx={"auto"}
+        p={{ base: "6", md: "10" }}
         bgImage={
           isLessThan768px
             ? "url('/assets/home/display/banner-mobile.png')"
             : "url('/assets/home/display/banner.png')"
         }
-        bgSize={'cover'}
-        bgPosition={'center'}
-        rounded={'md'}
+        bgSize={"cover"}
+        bgPosition={"center"}
+        rounded={"md"}
       >
         <Text
           color="white"
-          fontSize={'28px'}
-          fontWeight={'700'}
-          lineHeight={'2.2rem'}
+          fontSize={"28px"}
+          fontWeight={"700"}
+          lineHeight={"2.2rem"}
         >
-          Unlock your crypto
-          <br /> earning potential
+          How work
+          <br /> should work
         </Text>
         <Text
-          maxW={{ base: '100%', md: '460px' }}
-          mt={isLessThan768px ? '2' : '4'}
-          color={'white'}
-          fontSize={{ base: 'sm', md: 'lg' }}
+          maxW={{ base: "100%", md: "460px" }}
+          mt={isLessThan768px ? "2" : "4"}
+          color={"white"}
+          fontSize={{ base: "sm", md: "lg" }}
         >
-          Explore jobs, projects, and grant opportunities for developers and
-          non-technical talent alike
+          Forget the old rules. You can have the best people. Right now. Right
+          here.
         </Text>
         <Flex
-          align={'center'}
-          direction={isLessThan768px ? 'column' : 'row'}
-          gap={isLessThan768px ? '3' : '4'}
-          mt={isLessThan768px ? '24' : '4'}
+          align={"center"}
+          direction={isLessThan768px ? "column" : "row"}
+          gap={isLessThan768px ? "3" : "4"}
+          mt={isLessThan768px ? "24" : "4"}
         >
           <Button
-            w={isLessThan768px ? '100%' : 'auto'}
-            px={'2.25rem'}
-            py={'0.75rem'}
-            color={'#3223A0'}
-            fontSize={'0.875rem'}
-            bg={'white'}
-            onClick={() => {
-              Mixpanel.track('sign_up_clicked');
-              handleSubmit();
-            }}
+            w={isLessThan768px ? "100%" : "auto"}
+            px={"2.25rem"}
+            py={"0.75rem"}
+            color={"#3223A0"}
+            fontSize={"0.875rem"}
+            bg={"white"}
+            onClick={() => router.push("/auth/SignUp")}
           >
             Sign Up
           </Button>
@@ -110,15 +108,15 @@ export default function HomeBanner({ setTriggerLogin }: BannerProps) {
               {avatars.map((avatar, index) => (
                 <Avatar
                   key={index}
-                  borderWidth={'1px'}
-                  borderColor={'#49139c'}
+                  borderWidth={"1px"}
+                  borderColor={"#49139c"}
                   name={avatar.name}
                   src={avatar.src}
                 />
               ))}
             </AvatarGroup>
             {usersCount !== null && (
-              <Text ml={'0.6875rem'} color="white" fontSize={'0.875rem'}>
+              <Text ml={"0.6875rem"} color="white" fontSize={"0.875rem"}>
                 Join {usersCount.toLocaleString()}+ others
               </Text>
             )}
