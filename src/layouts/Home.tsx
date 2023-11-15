@@ -72,7 +72,7 @@ function Home({ children, type }: HomeProps) {
       className="bg-white"
       meta={
         <Meta
-          title="Superteam Earn"
+          title="Frelan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />

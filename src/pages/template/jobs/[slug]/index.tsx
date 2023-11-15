@@ -44,7 +44,7 @@ function JobDetails({ slug }: JobDetailsProps) {
     <Default
       meta={
         <Meta
-          title={`${job?.title || 'Job'} | Superteam Earn`}
+          title={`${job?.title || 'Job'} | Frelan`}
           description="Every Solana opportunity in one place!"
         />
       }

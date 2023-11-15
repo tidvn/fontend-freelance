@@ -50,7 +50,7 @@ function Invite({ invite }: Props) {
     <Default
       meta={
         <Meta
-          title="Accept Invite | Superteam Earn"
+          title="Accept Invite | Frelan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />

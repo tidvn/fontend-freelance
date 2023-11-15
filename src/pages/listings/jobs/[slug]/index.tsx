@@ -56,10 +56,10 @@ function JobDetails() {
     <Default
       meta={
         <Head>
-          <title>{`${job?.title || "Job"} | Superteam Earn`}</title>
+          <title>{`${job?.title || "Job"} | Frelan`}</title>
           <meta
             property="og:title"
-            content={`${job?.title || "Job"} | Superteam Earn`}
+            content={`${job?.title || "Job"} | Frelan`}
           />
           <meta
             property="og:image"
@@ -67,7 +67,7 @@ function JobDetails() {
           />
           <meta
             name="twitter:title"
-            content={`${job?.title || "Job"} | Superteam Earn`}
+            content={`${job?.title || "Job"} | Frelan`}
           />
           <meta
             name="twitter:image"

@@ -166,7 +166,7 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
       className="bg-white"
       meta={
         <Meta
-          title="Dashboard | Superteam Earn"
+          title="Dashboard | Frelan"
           description="Every Solana opportunity in one place!"
           canonical="/assets/logo/og.svg"
         />
