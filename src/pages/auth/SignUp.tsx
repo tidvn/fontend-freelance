@@ -22,6 +22,7 @@ import { useFormik } from "formik";
 import { useAlert } from "@/context/AlertContext";
 import { useRouter } from "next/router";
 import axios from "@/lib/axios";
+import { signIn } from "next-auth/react";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -36,7 +37,6 @@ export default function SignupCard() {
       password_confirmation: "",
       firstname: "",
       lastname: "",
-
     },
     onSubmit: async (values) => {
       try {
@@ -52,7 +52,9 @@ export default function SignupCard() {
           variant: "left-accent",
           message: "SignUp Done",
         });
-        router.push('/');
+        const sign = { username: values.username, password: values.password };
+        await signIn("credentials", { ...sign, callbackUrl: "/" });
+        // router.push("/");
       } catch (error: any) {
         showAlert({
           status: "error",
@@ -183,7 +185,10 @@ export default function SignupCard() {
               </Stack>
               <Stack pt={6}>
                 <Text align={"center"}>
-                  Already a user? <Link color={"blue.400"} onClick={()=>router.push('/')}>Login</Link>
+                  Already a user?{" "}
+                  <Link color={"blue.400"} onClick={() => router.push("/")}>
+                    Login
+                  </Link>
                 </Text>
               </Stack>
             </Stack>

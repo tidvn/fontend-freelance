@@ -73,7 +73,6 @@ const Index = () => {
       getMembers();
     }
   }, [userInfo?.currentCompanyId, skip, searchText]);
-console.log(userInfo)
   return (
     <Sidebar>
       {isOpen && <InviteMembers isOpen={isOpen} onClose={onClose} />}

@@ -21,7 +21,7 @@ function AllListingsPage() {
   const getListings = async () => {
     setIsListingsLoading(true);
     try {
-      const listingsData = await axios.get('/api/listings/', {
+      const listingsData = await axios.get('/api/listings', {
         params: {
           category: 'jobs',
           take: 100,
@@ -64,7 +64,6 @@ function AllListingsPage() {
           )}
           {!isListingsLoading &&
             listings?.jobs?.map((job) => {
-              console.log(job)
               return (
                 <JobsCard
                   slug={job?.slug}
