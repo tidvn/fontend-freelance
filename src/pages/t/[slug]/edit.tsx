@@ -205,7 +205,7 @@ export default function EditProfilePage() {
     const fetchPoW = async () => {
       const response = await fetchClient({
         method: "GET",
-        endpoint: `/api/pow/get/?userId=${userInfo?.id}`,
+        endpoint: `/api/pow/get?userId=${userInfo?.id}`,
       });
       setPow(response?.data);
     };
