@@ -133,13 +133,9 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
         ...jobPayment,
         isPublished: true,
       };
-      // const result = await axios.post('/api/jobs/create/', newJob);
-      // await axios.post('/api/email/manual/createJob', {
-      //   id: result?.data?.id,
-      // });
       const result = await fetchClient({
         method: "POST",
-        endpoint: "/api/jobs/create/",
+        endpoint: "/api/jobs/create",
         body: JSON.stringify(newJob),
       });
 
