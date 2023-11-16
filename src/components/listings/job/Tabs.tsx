@@ -8,7 +8,7 @@ import Loading from '@/components/shared/Loading';
 import type { Job } from '@/interface/job';
 
 interface TabProps {
-  id: number;
+  id: string;
   title: string;
   content: JSX.Element;
 }

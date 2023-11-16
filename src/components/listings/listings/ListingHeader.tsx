@@ -148,7 +148,7 @@ export const ListingHeader = ({
           {router.asPath.includes("jobs") && (
             <HStack>
               <HStack align="start" px={[3, 3, 0, 0]}>
-                {sub?.filter((e) => e.talentId === (talentInfo?.id as string))
+                {sub?.filter((e) => e.talentId === (talentInfo?.id as number))
                   ?.length! > 0 ? (
                   <Button
                     bg="#F7FAFC"

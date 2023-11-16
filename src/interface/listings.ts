@@ -109,7 +109,7 @@ interface SubscribeType {
 
 interface SubscribesType {
   id?: string;
-  talentid: number;
+  talentId: number;
   jobsid: number;
   Talent?: Talent;
 }
