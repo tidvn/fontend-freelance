@@ -4,7 +4,7 @@ import type { User } from '@/interface/user';
 import type { Skills } from './skills';
 
 interface Grant {
-  id: string;
+  id: number;
   title: string;
   slug: string;
   logo?: string;

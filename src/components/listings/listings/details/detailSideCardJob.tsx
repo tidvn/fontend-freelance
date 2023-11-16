@@ -34,7 +34,7 @@ import fetchClient from "@/lib/fetch-client";
 import axios from "@/lib/axios";
 
 interface Props {
-  id: string;
+  id: number;
   applicationLink?: string;
   total?: number;
   prizeList?: Partial<Rewards>;

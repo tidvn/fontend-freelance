@@ -23,7 +23,7 @@ import fetchClient from "@/lib/fetch-client";
 import axios from "@/lib/axios";
 
 interface Props {
-  refId: string;
+  refId: number;
   refType: "JOB";
 }
 export const Comments = ({ refId, refType }: Props) => {
@@ -155,7 +155,7 @@ export const Comments = ({ refId, refType }: Props) => {
           </Flex>
         </VStack>
         {comments?.map((comment: any) => {
-          const date = dayjs(comment?.updatedAt).fromNow();
+          const date = dayjs(comment?.updated_at).fromNow();
           return (
             <HStack key={comment.id} align={"start"} px={6}>
               <Flex

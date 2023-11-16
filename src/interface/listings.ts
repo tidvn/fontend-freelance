@@ -16,8 +16,8 @@ export const PrizeListMap = {
 };
 
 interface Questions {
-  id: string;
-  jobsId: string;
+  id: number;
+  jobsid: number;
   questions: string;
 }
 
@@ -37,7 +37,7 @@ interface Listings {
   featured: boolean;
   prizeList: Partial<PrizeListType>; // change to enum and string
   bugJob: boolean;
-  orgId: string;
+  orgid: number;
   showTop: boolean;
   eligibility: string;
   status: JobStatus;
@@ -52,11 +52,11 @@ interface Listings {
 
 type JobStatus = 'open' | 'review' | 'close';
 interface Winner {
-  id: string;
+  id: number;
   email: string;
   name: string;
   publickey: string;
-  jobsId: string;
+  jobsid: number;
   prize: Prize;
 }
 
@@ -66,7 +66,7 @@ interface GrantsBasicType {
   link: string;
 }
 interface GrantsType {
-  id: string;
+  id: number;
   title: string;
   link: string;
   description: string;
@@ -76,7 +76,7 @@ interface GrantsType {
   contact: string;
   token: string;
   active: boolean;
-  orgId: string;
+  orgid: number;
   maxSalary: number;
   minSalary: number;
 }
@@ -97,20 +97,20 @@ interface DraftType {
   question?: string;
 }
 interface SubscribeType {
-  id: string;
+  id: number;
   image: string;
   likes: string;
   link: string;
   talent: string;
   questions: string;
-  jobsId: string;
+  jobsid: number;
   Talent?: Talent;
 }
 
 interface SubscribesType {
   id?: string;
-  talentId: string;
-  jobsId: string;
+  talentid: number;
+  jobsid: number;
   Talent?: Talent;
 }
 

@@ -52,7 +52,7 @@ const Template = ({
     const template: any = jobsTemplates.find((t: any) => {
       return t?.id === templateId;
     });
-    setListingType("BOUNTY");
+    setListingType("JOB");
     setJobBasic({
       title: template?.title || undefined,
       templateId: template?.id || undefined,
@@ -92,7 +92,7 @@ const Template = ({
               border={"1px solid #cbd5e1"}
               cursor={"pointer"}
               onClick={() => {
-                setListingType("BOUNTY");
+                setListingType("JOB");
                 setSteps(2);
               }}
             >

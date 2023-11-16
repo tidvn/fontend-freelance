@@ -122,7 +122,7 @@ function JobDetails() {
                     skills={job?.skills?.map((e:any) => e.skills) ?? []}
                     description={job?.description}
                   />
-                  <Comments refId={job?.id ?? ""} refType="JOB" />
+                  <Comments refId={job?.id ?? 0} refType="JOB" />
                 </VStack>
                 <DetailSideCard
                   jobtitle={job.title ?? ""}

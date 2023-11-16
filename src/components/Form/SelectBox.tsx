@@ -4,7 +4,7 @@ interface SelectBoxProps {
   label: string;
   watchValue?: string;
   options: string[];
-  id: string;
+  id: number;
   placeholder: string;
   register: any;
 }

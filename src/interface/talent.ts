@@ -1,7 +1,7 @@
 import type { PoW } from './pow';
 
 export interface Talent {
-  id: string;
+  id: number;
   publickey: string;
   username: string;
   firstname: string;

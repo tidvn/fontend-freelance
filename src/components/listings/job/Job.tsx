@@ -39,7 +39,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
   // Description - 3
   // payment form - 4
   const [steps, setSteps] = useState<number>(isEditMode ? 2 : 1);
-  const [listingType, setListingType] = useState("BOUNTY");
+  const [listingType, setListingType] = useState("JOB");
   const [draftLoading, setDraftLoading] = useState<boolean>(false);
   const [jobRequirements, setJobRequirements] = useState<string | undefined>(
     isEditMode ? job?.requirements : undefined
@@ -227,7 +227,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
           setStep={setSteps}
           currentStep={steps}
           stepList={
-            listingType !== "BOUNTY"
+            listingType !== "JOB"
               ? [
                   {
                     label: "Template",
@@ -309,7 +309,7 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
               type={type}
             />
           )}
-          {steps > 1 && listingType === "BOUNTY" && (
+          {steps > 1 && listingType === "JOB" && (
             <CreateJob
               type={type}
               regions={regions}

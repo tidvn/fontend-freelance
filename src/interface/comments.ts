@@ -1,10 +1,10 @@
 import type { User } from '@/interface/user';
 
 export interface Comment {
-  id: string;
+  id: number;
   message: string;
-  authorId: string;
+  authorid: number;
   author: User;
-  refId: string;
-  refType: 'BOUNTY';
+  refid: number;
+  refType: 'JOB';
 }

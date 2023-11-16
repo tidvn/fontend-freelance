@@ -24,7 +24,7 @@ import { userStore } from "@/store/user";
 import fetchClient from "@/lib/fetch-client";
 
 interface Props {
-  id: string;
+  id: number;
   isOpen: boolean;
   onClose: () => void;
   eligibility: Eligibility[];
