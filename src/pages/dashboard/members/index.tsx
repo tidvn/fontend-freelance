@@ -57,7 +57,7 @@ const Index = () => {
     try {
       const membersList = await fetchClient({
         method: "GET",
-        endpoint: `/api/members/?companyId=${userInfo?.currentCompanyId}&searchText=${searchText}&skip=${skip}&take=${length}`,
+        endpoint: `/api/members?companyId=${userInfo?.currentCompanyId}&searchText=${searchText}&skip=${skip}&take=${length}`,
       });
 
       setTotalMembers(membersList.data.total);

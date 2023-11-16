@@ -22,7 +22,7 @@ function Invite({ invite }: Props) {
     try {
       const result = await fetchClient({
         method: "GET",
-        endpoint: `/api/invite/?id=${invite}`,
+        endpoint: `/api/invite?id=${invite}`,
       });
 
       if (!result.data) {

@@ -30,7 +30,7 @@ function ListingCategoryPage({ slug }: { slug: string }) {
         ? { category: 'hyperdrive' }
         : { category: 'all', take: 100, filter: slug };
     try {
-      const listingsData = await axios.get('/api/listings/', { params });
+      const listingsData = await axios.get('/api/listings', { params });
       setListings(listingsData.data);
       setIsListingsLoading(false);
     } catch (e) {

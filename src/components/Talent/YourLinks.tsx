@@ -214,7 +214,7 @@ function YourLinks({ success, useFormStore }: Props) {
       };
       const { subSkills, ...finalOptions } = updateOptions;
       console.log(finalOptions)
-      const updatedUser = await fetchClient({method : "POST", endpoint: '/api/user/update/',body : JSON.stringify(finalOptions)});
+      const updatedUser = await fetchClient({method : "POST", endpoint: '/api/user/update',body : JSON.stringify(finalOptions)});
       // console.log(updatedUser)
 
       // setUserInfo(updatedUser.data);
