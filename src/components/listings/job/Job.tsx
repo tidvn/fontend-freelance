@@ -138,8 +138,6 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
         endpoint: "/api/jobs/create",
         body: JSON.stringify(newJob),
       });
-
-      console.log(result?.data.id);
       setSlug(`/jobs/${result?.data?.slug}/`);
       onOpen();
       setIsListingPublishing(false);
@@ -150,9 +148,9 @@ function CreateListing({ job, isEditMode = false, type }: Props) {
 
   const createDraft = async () => {
     setDraftLoading(true);
-    let api = "/api/jobs/create/";
+    let api = "/api/jobs/create";
     if (isEditMode) {
-      api = `/api/jobs/update/`;
+      api = `/api/jobs/update`;
     }
     let draft: Job = {
       companyId: userInfo?.currentCompany?.id ?? 0,
