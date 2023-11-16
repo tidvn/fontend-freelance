@@ -29,7 +29,7 @@ function InviteView({ invite }: Props) {
       try {
         await fetchClient({
           method: "POST",
-          endpoint: "/api/members/accept/",
+          endpoint: "/api/members/accept",
           body: JSON.stringify({ inviteId: invite?.id }),
         });
         router.push("/dashboard/jobs");

@@ -73,7 +73,7 @@ function InviteMembers({ isOpen, onClose }: Props) {
     try {
       const res = await fetchClient({
         method: "POST",
-        endpoint: "/api/members/invite/",
+        endpoint: "/api/members/invite",
         body: JSON.stringify({
           email,
           companyId: userInfo?.currentCompanyId,
